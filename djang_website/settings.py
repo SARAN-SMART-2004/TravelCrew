@@ -46,7 +46,14 @@ INSTALLED_APPS = [
     'crispy_forms',
     'captcha',
     'crispy_bootstrap4',
+    'django.contrib.sites',  # Ensure 'sites' app is included
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
 ]
+
+SOCIALACCOUNT_LOGIN_ON_GET=True
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap4"
 CRISPY_TEMPLATE_PACK = "bootstrap4"
 
@@ -60,6 +67,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
 ]
 
 ROOT_URLCONF = 'djang_website.urls'
@@ -82,6 +90,11 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'djang_website.wsgi.application'
 
+# settings.py
+
+TWILIO_ACCOUNT_SID = '######################'
+TWILIO_AUTH_TOKEN = '######################'
+TWILIO_PHONE_NUMBER = '+###########'
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
@@ -135,9 +148,27 @@ STATIC_URL = '/static/'
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 LOGIN_REDIRECT_URL = '/'
+
 LOGIN_URL = 'login'
 
-AUTHENTICATION_BACKENDS = ['users.backends.EmailBackend']
+SITE_ID = 1  # Ensure a valid site ID is set
+
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
+
+LOGIN_REDIRECT_URL = '/'  # Example redirect URL after login
+
+# Configure Google provider
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'SCOPE': ['profile', 'email'],
+        'AUTH_PARAMS': {
+            'access_type': 'online',
+        }
+    }
+}
 
 RECAPTCHA_PUBLIC_KEY = '6LddA3kgAAAAAPf1mAJmEc7Ku0cssbD5QMha09NT'
 RECAPTCHA_PRIVATE_KEY = '6LddA3kgAAAAAJY-2-Q0J3QX83DFJwFR1hXqmN8q'
@@ -151,7 +182,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_FROM = 'smartsaran3031@gmail.com'
 EMAIL_HOST_USER = 'smartsaran3031@gmail.com'
-EMAIL_HOST_PASSWORD = 'gvvkopoiaqfqjzym'
+EMAIL_HOST_PASSWORD = '##############'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
