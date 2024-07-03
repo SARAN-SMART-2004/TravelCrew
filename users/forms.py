@@ -7,14 +7,16 @@ from captcha.fields import CaptchaField
 
 class UserRegistrationForm(UserCreationForm):
     email = forms.EmailField(help_text='A valid email address, please.', required=True)
+    #phone_number = forms.CharField(max_length=15, required=False, help_text='Enter your phone number')
 
     class Meta:
         model = get_user_model()
-        fields = ['first_name', 'last_name', 'username', 'email', 'password1', 'password2']
+        fields = ['first_name', 'last_name', 'username', 'email',  'password1', 'password2']
 
     def save(self, commit=True):
         user = super(UserRegistrationForm, self).save(commit=False)
         user.email = self.cleaned_data['email']
+        #user.phone_number = self.cleaned_data['phone_number']
         if commit:
             user.save()
 
@@ -37,10 +39,12 @@ class UserLoginForm(AuthenticationForm):
 
 class UserUpdateForm(forms.ModelForm):
     email = forms.EmailField()
+    phone_number = forms.CharField(max_length=15, required=False, help_text='Enter your phone number')
 
     class Meta:
         model = get_user_model()
-        fields = ['first_name', 'last_name', 'email', 'image', 'description']
+        fields = ['first_name', 'last_name', 'email', 'image', 'description', 'phone_number']
+
 
 class SetPasswordForm(SetPasswordForm):
     class Meta:
@@ -52,3 +56,7 @@ class PasswordResetForm(PasswordResetForm):
         super(PasswordResetForm, self).__init__(*args, **kwargs)
 
     captcha = CaptchaField()  # Updated field for django-simple-captcha
+from django import forms
+
+class OTPForm(forms.Form):
+    otp = forms.CharField(max_length=6, widget=forms.TextInput(attrs={'placeholder': 'Enter OTP'}))

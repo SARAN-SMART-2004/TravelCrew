@@ -1,6 +1,11 @@
 {% extends "main/header.html" %}
 {% load crispy_forms_tags %}
 {% block content %}
+<style>
+    .form-control {
+        width: 80%;
+    }
+</style>
 <div class="content-section col-lg-12 col-md-12 col-sm-12 tutorial-style" style="min-height:65vh;">
     <legend class="border-bottom mb-4">Profile Information:</legend>
     <form method="POST" enctype="multipart/form-data">
@@ -15,7 +20,7 @@
                             title="Upload new image">
                     </label>
             {% else %}
-                <img class="rounded-circle account-img profile-image", src="{{ form.instance.image.url }}">
+                <img class="rounded-circle account-img profile-image" src="{{ form.instance.image.url }}">
             {% endif %}
             <div class="media-body">
                 <h2 class="account-heading">{{ form.instance.username }}
@@ -24,6 +29,16 @@
                 <p class="text-secondary">{{ form.instance.first_name }} {{ form.instance.last_name }}</p>
                 <p class="text-secondary">{{ form.instance.email }}</p>
                 <p class="text-secondary">{{ form.instance.description }}</p>
+                <p class="text-secondary">
+                    {{ form.instance.phone_number }}
+                    {% if form.instance.is_phone_verified %}
+                        <span style="color: green;">✔ Verified</span>
+                    {% else %}
+                        <span style="color: red;">✘ Not Verified</span>
+
+                        
+                    {% endif %}
+                </p>
             </div>
         </div>
 
@@ -40,6 +55,7 @@
                 </div> 
                 {{ form.email|as_crispy_field }}
                 {{ form.description|as_crispy_field }}
+                {{ form.phone_number|as_crispy_field }}
 
                 <a href="{% url 'password_change' %}">Change password?</a>
             </fieldset>
@@ -47,6 +63,7 @@
                 <button class="btn btn-outline-info" type="submit">Update</button>
             </div>
         {% endif %}
-    </form>
+ 
 </div>
+
 {% endblock content %}

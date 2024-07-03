@@ -1,5 +1,3 @@
-from logging.config import valid_ident
-from typing import Protocol
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout, authenticate, get_user_model
 from django.contrib import messages
@@ -12,11 +10,15 @@ from django.core.mail import EmailMessage
 from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
 from django.db.models.query_utils import Q
+from twilio.rest import Client
+from django.conf import settings
+from django.utils import timezone
+from datetime import timedelta
 
-from .forms import UserRegistrationForm, UserLoginForm, UserUpdateForm, SetPasswordForm, PasswordResetForm
+from .forms import UserRegistrationForm, UserLoginForm, UserUpdateForm, SetPasswordForm, PasswordResetForm, OTPForm
 from .decorators import user_not_authenticated
 from .tokens import account_activation_token
-from .models import SubscribedUsers
+from .models import SubscribedUsers, OTP, CustomUser
 
 def activate(request, uidb64, token):
     User = get_user_model()
@@ -48,11 +50,10 @@ def activateEmail(request, user, to_email):
     })
     email = EmailMessage(mail_subject, message, to=[to_email])
     if email.send():
-        messages.success(request, f'Dear <b>{user}</b>, please go to you email <b>{to_email}</b> inbox and click on \
-                received activation link to confirm and complete the registration. <b>Note:</b> Check your spam folder.')
+        messages.success(request, f'Dear <b>{user}</b>, please go to your email <b>{to_email}</b> inbox and click on \
+                the received activation link to confirm and complete the registration. <b>Note:</b> Check your spam folder.')
     else:
         messages.error(request, f'Problem sending email to {to_email}, check if you typed it correctly.')
-
 
 @user_not_authenticated
 def register(request):
@@ -60,7 +61,7 @@ def register(request):
         form = UserRegistrationForm(request.POST)
         if form.is_valid():
             user = form.save(commit=False)
-            user.is_active=False
+            user.is_active = False
             user.save()
             activateEmail(request, user, form.cleaned_data.get('email'))
             return redirect('homepage')
@@ -68,7 +69,6 @@ def register(request):
         else:
             for error in list(form.errors.values()):
                 messages.error(request, error)
-
     else:
         form = UserRegistrationForm()
 
@@ -76,7 +76,7 @@ def register(request):
         request=request,
         template_name="users/register.html",
         context={"form": form}
-        )
+    )
 
 @login_required
 def custom_logout(request):
@@ -112,31 +112,32 @@ def custom_login(request):
         request=request,
         template_name="users/login.html",
         context={"form": form}
-        )
+    )
 
+@login_required
 def profile(request, username):
+    user = get_user_model().objects.filter(username=username).first()
+    if user is None:
+        return redirect("homepage")
+    
     if request.method == "POST":
-        user = request.user
-        form = UserUpdateForm(request.POST, request.FILES, instance=user)
+        form = UserUpdateForm(request.POST, request.FILES, instance=request.user)
         if form.is_valid():
             user_form = form.save()
+            if 'phone_number' in form.changed_data:
+                send_otp(request.user)
+                return redirect('verify_otp')
+            
             messages.success(request, f'{user_form.username}, Your profile has been updated!')
             return redirect("profile", user_form.username)
-
-        for error in list(form.errors.values()):
-            messages.error(request, error)
-
-    user = get_user_model().objects.filter(username=username).first()
-    if user:
+        else:
+            for error in list(form.errors.values()):
+                messages.error(request, error)
+    else:
         form = UserUpdateForm(instance=user)
-        form.fields['description'].widget.attrs = {'rows': 1}
-        return render(
-            request=request,
-            template_name="users/profile.html",
-            context={"form": form}
-            )
-    
-    return redirect("homepage")
+
+    form.fields['description'].widget.attrs = {'rows': 1}
+    return render(request, 'users/profile.html', {'form': form})
 
 @login_required
 def password_change(request):
@@ -197,7 +198,7 @@ def password_reset_request(request):
         request=request, 
         template_name="password_reset.html", 
         context={"form": form}
-        )
+    )
 
 def passwordResetConfirm(request, uidb64, token):
     User = get_user_model()
@@ -256,3 +257,53 @@ def subscribe(request):
         subscribe_model_instance.save()
         messages.success(request, f'{email} email was successfully subscribed to our newsletter!')
         return redirect(request.META.get("HTTP_REFERER", "/"))  
+
+def send_otp(user):
+    otp = OTP.generate_otp()
+    OTP.objects.create(user=user, otp=otp)
+    
+    client = Client(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN)
+    message = client.messages.create(
+        body=f'Your OTP is {otp}',
+        from_='+15735080551',  # Your Twilio phone number
+        to=user.phone_number
+    )
+    return message.sid
+
+@login_required
+def verify_otp(request):
+    if request.method == 'POST':
+        form = OTPForm(request.POST)
+        if form.is_valid():
+            otp = form.cleaned_data['otp']
+            user_otp = OTP.objects.filter(user=request.user, otp=otp).first()
+            if user_otp and user_otp.created_at >= timezone.now() - timedelta(minutes=10):
+                request.user.is_phone_verified = True
+                request.user.save()
+                messages.success(request, 'Phone number verified successfully!')
+                return redirect('profile', request.user.username)
+            else:
+                messages.error(request, 'Invalid OTP or OTP expired.')
+    else:
+        form = OTPForm()
+    
+    return render(request, 'verify_otp.html', {'form': form})
+
+
+# from django.shortcuts import render, redirect
+# from django.contrib import messages
+# from .forms import UserUpdateForm
+# @login_required
+# def verify_otp_stored(request):
+#     if request.method == "POST":
+#         phone_number = request.user.phone_number  # Fetch the phone number from the logged-in user
+#         if phone_number:
+#             # Here you would call the function to send the OTP to the phone number
+#             send_otp(request.user)
+#             return redirect('verify_otp')  # Redirect to the OTP verification page
+#         else:
+#             messages.error(request, 'Phone number not found.')
+#             return redirect('profile', request.user.username)
+#     else:
+#         messages.error(request, 'Invalid request method.')
+#         return redirect('profile', request.user.username)
