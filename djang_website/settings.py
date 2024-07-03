@@ -92,9 +92,9 @@ WSGI_APPLICATION = 'djang_website.wsgi.application'
 
 # settings.py
 
-TWILIO_ACCOUNT_SID = '######################'
-TWILIO_AUTH_TOKEN = '######################'
-TWILIO_PHONE_NUMBER = '+###########'
+TWILIO_ACCOUNT_SID = '##############'
+TWILIO_AUTH_TOKEN = '########'
+TWILIO_PHONE_NUMBER = '+#########'
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
@@ -170,8 +170,8 @@ SOCIALACCOUNT_PROVIDERS = {
     }
 }
 
-RECAPTCHA_PUBLIC_KEY = '6LddA3kgAAAAAPf1mAJmEc7Ku0cssbD5QMha09NT'
-RECAPTCHA_PRIVATE_KEY = '6LddA3kgAAAAAJY-2-Q0J3QX83DFJwFR1hXqmN8q'
+RECAPTCHA_PUBLIC_KEY = '$$$$$$$$$$$$$$$$$$'
+RECAPTCHA_PRIVATE_KEY = '##########-2-##########'
 SILENCED_SYSTEM_CHECKS = ['captcha.recaptcha_test_key_error']
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
@@ -182,7 +182,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_FROM = 'smartsaran3031@gmail.com'
 EMAIL_HOST_USER = 'smartsaran3031@gmail.com'
-EMAIL_HOST_PASSWORD = '##############'
+EMAIL_HOST_PASSWORD = '############'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
