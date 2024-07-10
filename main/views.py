@@ -3,223 +3,188 @@ from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
 
-from users.models import SubscribedUsers
+# from users.models import SubscribedUsers
 from django.contrib import messages
 from django.core.mail import EmailMessage
+from django.contrib.auth import get_user_model
+from users.models import CustomUser
 
-from .models import Article, ArticleSeries
+
+# from .models import Article, ArticleSeries
 from .decorators import user_is_superuser
-from .forms import NewsletterForm, SeriesCreateForm, ArticleCreateForm, SeriesUpdateForm, ArticleUpdateForm#, NewsletterForm
-from users.models import SubscribedUsers
+# from .forms import NewsletterForm, SeriesCreateForm, ArticleCreateForm, SeriesUpdateForm, ArticleUpdateForm#, NewsletterForm
+# from users.models import SubscribedUsers
 
 import os
 from uuid import uuid4
 
-# Create your views here.
+from django.shortcuts import render
+
 def homepage(request):
-    matching_series = ArticleSeries.objects.all()
+    # Check if the user is authenticated
+    if request.user.is_authenticated:
+        # Fetch all details of the authenticated user
+        current_user = request.user
+        username = current_user.username
+        email = current_user.email
+        description = current_user.description
+        phone_number = current_user.phone_number
+        image=current_user.image
+        
+        
+        context = {
+            'current_user': current_user,
+            'username': username,
+            'email': email,
+            'description': description,
+            'phone_number': phone_number,
+            'image':image,
+            
+            # Add more data as needed
+        }
+    else:
+        context = {}
     
-    return render(
-        request=request,
-        template_name='main/home.html',
-        context={
-            "objects": matching_series,
-            "type": "series"
-            }
-        )
+    return render(request, 'main/header.html', context)
 
-def series(request, series: str):
-    matching_series = Article.objects.filter(series__slug=series).all()
+
+
+#  matching_series = ArticleSeries.objects.all()
     
-    return render(
-        request=request,
-        template_name='main/home.html',
-        context={
-            "objects": matching_series,
-            "type": "article"
-            }
-        )
+#     return render(
+#         request=request,
+#         template_name='main/home.html',
+#         context={
+#             "objects": matching_series,
+#             "type": "series"
+#             }
+#         )
 
-def article(request, series: str, article: str):
-    matching_article = Article.objects.filter(series__slug=series, article_slug=article).first()
-    
-    return render(
-        request=request,
-        template_name='main/article.html',
-        context={"object": matching_article}
-        )
 
-@user_is_superuser
-def new_series(request):
-    if request.method == "POST":
-        form = SeriesCreateForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            return redirect("homepage")
 
+
+
+def editpost(request):
+    # Check if the user is authenticated
+    if request.user.is_authenticated:
+        # Fetch all details of the authenticated user
+        current_user = request.user
+        username = current_user.username
+        email = current_user.email
+        description = current_user.description
+        phone_number = current_user.phone_number
+        image=current_user.image
+        
+        
+        context = {
+            'current_user': current_user,
+            'username': username,
+            'email': email,
+            'description': description,
+            'phone_number': phone_number,
+            'image':image,
+            
+            # Add more data as needed
+        }
     else:
-         form = SeriesCreateForm()
-
-    return render(
-        request=request,
-        template_name='main/new_record.html',
-        context={
-            "object": "Series",
-            "form": form
-            }
-        )
-
-@user_is_superuser
-def new_post(request):
-    if request.method == "POST":
-        form = ArticleCreateForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            return redirect(f"{form.cleaned_data['series'].slug}/{form.cleaned_data.get('article_slug')}")
-
+        context = {}
+    return render(request,'main/editpost.html',context)
+def createpost(request):
+    # Check if the user is authenticated
+    if request.user.is_authenticated:
+        # Fetch all details of the authenticated user
+        current_user = request.user
+        username = current_user.username
+        email = current_user.email
+        description = current_user.description
+        phone_number = current_user.phone_number
+        image=current_user.image
+        
+        
+        context = {
+            'current_user': current_user,
+            'username': username,
+            'email': email,
+            'description': description,
+            'phone_number': phone_number,
+            'image':image,
+            
+            # Add more data as needed
+        }
     else:
-         form = ArticleCreateForm()
-
-    return render(
-        request=request,
-        template_name='main/new_record.html',
-        context={
-            "object": "Article",
-            "form": form
-            }
-        )
-
-@user_is_superuser
-def series_update(request, series):
-    matching_series = ArticleSeries.objects.filter(slug=series).first()
-
-    if request.method == "POST":
-        form = SeriesUpdateForm(request.POST, request.FILES, instance=matching_series)
-        if form.is_valid():
-            form.save()
-            return redirect('homepage')
-    
+        context = {}
+    return render(request,'main/createpost.html',context)
+def poststatus(request):
+    # Check if the user is authenticated
+    if request.user.is_authenticated:
+        # Fetch all details of the authenticated user
+        current_user = request.user
+        username = current_user.username
+        email = current_user.email
+        description = current_user.description
+        phone_number = current_user.phone_number
+        image=current_user.image
+        
+        
+        context = {
+            'current_user': current_user,
+            'username': username,
+            'email': email,
+            'description': description,
+            'phone_number': phone_number,
+            'image':image,
+            
+            # Add more data as needed
+        }
     else:
-        form = SeriesUpdateForm(instance=matching_series)
+        context = {}
+    return render(request,'main/poststatus.html',context)
 
-        return render(
-            request=request,
-            template_name='main/new_record.html',
-            context={
-                "object": "Series",
-                "form": form
-                }
-            )
 
-@user_is_superuser
-def series_delete(request, series):
-    matching_series = ArticleSeries.objects.filter(slug=series).first()
-
-    if request.method == "POST":
-        matching_series.delete()
-        return redirect('/')
+def dashboard(request):
+    # Check if the user is authenticated
+    if request.user.is_authenticated:
+        # Fetch all details of the authenticated user
+        current_user = request.user
+        username = current_user.username
+        email = current_user.email
+        description = current_user.description
+        phone_number = current_user.phone_number
+        image=current_user.image
+        
+        
+        context = {
+            'current_user': current_user,
+            'username': username,
+            'email': email,
+            'description': description,
+            'phone_number': phone_number,
+            'image':image,
+            
+            # Add more data as needed
+        }
     else:
-        return render(
-            request=request,
-            template_name='main/confirm_delete.html',
-            context={
-                "object": matching_series,
-                "type": "Series"
-                }
-            )
+        context = {}
+    return render(request,'main/boxindex.html',context)
+from django.shortcuts import render
+from users.models import CustomUser
 
-@user_is_superuser
-def article_update(request, series, article):
-    matching_article = Article.objects.filter(series__slug=series, article_slug=article).first()
+def people(request):
+    context = {}
 
-    if request.method == "POST":
-        form = ArticleUpdateForm(request.POST, request.FILES, instance=matching_article)
-        if form.is_valid():
-            form.save()
-            return redirect(f'/{matching_article.slug}')
-    
-    else:
-        form = ArticleUpdateForm(instance=matching_article)
+    if request.user.is_authenticated:
+        current_user = request.user
+        context['current_user'] = current_user
+        context['username'] = current_user.username
+        context['email'] = current_user.email
+        context['description'] = current_user.description
+        context['phone_number'] = current_user.phone_number
+        context['image'] = current_user.image
 
-        return render(
-            request=request,
-            template_name='main/new_record.html',
-            context={
-                "object": "Article",
-                "form": form
-                }
-            )
+    users = CustomUser.objects.all()
+    context['users'] = users
 
-@user_is_superuser
-def article_delete(request, series, article):
-    matching_article = Article.objects.filter(series__slug=series, article_slug=article).first()
+    return render(request, 'main/people.html', context)
+def edit(request):
+    return render(request, 'main/edit.html')
 
-    if request.method == "POST":
-        matching_article.delete()
-        return redirect('/')
-    else:
-        return render(
-            request=request,
-            template_name='main/confirm_delete.html',
-            context={
-                "object": matching_article,
-                "type": "article"
-                }
-            )
-
-@csrf_exempt
-@user_is_superuser
-def upload_image(request, series, article):
-    if request.method != 'POST':
-        return JsonResponse({"Error Message": "Wrong request"})
-
-    matching_article = Article.objects.filter(series__slug=series, article_slug=article).first()
-    if not matching_article:
-        return JsonResponse({"Error Message": f"Wrong series({series}) or article ({article})"})
-
-    file_obj = request.FILES['file']
-    file_name_suffix = file_obj.name.split('.')[-1]
-    if file_name_suffix not in ['jpg', 'png', 'gif', 'jpeg']:
-        return JsonResponse({"Error Message": f"Wrong file suffix ({file_name_suffix}), supported are .jpg, .png, .git, .pjeg"})
-
-    file_path = os.path.join(settings.MEDIA_ROOT, 'ArticleSeries', matching_article.slug, file_obj.name)
-
-    if os.path.exists(file_path):
-        file_obj.name = str(uuid4()) + '.' + file_name_suffix
-        file_path = os.path.join(settings.MEDIA_ROOT, 'ArticleSeries', matching_article.slug, file_obj.name)
-
-    with open(file_path, 'wb+') as f:
-        for chunk in file_obj.chunks():
-            f.write(chunk)
-
-    return JsonResponse({
-        "Message": "Image upload successfully",
-        "location": os.path.join(settings.MEDIA_URL, 'ArticleSeries', matching_article.slug, file_obj.name)
-        })
-
-@user_is_superuser
-def newsletter(request):
-    if request.method == 'POST':
-        form = NewsletterForm(request.POST)
-        if form.is_valid():
-            subject = form.cleaned_data.get('subject')
-            receivers = form.cleaned_data.get('receivers').split(',')
-            email_message = form.cleaned_data.get('message')
-
-            mail = EmailMessage(subject, email_message, f"PyLessons <{request.user.email}>", bcc=receivers)
-            mail.content_subtype = 'html'
-
-            if mail.send():
-                messages.success(request, "Email sent succesfully")
-            else:
-                messages.error(request, "There was an error sending email")
-
-        else:
-            for error in list(form.errors.values()):
-                messages.error(request, error)
-
-        return redirect('/')
-
-    form = NewsletterForm()
-    form.fields['receivers'].initial = ','.join([active.email for active in SubscribedUsers.objects.all()])
-    return render(request=request, template_name='main/newsletter.html', context={'form': form})

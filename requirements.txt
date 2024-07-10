@@ -6,3 +6,8 @@ django-recaptcha
 pillow
 six
 django-allauth
+PyJWT
+cryptography
+twilio
+django-simple-captcha
+python-decouple

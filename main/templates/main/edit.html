@@ -1,0 +1,98 @@
+{% extends "main/header.html" %}
+{% block content %}
+{% if user.is_authenticated %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<style>
+    .report-container{
+    margin: 0px;}
+
+        .form-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            max-width: 500px;
+            margin: auto;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+        }
+        .form-group input[type="date"],
+        .form-group input[type="time"] {
+            padding: 5px;
+        }
+        .form-group textarea {
+            resize: vertical;
+            height: 100px;
+        }
+        .form-group button {
+            background-color: #8e44ad;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .form-group button:hover {
+            background-color: #732d91;
+        }
+        
+        
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        
+        <h2>Edit Travel Plan</h2>
+        <form action="/update-travel-plan" method="POST">
+            <div class="form-group">
+                <label for="source-place">Source Place</label>
+                <input type="text" id="source-place" name="source_place" value="Theni" required>
+            </div>
+            <div class="form-group">
+                <label for="destination-place">Destination Place</label>
+                <input type="text" id="destination-place" name="destination_place" value="{{ destination_place }}" required>
+            </div>
+            <div class="form-group">
+                <label for="date">Date</label>
+                <input type="date" id="date" name="date" value="{{ date }}" required>
+            </div>
+            <div class="form-group">
+                <label for="leaving-time">Leaving Time</label>
+                <input type="time" id="leaving-time" name="leaving_time" value="{{ leaving_time }}" required>
+            </div>
+            <div class="form-group">
+                <label for="waiting-time">Waiting Time</label>
+                <input type="time" id="waiting-time" name="waiting_time" value="{{ waiting_time }}" required>
+            </div>
+            <div class="form-group">
+                <label for="message">Message</label>
+                <textarea id="message" name="message">{{ message }}</textarea>
+            </div>
+            <div class="form-group">
+                <label for="organizer">Organizer</label>
+                <input type="text" id="organizer" name="organizer" value="{{ organizer }}" required>
+            </div>
+            <div class="form-group">
+                <button type="submit">Update</button>
+            </div>
+        </form>
+    </div>
+    {% else %}
+    <p> you are not allowed</p>
+    {% endif %}
+
+
+{% endblock content %}

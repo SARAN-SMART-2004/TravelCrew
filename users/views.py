@@ -14,11 +14,17 @@ from twilio.rest import Client
 from django.conf import settings
 from django.utils import timezone
 from datetime import timedelta
+from django.contrib.auth import get_user_model
+from django.shortcuts import render, get_object_or_404
 
 from .forms import UserRegistrationForm, UserLoginForm, UserUpdateForm, SetPasswordForm, PasswordResetForm, OTPForm
 from .decorators import user_not_authenticated
 from .tokens import account_activation_token
 from .models import SubscribedUsers, OTP, CustomUser
+
+
+
+
 
 def activate(request, uidb64, token):
     User = get_user_model()
@@ -137,7 +143,10 @@ def profile(request, username):
         form = UserUpdateForm(instance=user)
 
     form.fields['description'].widget.attrs = {'rows': 1}
-    return render(request, 'users/profile.html', {'form': form})
+    username = request.user.username
+    
+
+    return render(request, 'users/profile.html', {'form': form, 'username': username})
 
 @login_required
 def password_change(request):

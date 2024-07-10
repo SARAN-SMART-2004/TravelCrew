@@ -1,69 +1,149 @@
 {% extends "main/header.html" %}
 {% load crispy_forms_tags %}
+
 {% block content %}
 <style>
+    .nav{
+        z-index:10000;
+    }
+    .report-container {
+        width: 100%; /* Adjusted to full width */
+        max-width: 800px; /* Added max-width for better control on larger screens */
+        margin: 0 auto; /* Center the container */
+        padding: 20px; /* Add padding for spacing */
+        position: relative; /* Enable positioning */
+        z-index: 1000;
+    }
     .form-control {
-        width: 80%;
+        width: 100%; /* Adjusted to full width */
+        height: 30px; /* Adjusted height */
+    }
+    .rounded-circle {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+    }
+    .account-heading {
+        margin-bottom: 5px;
+    }
+    .text-muted {
+        font-size: 14px;
+    }
+    .text-secondary {
+        font-size: 16px;
+        margin-bottom: 10px;
+    }
+    .verified-badge {
+        color: green;
+    }
+    .not-verified-badge {
+        color: red;
+    }
+    .align {
+        display: flex;
+        flex-direction: column;
+        align-items: center; /* Center align content */
+    }
+    .content-section {
+        margin-top: 20px; /* Add margin for spacing */
+    }
+    .right {
+        margin-top: 20px; /* Add margin for spacing */
+        text-align: center; /* Center align content */
+    }
+    .border-bottom {
+        font-size: 30px;
+        font-weight: bold;
+    }
+    label {
+        font-weight: bold; /* Make input labels bold */
+    }
+    .btn-update {
+        background-color: #ad2ead; /* Violet background */
+        color: white; /* White text color */
+        border: 1px solid violet; /* Violet border */
+        padding: 10px 20px; /* Padding */
+        font-size: 16px; /* Font size */
+        border-radius: 5px; /* Rounded corners */
+        cursor: pointer; /* Cursor style */
+        transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition */
+    }
+    .btn-update:hover {
+        background-color: #8a2be2; /* Darker violet on hover */
+        border-color: #8a2be2; /* Darker border on hover */
+    }
+    .back-button {
+        position: absolute;
+        top: 10px;
+        right: 10px;
     }
 </style>
-<div class="content-section col-lg-12 col-md-12 col-sm-12 tutorial-style" style="min-height:65vh;">
-    <legend class="border-bottom mb-4">Profile Information:</legend>
-    <form method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
-        <div class="media">
-            {% if user.username == form.instance.username %}
-                <input id="id_image" type="file" name="image" hidden/>
-                    <label for="id_image">
-                        <img class="rounded-circle account-img profile-image"
-                            style="cursor: pointer"
-                            src="{{ form.instance.image.url }}"
-                            title="Upload new image">
-                    </label>
-            {% else %}
-                <img class="rounded-circle account-img profile-image" src="{{ form.instance.image.url }}">
-            {% endif %}
-            <div class="media-body">
-                <h2 class="account-heading">{{ form.instance.username }}
-                    <small class="text-muted">({{ form.instance.status }})</small>
-                </h2>
-                <p class="text-secondary">{{ form.instance.first_name }} {{ form.instance.last_name }}</p>
-                <p class="text-secondary">{{ form.instance.email }}</p>
-                <p class="text-secondary">{{ form.instance.description }}</p>
-                <p class="text-secondary">
-                    {{ form.instance.phone_number }}
-                    {% if form.instance.is_phone_verified %}
-                        <span style="color: green;">✔ Verified</span>
-                    {% else %}
-                        <span style="color: red;">✘ Not Verified</span>
 
-                        
-                    {% endif %}
-                </p>
+<div class="report-container">
+    <div class="content-section">
+        <a href="{% url 'homepage' %}" class="btn btn-outline-secondary back-button">Back</a>
+        <legend class="border-bottom mb-4">Profile Information:</legend>
+        <div class="align">
+            <div class="left">
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="media">
+                        {% if user.username == form.instance.username %}
+                        <input id="id_image" type="file" name="image" hidden />
+                        <label for="id_image">
+                            <img class="rounded-circle account-img profile-image" style="cursor: pointer;"
+                                src="{{ form.instance.image.url }}" alt="Profile Image" title="Upload new image">
+                        </label>
+                        {% else %}
+                        <img class="rounded-circle" src="{{ form.instance.image.url }}" alt="Profile Image">
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="right">
+                    <div class="media-body ml-3">
+                        <h2 class="account-heading">{{ form.instance.username }}
+                            <small class="text-muted">({{ form.instance.status }})</small>
+                        </h2>
+                        <p class="text-secondary">{{ form.instance.first_name }} {{ form.instance.last_name }}</p>
+                        <p class="text-secondary">{{ form.instance.email }}</p>
+                        <p class="text-secondary">{{ form.instance.description }}</p>
+                        <p class="text-secondary">
+                            {{ form.instance.phone_number }}
+                            {% if form.instance.is_phone_verified %}
+                            <span class="verified-badge">✔ Verified</span>
+                            {% else %}
+                            <span class="not-verified-badge">✘ Not Verified</span>
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
             </div>
         </div>
 
         {% if user.username == form.instance.username %}
-            <fieldset class="form-group">
-                <legend class="border-bottom mb-4">Edit Profile Information</legend>
-                <div class="form-row">
-                    <div class="form-group col-md-6 mb-0">
-                        {{ form.first_name|as_crispy_field }}
-                    </div>
-                    <div class="form-group col-md-6 mb-0">
-                        {{ form.last_name|as_crispy_field }}
-                    </div>
-                </div> 
-                {{ form.email|as_crispy_field }}
-                {{ form.description|as_crispy_field }}
-                {{ form.phone_number|as_crispy_field }}
-
-                <a href="{% url 'password_change' %}">Change password?</a>
-            </fieldset>
-            <div class="form-group">
-                <button class="btn btn-outline-info" type="submit">Update</button>
+        <fieldset class="form-group mt-4">
+            <legend class="border-bottom mb-4">Edit Profile Information</legend>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    {{ form.first_name|as_crispy_field }}
+                </div>
+                <div class="form-group col-md-6">
+                    {{ form.last_name|as_crispy_field }}
+                </div>
             </div>
+            {{ form.email|as_crispy_field }}
+            {{ form.description|as_crispy_field }}
+            {{ form.phone_number|as_crispy_field }}
+
+            <a href="{% url 'password_change' %}" class="btn btn-link">Change Password</a>
+        </fieldset>
+
+        <div class="form-group text-center"> <!-- Center align the button -->
+            <button class="btn btn-update" type="submit">Update</button>
+        </div>
         {% endif %}
- 
+        </form>
+    </div>
 </div>
 
-{% endblock content %}
+{% endblock %}

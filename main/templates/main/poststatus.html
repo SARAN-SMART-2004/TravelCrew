@@ -1,0 +1,49 @@
+{% extends "main/header.html" %}
+{% block content %}
+{% if user.is_authenticated %}
+<style>
+    .report-container{
+    margin: 0px;}
+</style>
+<div class="report-container">
+    <div class="report-header">
+        <h1 class="recent-Articles">
+           Post Status
+        </h1>
+        <div class="searchbar">
+            <input type="text" 
+                   placeholder="Search">
+            <div class="searchbtn">
+              <img src=
+"https://media.geeksforgeeks.org/wp-content/uploads/20221210180758/Untitled-design-(28).png"
+                    class="icn srchicn" 
+                    alt="search-icon">
+              </div>
+        </div>
+        <button class="view">View All</button>
+    </div>
+
+    <div class="report-body">
+        <div class="report-topic-heading">
+            <h3 class="t-op">From Place</h3>
+            <h3 class="t-op">To Place</h3>
+            <h3 class="t-op">Date</h3>
+            <h3 class="t-op">Status</h3>
+        </div>
+
+        <div class="items">
+            <div class="item1">
+                <h3 class="t-op-nextlvl">Near Vetri Cinema's Theni</h3>
+                <h3 class="t-op-nextlvl">Theni Old Bus Stand</h3>
+                <h3 class="t-op-nextlvl">10/10/2024</h3>
+                <h3 class="t-op-nextlvl label-tag">Published</h3>
+            </div>
+
+        </div>
+    </div>
+    {% else %}
+        <p> you not allowed</P>
+        {% endif %}
+
+
+{% endblock content %}

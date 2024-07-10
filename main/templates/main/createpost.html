@@ -1,0 +1,103 @@
+{% extends "main/header.html" %}
+{% block content %}
+{% if user.is_authenticated %}
+
+    
+
+ <style>
+    .report-container{
+        margin: 0px;
+        box-shadow: none;
+        background-color:#cad7fda4;
+        
+            }
+        
+        .form-container {
+            box-shadow: 3px 3px 10px rgb(188, 188, 188);
+            background-color:white;
+            padding: 20px;
+            border-radius: 8px;
+            max-width: 500px;
+            margin: auto;
+            
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+        }
+        .form-group input[type="date"],
+        .form-group input[type="time"] {
+            padding: 5px;
+        }
+        .form-group textarea {
+            resize: vertical;
+            height: 100px;
+        }
+        .form-group button {
+            background-color: #8e44ad;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .form-group button:hover {
+            background-color: #732d91;
+        }
+    </style>
+
+    {% comment %} <div class="report-container"> {% endcomment %}
+    <div class="form-container">
+        <h2>Travel Plan Form</h2>
+        <form action="/submit-travel-plan" method="POST">
+            <div class="form-group">
+                <label for="source-place">Source Place</label>
+                <input type="text" id="source-place" name="source_place" required>
+            </div>
+            <div class="form-group">
+                <label for="destination-place">Destination Place</label>
+                <input type="text" id="destination-place" name="destination_place" required>
+            </div>
+            <div class="form-group">
+                <label for="date">Date</label>
+                <input type="date" id="date" name="date" required>
+            </div>
+            <div class="form-group">
+                <label for="leaving-time">Leaving Time</label>
+                <input type="time" id="leaving-time" name="leaving_time" required>
+            </div>
+            <div class="form-group">
+                <label for="waiting-time">Waiting Time</label>
+                <input type="time" id="waiting-time" name="waiting_time" required>
+            </div>
+            <div class="form-group">
+                <label for="message">Message</label>
+                <textarea id="message" name="message"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="organizer">Organizer</label>
+                <input type="text" id="organizer" name="organizer" required>
+            </div>
+            <div class="form-group">
+                <button type="submit">Submit</button>
+            </div>
+        </form>
+    </div>
+   
+    {% else %}
+    <p> you are not allowed</p>
+    {% endif %}
+
+{% endblock content %}

@@ -1,0 +1,84 @@
+{% extends "main/header.html" %}
+{% block content %}
+    <style>
+        
+      
+            .report-container{
+            margin: 0px;}
+    
+        
+        .card {
+            background: white; /* Semi-transparent background */
+            border-radius: 1em; /* Rounded corners */
+            padding: 1.5em 0.5em 0.5em;
+            text-align: center;
+            backdrop-filter: blur(10px); /* Blur effect */
+            -webkit-backdrop-filter: blur(10px); /* Safari support */
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+            border: 1px solid rgba(255, 255, 255, 0.3); /* Border to enhance glass effect */
+            margin: 1em;
+            width: 18rem;
+            display: inline-block;
+            color: #333; /* Text color */
+        }
+        
+        .card-img-top {
+            width: 60%;
+            border-radius: 50%;
+            margin: 0 auto;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .card-title {
+            font-weight: bold;
+            font-size: 1.5em;
+            margin-top: 1em;
+            text-transform: capitalize;
+            
+        }
+        
+        .card-text {
+            font-size: 1em;
+            margin-top: 0.5em;
+            padding:5px;
+            
+            
+        }
+        
+        .btn-primary {
+            border-radius: 2em;
+            padding: 0.5em 1.5em;
+            background-color: #007bff; /* Button color */
+            border: none;
+            color: #fff;
+            margin-top: 1em;
+            cursor: pointer;
+            
+        }
+        
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            
+        }
+        
+    </style>
+
+
+    <div class="container">
+        {% for user in users %}
+            <div class="card">
+                <img src="{{ user.image.url }}" class="card-img-top" alt="{{ user.username }}">
+                <div class="card-body">
+                    <h5 class="card-title">{{ user.username }}</h5>
+                    <p class="card-text"><b>Email:</b> {{ user.email }}</p>
+                    <p class="card-text"><b>Phone:</b> {{ user.phone_number }}</p>
+                    <a href="#" class="btn btn-primary">Know More</a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+
+{% endblock content %}

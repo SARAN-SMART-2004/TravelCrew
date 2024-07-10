@@ -1,14 +1,49 @@
 {% extends "main/header.html" %}
 {% load crispy_forms_tags %}
 {% block content %}
-<div class="content-section col-lg-12 col-md-12 col-sm-12 tutorial-style" style="min-height:65vh;">
-    <legend class="border-bottom mb-4">Verify Phone Number:</legend>
-    <form method="POST">
-        {% csrf_token %}
-        {{ form|crispy }}
-        <div class="form-group">
-            <button class="btn btn-outline-info" type="submit">Verify</button>
-        </div>
-    </form>
+
+<style>
+    .content-section {
+        text-align: center;
+    }
+    .report-container {
+        width: 50%;
+        height: 50%;
+        padding: 50px;
+        font-size: 30px;
+    }
+    .btn-verify {
+        background-color: #8a2be2; /* Violet color */
+        color: white; /* Text color */
+        border: none;
+        padding: 10px 20px; /* Adjust padding for button size */
+        font-size: 18px; /* Adjust font size for button text */
+        cursor: pointer;
+        border-radius: 5px; /* Rounded corners */
+        transition: background-color 0.3s ease; /* Smooth transition on hover */
+    }
+    .btn-verify:hover {
+        background-color: #800080; /* Darker violet on hover */
+    }
+    /* Adjust input field height and width */
+    form input[type="text"] {
+        height: 30px;
+        width: 200px;
+        padding: 5px; /* Optional: Add padding for better appearance */
+    }
+</style>
+
+<div class="report-container">
+    <div class="content-section col-lg-12 col-md-12 col-sm-12 tutorial-style">
+        <legend class="border-bottom mb-4">Verify Phone Number:</legend>
+        <form method="POST">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <div class="form-group">
+                <button class="btn btn-verify" type="submit">Verify</button>
+            </div>
+        </form>
+    </div>
 </div>
+
 {% endblock content %}

@@ -1,25 +1,98 @@
+
+<style>
+    .custom-alert {
+        font-family: 'Arial', sans-serif;
+        font-size: 1.1em;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin: 10px 0;
+    }
+    
+    .alert-success {
+        background: linear-gradient(to right, #4caf50, #8bc34a);
+        color: white;
+        border: none;
+    }
+    
+    .alert-danger {
+        background: linear-gradient(to right, #f44336, #e57373);
+        color: white;
+        border: none;
+    }
+    
+    .alert-info {
+        background: linear-gradient(to right, #2196f3, #64b5f6);
+        color: white;
+        border: none;
+    }
+    
+    .alert-warning {
+        background: linear-gradient(to right, #ff9800, #ffc107);
+        color: white;
+        border: none;
+    }
+    
+    .close {
+        color: white;
+        opacity: 0.8;
+    }
+    
+    .close:hover {
+        color: white;
+        opacity: 1;
+    }
+    
+</style>
 {% if messages %}
     {% for message in messages %}
         {% if message.tags == 'success' %}
-            <div class="alert alert-success alert-dismissible" role="alert">
+            <div class="alert alert-success alert-dismissible custom-alert" role="alert">
                 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                 {{ message|safe|escape }}
             </div>
         {% elif message.tags == 'error' %}
-            <div class="alert alert-danger alert-dismissible" role="alert">
+            <div class="alert alert-danger alert-dismissible custom-alert" role="alert">
                 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                 {{ message|safe|escape }}
             </div>
         {% elif message.tags == 'info' %}
-            <div class="alert alert-info alert-dismissible" role="alert">
+            <div class="alert alert-info alert-dismissible custom-alert" role="alert">
                 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                 {{ message|safe|escape }}
             </div>
         {% elif message.tags == 'warning' %}
-            <div class="alert alert-warning alert-dismissible" role="alert">
+            <div class="alert alert-warning alert-dismissible custom-alert" role="alert">
                 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                 {{ message|safe|escape }}
             </div>
+
         {% endif %}
     {% endfor %}
 {% endif %}
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        // Function to close alerts after 3 seconds
+        setTimeout(() => {
+            const alerts = document.querySelectorAll('.alert');
+            alerts.forEach(alert => {
+                alert.classList.add('fade-out');
+                setTimeout(() => {
+                    alert.style.display = 'none';
+                }, 1000); // Match this timeout to your fade-out animation duration
+            });
+        }, 3000);
+
+        // Close alerts when the close button is clicked
+        const closeButtons = document.querySelectorAll('.alert .close');
+        closeButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const alert = button.parentElement;
+                alert.classList.add('fade-out');
+                setTimeout(() => {
+                    alert.style.display = 'none';
+                }, 1000); // Match this timeout to your fade-out animation duration
+            });
+        });
+    });
+</script>
