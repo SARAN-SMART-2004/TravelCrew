@@ -26,13 +26,7 @@ class CustomUser(AbstractUser):
     def __str__(self):
         return self.username
 
-class SubscribedUsers(models.Model):
-    name = models.CharField(max_length=100)
-    email = models.EmailField(unique=True, max_length=100)
-    created_date = models.DateTimeField('Date created', default=timezone.now)
 
-    def __str__(self):
-        return self.email
 
 class OTP(models.Model):
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)

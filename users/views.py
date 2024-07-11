@@ -20,7 +20,7 @@ from django.shortcuts import render, get_object_or_404
 from .forms import UserRegistrationForm, UserLoginForm, UserUpdateForm, SetPasswordForm, PasswordResetForm, OTPForm
 from .decorators import user_not_authenticated
 from .tokens import account_activation_token
-from .models import SubscribedUsers, OTP, CustomUser
+from .models import OTP, CustomUser
 
 
 
@@ -236,36 +236,6 @@ def passwordResetConfirm(request, uidb64, token):
     messages.error(request, 'Something went wrong, redirecting back to Homepage')
     return redirect("homepage")
 
-def subscribe(request):
-    if request.method == 'POST':
-        name = request.POST.get('name', None)
-        email = request.POST.get('email', None)
-
-        if not name or not email:
-            messages.error(request, "You must type legit name and email to subscribe to a Newsletter")
-            return redirect("/")
-
-        if get_user_model().objects.filter(email=email).first():
-            messages.error(request, f"Found registered user with associated {email} email. You must login to subscribe or unsubscribe.")
-            return redirect(request.META.get("HTTP_REFERER", "/")) 
-
-        subscribe_user = SubscribedUsers.objects.filter(email=email).first()
-        if subscribe_user:
-            messages.error(request, f"{email} email address is already subscriber.")
-            return redirect(request.META.get("HTTP_REFERER", "/"))  
-
-        try:
-            validate_email(email)
-        except ValidationError as e:
-            messages.error(request, e.messages[0])
-            return redirect("/")
-
-        subscribe_model_instance = SubscribedUsers()
-        subscribe_model_instance.name = name
-        subscribe_model_instance.email = email
-        subscribe_model_instance.save()
-        messages.success(request, f'{email} email was successfully subscribed to our newsletter!')
-        return redirect(request.META.get("HTTP_REFERER", "/"))  
 
 def send_otp(user):
     otp = OTP.generate_otp()
@@ -299,20 +269,3 @@ def verify_otp(request):
     return render(request, 'verify_otp.html', {'form': form})
 
 
-# from django.shortcuts import render, redirect
-# from django.contrib import messages
-# from .forms import UserUpdateForm
-# @login_required
-# def verify_otp_stored(request):
-#     if request.method == "POST":
-#         phone_number = request.user.phone_number  # Fetch the phone number from the logged-in user
-#         if phone_number:
-#             # Here you would call the function to send the OTP to the phone number
-#             send_otp(request.user)
-#             return redirect('verify_otp')  # Redirect to the OTP verification page
-#         else:
-#             messages.error(request, 'Phone number not found.')
-#             return redirect('profile', request.user.username)
-#     else:
-#         messages.error(request, 'Invalid request method.')
-#         return redirect('profile', request.user.username)

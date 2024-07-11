@@ -9,6 +9,9 @@ urlpatterns = [
     path("poststatus/", views.poststatus, name="poststatus"),
     path("dashboard/", views.dashboard, name="dashboard"),
     path("people/", views.people, name="people"),
+    path("upcomingtrips/", views.upcoming_trip, name="upcomingtrips"),
+    path("pasttrips/", views.past_trip, name="pasttrips"),
+    path("posts/", views.posts, name="posts"),
     
     
     

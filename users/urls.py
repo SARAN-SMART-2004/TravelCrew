@@ -2,7 +2,7 @@ from django.urls import path
 from . import views
 from .views import profile, verify_otp
 urlpatterns = [
-    path('subscribe', views.subscribe, name='subscribe'),
+    
     path("register", views.register, name="register"),
     path('login/', views.custom_login, name='login'),
     path('logout/', views.custom_logout, name='logout'),
