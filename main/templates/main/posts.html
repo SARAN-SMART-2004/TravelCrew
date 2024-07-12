@@ -2,48 +2,112 @@
 {% block content %}
 {% if user.is_authenticated %}
 <style>
-    .report-container{
-    margin: 0px;}
+    .report-container {
+        margin: 0px;
+    }
+    .report-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .report-body {
+        margin-top: 20px;
+    }
+    .report-topic-heading {
+        display: flex;
+        justify-content: space-between;
+    }
+    .t-op {
+        flex: 1;
+        text-align: center;
+    }
+    .items .item1 {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px 0;
+        border-bottom: 1px solid #ddd;
+    }
+    .t-op-nextlvl {
+        flex: 1;
+        text-align: center;
+    }
+    .completed {
+        color: green;
+    }
+    .ongoing {
+        color: red;
+    }
+    .upcoming {
+        color: blue;
+    }
+    /* Your existing CSS styles */
+    .view-button {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #5500cb;
+        color: white;
+        text-decoration: none;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+    .view-button:hover {
+        background-color: #6c3483;
+    }
+    .sb{
+        height:35px;
+        width:200px;
+    }
 </style>
+
 <div class="report-container">
     <div class="report-header">
-        <h1 class="recent-Articles">
-           All Trips
-        </h1>
+        <h1 class="recent-Articles">All Trips</h1>
         <div class="searchbar">
             <input type="text" 
                    placeholder="Search">
             <div class="searchbtn">
-              <img src=
-"https://media.geeksforgeeks.org/wp-content/uploads/20221210180758/Untitled-design-(28).png"
-                    class="icn srchicn" 
-                    alt="search-icon">
+                <i class="fa-solid fa-magnifying-glass icn srchicn" style="color: white;"></i>
+              
               </div>
         </div>
+
+        
         <button class="view">View All</button>
     </div>
 
     <div class="report-body">
         <div class="report-topic-heading">
-            <h3 class="t-op">From Place</h3>
-            <h3 class="t-op">To Place</h3>
+            <h3 class="t-op">Organizer </h3>
+            <h3 class="t-op">Source Place</h3>
+            <h3 class="t-op">Destination Place</h3>
             <h3 class="t-op">Date</h3>
+            <h3 class="t-op">Leaving Time</h3>
             <h3 class="t-op">Status</h3>
+            <h3 class="t-op"></h3>
         </div>
 
         <div class="items">
+            {% if travel_plans %}
+            {% for plan in travel_plans %}
             <div class="item1">
-                <h3 class="t-op-nextlvl">Near Vetri Cinema's Theni</h3>
-                <h3 class="t-op-nextlvl">Theni Old Bus Stand</h3>
-                <h3 class="t-op-nextlvl">10/10/2024</h3>
-                <h3 class="t-op-nextlvl label-tag">Published</h3>
+                <h3 class="t-op-nextlvl">{{ plan.organizer }}</h3>
+                <h3 class="t-op-nextlvl">{{ plan.source_place }}</h3>
+                <h3 class="t-op-nextlvl">{{ plan.destination_place }}</h3>
+                <h3 class="t-op-nextlvl">{{ plan.date }}</h3>
+                <h3 class="t-op-nextlvl">{{ plan.leaving_time }}</h3>
+                <h3 class="t-op-nextlvl {% if plan.status == 'Completed' %}completed{% elif plan.status == 'Ongoing' %}ongoing{% elif plan.status == 'Upcoming' %}upcoming{% endif %}">{{ plan.status }}</h3>
+                <a href="{% url 'travel_plan_details' plan.pk %}" class="view-button">View</a>
             </div>
-
+            {% endfor %}
+            {% else %}
+                <p>There is no post created yet!!!!!!!!.</p>
+            {% endif %}
         </div>
     </div>
-    {% else %}
-        <p> you not allowed</P>
-        {% endif %}
-
-
+{% else %}
+    <p>You are not allowed to view this page.</p>
+{% endif %}
 {% endblock content %}

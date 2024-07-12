@@ -2,48 +2,71 @@
 {% block content %}
 {% if user.is_authenticated %}
 <style>
-    .report-container{
-    margin: 0px;}
+    .report-container {
+        margin: 0px;
+    }
+    .report-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    
+    .report-body {
+        margin-top: 20px;
+    }
+    .report-topic-heading {
+        display: flex;
+        justify-content: space-between;
+    }
+    .t-op {
+        flex: 1;
+        text-align: center;
+    }
+    .items .item1 {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px 0;
+        border-bottom: 1px solid #ddd;
+    }
+    .t-op-nextlvl {
+        flex: 1;
+        text-align: center;
+    }
 </style>
 <div class="report-container">
     <div class="report-header">
-        <h1 class="recent-Articles">
-           Upcoming Trips
-        </h1>
-        <div class="searchbar">
-            <input type="text" 
-                   placeholder="Search">
-            <div class="searchbtn">
-              <img src=
-"https://media.geeksforgeeks.org/wp-content/uploads/20221210180758/Untitled-design-(28).png"
-                    class="icn srchicn" 
-                    alt="search-icon">
-              </div>
-        </div>
+        <h1 class="recent-Articles">Upcoming Trips</h1>
+        
         <button class="view">View All</button>
     </div>
 
     <div class="report-body">
         <div class="report-topic-heading">
+            <h3 class="t-op">Organizer</h3>
             <h3 class="t-op">From Place</h3>
             <h3 class="t-op">To Place</h3>
             <h3 class="t-op">Date</h3>
-            <h3 class="t-op">Status</h3>
+            <h3 class="t-op">Leaving Time</h3>
         </div>
 
         <div class="items">
+            {% if past_travel_plans %}
+            {% for trip in past_travel_plans %}
             <div class="item1">
-                <h3 class="t-op-nextlvl">Near Vetri Cinema's Theni</h3>
-                <h3 class="t-op-nextlvl">Theni Old Bus Stand</h3>
-                <h3 class="t-op-nextlvl">10/10/2024</h3>
-                <h3 class="t-op-nextlvl label-tag">Published</h3>
+                <h3 class="t-op-nextlvl">{{ trip.organizer }}</h3>
+                <h3 class="t-op-nextlvl">{{ trip.source_place }}</h3>
+                <h3 class="t-op-nextlvl">{{ trip.destination_place }}</h3>
+                <h3 class="t-op-nextlvl">{{ trip.date }}</h3>
+                <h3 class="t-op-nextlvl">{{ trip.leaving_time }}</h3>
             </div>
-
+            {% endfor %}
+            {% else %}
+                <p>You have not yet traveled any plans.</p>
+            {% endif %}
         </div>
     </div>
-    {% else %}
-        <p> you not allowed</P>
-        {% endif %}
-
-
+{% else %}
+    <p>You are not allowed to view this page.</p>
+{% endif %}
 {% endblock content %}

@@ -3,8 +3,9 @@
 {% if user.is_authenticated %}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <style>
-    .report-container{
-    margin: 0px;}
+    .report-container {
+        margin: 0px;
+    }
     .home-icon a {
         color: #000000;
         text-decoration: none;
@@ -12,24 +13,12 @@
     .home-icon a:hover {
         color: #8e44ad;
     }
-
 </style>
 
 <div class="report-container">
     <div class="report-header">
-        <h1 class="recent-Articles">
-           Edit POST
-        </h1>
-        <div class="searchbar">
-            <input type="text" 
-                   placeholder="Search">
-            <div class="searchbtn">
-              <img src=
-"https://media.geeksforgeeks.org/wp-content/uploads/20221210180758/Untitled-design-(28).png"
-                    class="icn srchicn" 
-                    alt="search-icon">
-              </div>
-        </div>
+        <h1 class="recent-Articles">Edit POST</h1>
+        
         <button class="view">View All</button>
     </div>
 
@@ -39,32 +28,26 @@
             <h3 class="t-op">From Place</h3>
             <h3 class="t-op">To Place</h3>
             <h3 class="t-op">Date</h3>
-            <h3 class="t-op">Status</h3>
+            <h3 class="t-op">Leaving Time</h3>
         </div>
 
         <div class="items">
-            
+            {% for plan in travel_plans %}
             <div class="item1">
-                <h1 class="t-op-nextlvl">
-                    <div class="home-icon">
-                        <a href="/">
-                            <h1 class="t-op-nextlvl"><i class="fa-solid fa-pen-to-square"></i></h1>
-                        </a>
-                    </div>
-                
-                </h1>
-                <h3 class="t-op-nextlvl">Near Vetri Cinema's Theni</h3>
-                <h3 class="t-op-nextlvl">Theni Old Bus Stand</h3>
-                <h3 class="t-op-nextlvl">10/10/2024</h3>
-                <h3 class="t-op-nextlvl label-tag">Published</h3>
+                <div class="home-icon">
+                    <a href="{% url 'edit_travel_plan' plan.pk %}">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                    </a>
+                </div>
+                <h3 class="t-op-nextlvl">{{ plan.source_place }}</h3>
+                <h3 class="t-op-nextlvl">{{ plan.destination_place }}</h3>
+                <h3 class="t-op-nextlvl">{{ plan.date }}</h3>
+                <h3 class="t-op-nextlvl">{{ plan.leaving_time }}</h3>
             </div>
-
-            
+            {% endfor %}
         </div>
     </div>
-    {% else %}
-    <p> you are not allowed</p>
-    {% endif %}
-
-
+{% else %}
+    <p>You are not allowed to view this page.</p>
+{% endif %}
 {% endblock content %}

@@ -54,6 +54,8 @@
             text-align: center;
             margin-top: 8px; /* Adjust the spacing between the image and the username as needed */
         }
+        
+        
     
 </style>
 </head>
@@ -63,19 +65,18 @@
     <header>
         <div class="logosec">
             <div class="logo">Travel Partner</div>
-            <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210182541/Untitled-design-(30).png"
-                class="icn menuicn" 
-                id="menuicn" 
-                alt="menu-icon">
+            <i class="fa-solid fa-bars icn menuicn" id="menuicn" style="color: #410099;"></i>
+            
         </div>
-
         <div class="searchbar">
-            <input type="text" placeholder="Search">
+            <input type="text" 
+                   placeholder="Search">
             <div class="searchbtn">
-              <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210180758/Untitled-design-(28).png"
-                    class="icn srchicn" alt="search-icon">
+                <i class="fa-solid fa-magnifying-glass icn srchicn" style="color: white;"></i>
+              
               </div>
         </div>
+        
 
         <div class="message">
             <div class="circle"></div>
@@ -134,17 +135,17 @@
 
                     <div class="option2 nav-option">
                         <i class="fa-solid fa-earth-americas" style="color: #3f0097;"></i>
-                            <h3> <a href="{% url 'posts' %}" > Post</h3></a>
+                            <h3> <a href="{% url 'all_travel_plans' %}" > Post</h3></a>
                     </div>
 
                     <div class="nav-option option3">
                         <i class="fa-solid fa-file-pen" style="color: #3f0097;"></i>
-                        <h3> <a href="{% url 'editpost' %}">Edit Post</a></h3>
+                        <h3> <a href="{% url 'edit_all_travel_plans' %}">Edit Post</a></h3>
                     </div>
 
                     <div class="nav-option option4">
                         <i class="fa-solid fa-pen-to-square" style="color: #3f0097;"></i>
-                            <h3><a href="{% url 'createpost' %}">
+                            <h3><a href="{% url 'submit_travel_plan' %}">
                                  Create Post
                             </a></h3>
                         
@@ -152,15 +153,21 @@
 
                     <div class="nav-option option5">
                         <i class="fa-solid fa-taxi"  style="color: #3f0097;"></i>
-                            <h3><a href="{% url 'upcomingtrips' %}">
+                            <h3><a href="{% url 'upcoming_trips' %}">
                                 Upcoming Trips
+                           </a></h3>
+                    </div>
+                    <div class="nav-option option5">
+                        <i class="fa-solid fa-road" style="color: #3f0099;"></i>
+                            <h3><a href="{% url 'ongoing_trips' %}">
+                                Ongoing Trips
                            </a></h3>
                     </div>
 
 
                     <div class="nav-option option5">
                         <i class="fa-solid fa-plane-circle-check"  style="color: #3f0097;"></i>
-                            <h3><a href="{% url 'pasttrips' %}">
+                            <h3><a href="{% url 'past_trips' %}">
                                 Past Trips
                            </a></h3>
                     </div>
@@ -182,7 +189,7 @@
 
                     <div class="nav-option option6">
                         <i class="fa-solid fa-square-poll-vertical" style="color: #3f0097;"></i>
-                            <h3> <a href="{% url 'poststatus' %}">Post Status</a></h3>
+                            <h3> <a href="{% url 'user_post_history' %}"> My Post Status</a></h3>
                     </div>
                     
 

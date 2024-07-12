@@ -27,6 +27,54 @@ body {
   overflow-x: hidden;
   
 }
+.searchbar {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 400px; /* Example maximum width for desktop */
+  margin: 0 auto; /* Centers the search bar */
+}
+
+.searchbar input[type="text"] {
+  flex: 1; /* Takes remaining space */
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.searchbtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px; /* Adjust width as needed */
+  height: 40px; /* Adjust height as needed */
+  background-color: #007bff; /* Example background color */
+  border-radius: 50%; /* Makes it round */
+  margin-left: 5px; /* Creates space between input and button */
+}
+
+.srchicn {
+  color: white;
+  font-size: 20px; /* Adjust icon size */
+}
+
+/* Media query for mobile responsiveness */
+@media (max-width: 768px) {
+  .searchbar {
+      max-width: 100%; /* Full width on smaller screens */
+  }
+
+  .searchbtn {
+      width: 30px; /* Decrease width for smaller screens */
+      height: 30px; /* Decrease height for smaller screens */
+  }
+
+  .srchicn {
+      font-size: 16px; /* Decrease icon size for smaller screens */
+  }
+}
+
 
 header {
   height: 70px;
@@ -70,26 +118,7 @@ header {
   gap: 60px;
 }
 
-.searchbar input {
-  width: 250px;
-  height: 42px;
-  border-radius: 50px 0 0 50px;
-  background-color: var(--background-color3);
-  padding: 0 20px;
-  font-size: 15px;
-  outline: none;
-  border: none;
-}
-.searchbtn {
-  width: 50px;
-  height: 42px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 0px 50px 50px 0px;
-  background-color: var(--secondary-color);
-  cursor: pointer;
-}
+
 
 .message {
   gap: 40px;

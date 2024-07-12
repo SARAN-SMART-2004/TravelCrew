@@ -6,49 +6,43 @@
     margin: 0px;}
 </style>
 
-            <div class="box-container">
+             <div class="box-container">
 
                 <div class="box box1">
                     <div class="text">
                         <h2 class="topic-heading">60.5k</h2>
-                        <h2 class="topic"> <a href="{% url 'homepage' %}">All Post</a></h2>
+                        <h2 class="topic"> <a href="{% url 'all_travel_plans' %}">All Post</a></h2>
                     </div>
 
-                    <img src=
-"https://media.geeksforgeeks.org/wp-content/uploads/20221210184645/Untitled-design-(31).png"
-                        alt="Views">
+                    <i class="fa-solid fa-earth-americas" style="color: white;"></i>
                 </div>
 
                 <div class="box box2"  >
                     <div class="text">
                         <h2 class="topic-heading">150</h2>
-                        <h2 class="topic"> <a href="{% url 'editpost' %}">Edit Post</a></h2>
+                        <h2 class="topic"> <a href="{% url 'edit_all_travel_plans' %}">Edit Post</a></h2>
                     </div>
 
-                    <img src=
-"https://media.geeksforgeeks.org/wp-content/uploads/20221210185030/14.png" 
-                         alt="likes">
+                    <i class="fa-solid fa-file-pen" style="color: white;"></i>
+
                 </div>
 
                 <div class="box box3">
                     <div class="text">
                         <h2 class="topic-heading">320</h2>
-                        <h2 class="topic">Chat</h2>
+                        <h2 class="topic"> <a href="{% url 'submit_travel_plan' %}">create Post</a></h2>
                     </div>
 
-                    <img src=
-"https://media.geeksforgeeks.org/wp-content/uploads/20221210184645/Untitled-design-(32).png"
-                        alt="comments">
+                    <i class="fa-solid fa-pen-to-square" style="color: white;"></i>
                 </div>
 
                 <div class="box box4">
                     <div class="text">
                         <h2 class="topic-heading">70</h2>
-                        <h2 class="topic"> <a href="{% url 'poststatus' %}">Post Status</a></h2>
+                        <h2 class="topic"> <a href="{% url 'user_post_history' %}">Post Status</a></h2>
                     </div>
 
-                    <img src=
-"https://media.geeksforgeeks.org/wp-content/uploads/20221210185029/13.png" alt="published">
+                    <i class="fa-solid fa-square-poll-vertical" style="color: white;"></i>
                 </div>
 
 
@@ -60,44 +54,37 @@
                 <div class="box box1">
                     <div class="text">
                         <h2 class="topic-heading">60.5k</h2>
-                        <h2 class="topic"> <a href="{% url 'homepage' %}">Upcoming Trips</a></h2>
+                        <h2 class="topic"> <a href="{% url 'upcoming_trips' %}">Upcoming Trips</a></h2>
                     </div>
 
-                    <img src=
-"https://media.geeksforgeeks.org/wp-content/uploads/20221210184645/Untitled-design-(31).png"
-                        alt="Views">
+                    <i class="fa-solid fa-taxi"  style="color: white;"></i>
                 </div>
 
                 <div class="box box2"  >
                     <div class="text">
                         <h2 class="topic-heading">150</h2>
-                        <h2 class="topic"> <a href="{% url 'editpost' %}">Past Trips</a></h2>
+                        <h2 class="topic"> <a href="{% url 'past_trips' %}">Past Trips</a></h2>
                     </div>
 
-                    <img src=
-"https://media.geeksforgeeks.org/wp-content/uploads/20221210185030/14.png" 
-                         alt="likes">
+                    <i class="fa-solid fa-plane-circle-check"  style="color: white;"></i>
                 </div>
 
                 <div class="box box3">
                     <div class="text">
                         <h2 class="topic-heading">320</h2>
-                        <h2 class="topic">Send Reques</h2>
+                        <h2 class="topic"> <a href="{% url 'ongoing_trips' %}">Ongoing Trips</a></h2>
                     </div>
 
-                    <img src=
-"https://media.geeksforgeeks.org/wp-content/uploads/20221210184645/Untitled-design-(32).png"
-                        alt="comments">
+                    <i class="fa-solid fa-road" style="color: white;"></i>
                 </div>
 
                 <div class="box box4">
                     <div class="text">
                         <h2 class="topic-heading">70</h2>
-                        <h2 class="topic"> <a href="{% url 'poststatus' %}">Recieved Request</a></h2>
+                        <h2 class="topic"> <a href="{% url 'people' %}">Peoples</a></h2>
                     </div>
 
-                    <img src=
-"https://media.geeksforgeeks.org/wp-content/uploads/20221210185029/13.png" alt="published">
+                    <i class="fa-solid fa-user-group" style="color: white;"></i> 
                 </div>
             </div>
             {% else %}
