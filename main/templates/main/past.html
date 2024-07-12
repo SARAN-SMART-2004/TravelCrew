@@ -33,6 +33,25 @@
         flex: 1;
         text-align: center;
     }
+    .view-button {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #5500cb;
+        color: white;
+        text-decoration: none;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+    .view-button:hover {
+        background-color: #6c3483;
+    }
+    .sb{
+        height:35px; 
+        width:200px;
+    }
+
 </style>
 <div class="report-container">
     <div class="report-header">
@@ -48,6 +67,7 @@
             <h3 class="t-op">To Place</h3>
             <h3 class="t-op">Date</h3>
             <h3 class="t-op">Leaving Time</h3>
+            <h3 class="t-op"></h3>
         </div>
 
         <div class="items">
@@ -59,6 +79,7 @@
                 <h3 class="t-op-nextlvl">{{ trip.destination_place }}</h3>
                 <h3 class="t-op-nextlvl">{{ trip.date }}</h3>
                 <h3 class="t-op-nextlvl">{{ trip.leaving_time }}</h3>
+                <a href="{% url 'travel_plan_details' trip.pk %}" class="view-button">View</a>
             </div>
             {% endfor %}
             {% else %}

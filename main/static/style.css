@@ -49,7 +49,7 @@ body {
   justify-content: center;
   width: 40px; /* Adjust width as needed */
   height: 40px; /* Adjust height as needed */
-  background-color: #007bff; /* Example background color */
+  background-color: #3f0097; /* Example background color */
   border-radius: 50%; /* Makes it round */
   margin-left: 5px; /* Creates space between input and button */
 }
@@ -234,16 +234,16 @@ header {
   gap: 30px;
 }
 
-.option1 {
+.nav-option.option1 {
   border-left: 5px solid #010058af;
   background-color: var(--Border-color);
   color: white;
   cursor: pointer;
 }
-.option1:hover {
-  border-left: 5px solid #010058af;
+.nav-option.option1:hover {
   background-color: var(--Border-color);
 }
+
 .box {
   height: 130px;
   width: 230px;

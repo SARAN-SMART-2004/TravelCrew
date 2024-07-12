@@ -3,87 +3,122 @@
 {% block content %}
 <style>
     body {
-        background-color: #2c003e;
-        color: #f4f4f4;
-        font-family: Arial, sans-serif;
+        background-color: #f5f5f5; /* Light background for contrast */
+        color: #333; /* Dark text for readability */
+        font-family: 'Georgia', serif; /* Classic serif font */
     }
-
+    .main{
+        background-color:#cad7fda4; 
+    }
     .content-section {
-        background: linear-gradient(145deg, #3b0070, #5200a3);
-        border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        background: #ffffff; /* White background for the form */
+        border: 1px solid #ccc; /* Light grey border */
+        border-radius: 8px; /* Slightly rounded corners */
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
         padding: 2rem;
-        max-width: 500px;
+        max-width:600px;
+        
         margin: auto;
-        margin-top: 50px;
-        color: #ffffff;
-    }
+        font-size:20px;
 
+       
+        color: #333; /* Dark text */
+    }
+    li{
+        padding-left: 30px;
+        list-style:none;
+    }
+    .small{
+        <br>
+    }
+    
     .content-section legend {
-        color: #e0e0e0; /* Light grey color */
+        color: #333; /* Dark color for the legend */
         font-weight: bold;
-        text-align: center;
-        border-bottom: none;
+        text-align: center; /* Center aligned */
+        font-size: 1.5rem; /* Larger font size */
+        margin-bottom: 1rem; /* Space below the legend */
     }
-
+    
     .content-section p {
         text-align: center;
+        margin-bottom: 1.5rem; /* Space below paragraph */
+        color: #555; /* Darker grey for readability */
     }
-
+    
     .content-section .form-control {
         margin-bottom: 15px;
-        border-radius: 5px;
-        border: 1px solid #6a0dad; /* Violet color border */
+        border-radius: 4px; /* Slightly less rounded */
+        border: 1px solid #aaa; /* Grey border */
+        padding: 10px; /* More padding for inputs */
     }
-
+    
     .content-section .btn {
-        border-radius: 5px;
-        background-color: #6a0dad; /* Violet color */
+        border-radius: 4px; /* Match input corners */
+        background-color: #007bff; /* Classic blue */
         color: white;
         width: 100%;
         padding: 10px;
+        font-size: 1rem; /* Larger font size */
+        transition: background-color 0.3s ease; /* Smooth transition */
     }
-
+    
     .content-section .btn:hover {
-        background-color: #5a0cac; /* Darker violet on hover */
+        background-color: #0056b3; /* Darker blue on hover */
     }
-
+    
     .content-section .border-top {
-        border-top: 1px solid #6a0dad; /* Violet color border */
+        border-top: 1px solid #ccc; /* Light grey border */
         padding-top: 10px;
         text-align: center;
     }
-
+    
     .content-section .text-muted a {
-        color: white; /* Violet color links */
+        color: #007bff; /* Classic link color */
         text-decoration: none;
     }
-
+    
     .content-section .text-muted a:hover {
-        text-decoration: none;
+        text-decoration: underline; /* Underline on hover */
     }
-    .main{
-        background-color:white;
+    
+    * {
+        text-decoration: none; /* Remove text decoration globally */
+    }
+    .text-muted{
+        padding-left:5px;
     }
 </style>
-
 <div class="content-section">
     <form method="POST">
         {% csrf_token %}
-        <fieldset class="form-group">
+       <b> <fieldset class="form-group">
             <legend class="mb-4">Join Today</legend>
-            {{ form|crispy }}
-        </fieldset>
 
-        <p>By registering, you accept the Terms of Service and Privacy Notice</p>
+            {% for field in form %}
+                <div class="form-group">
+                   <b> <label for="{{ field.id_for_label }}">{{ field.label }}</label></b>
+                    {{ field }}  <!-- Render the field directly -->
+<br></b>
+
+                    {% if field.help_text %}
+                        <small class="text-muted">{{ field.help_text }}</small> <!-- Help text on new line -->
+                    {% endif %}<br>
+                </div>
+            {% endfor %}
+        </fieldset>
+        <p>By registering, you accept the Terms of Service and Privacy Notice.</p>
 
         <div class="form-group">
             <button class="btn" type="submit">Sign Up</button>
         </div>
     </form>
+
+    <br>
+
     <div class="border-top pt-3">
         <small class="text-muted">
-            Already Have An Account? <a class="ml-2" href="{% url 'login' %}">Sign In</a>
+            Already Have An Account? <a href="{% url 'login' %}">Sign In</a>
         </small>
     </div>
 </div>

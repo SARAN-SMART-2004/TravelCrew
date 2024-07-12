@@ -13,12 +13,14 @@
     .home-icon a:hover {
         color: #8e44ad;
     }
+    .danger {
+        color: #ff0000;
+    }
 </style>
 
 <div class="report-container">
     <div class="report-header">
         <h1 class="recent-Articles">Edit POST</h1>
-        
         <button class="view">View All</button>
     </div>
 
@@ -32,19 +34,29 @@
         </div>
 
         <div class="items">
-            {% for plan in travel_plans %}
-            <div class="item1">
-                <div class="home-icon">
-                    <a href="{% url 'edit_travel_plan' plan.pk %}">
-                        <i class="fa-solid fa-pen-to-square"></i>
-                    </a>
+            {% if travel_plans %}
+                {% for plan in travel_plans %}
+                <div class="item1">
+                    {% if plan.date > today %}
+                        <div class="home-icon">
+                            <a href="{% url 'edit_travel_plan' plan.pk %}">
+                                <i class="fa-solid fa-pen-to-square"></i>
+                            </a>
+                        </div>
+                    {% else %}
+                        <div class="danger">
+                            <i class="fa-solid fa-exclamation-triangle"></i> 
+                        </div>
+                    {% endif %}
+                    <h3 class="t-op-nextlvl">{{ plan.source_place }}</h3>
+                    <h3 class="t-op-nextlvl">{{ plan.destination_place }}</h3>
+                    <h3 class="t-op-nextlvl">{{ plan.date }}</h3>
+                    <h3 class="t-op-nextlvl">{{ plan.leaving_time }}</h3>
                 </div>
-                <h3 class="t-op-nextlvl">{{ plan.source_place }}</h3>
-                <h3 class="t-op-nextlvl">{{ plan.destination_place }}</h3>
-                <h3 class="t-op-nextlvl">{{ plan.date }}</h3>
-                <h3 class="t-op-nextlvl">{{ plan.leaving_time }}</h3>
-            </div>
-            {% endfor %}
+                {% endfor %}
+            {% else %}
+                <p>No created posts available for editing.</p>
+            {% endif %}
         </div>
     </div>
 {% else %}

@@ -3,25 +3,29 @@
 
 {% block content %}
 <style>
-    .nav{
-        z-index:10000;
+    .nav {
+        z-index: 10000;
     }
     .report-container {
-        width: 100%; /* Adjusted to full width */
-        max-width: 800px; /* Added max-width for better control on larger screens */
+        width: 100%; /* Full width */
+        max-width: 800px; /* Maximum width for larger screens */
         margin: 0 auto; /* Center the container */
         padding: 20px; /* Add padding for spacing */
         position: relative; /* Enable positioning */
         z-index: 1000;
     }
     .form-control {
-        width: 100%; /* Adjusted to full width */
-        height: 30px; /* Adjusted height */
+        width: 100%; /* Full width input */
+        padding: 10px; /* Padding for inputs */
+        border: 1px solid #ccc; /* Light grey border */
+        border-radius: 4px; /* Slightly rounded corners */
+        font-size: 16px; /* Standard font size */
     }
     .rounded-circle {
         width: 100px;
         height: 100px;
         border-radius: 50%;
+        border: 2px solid #ccc; /* Border for profile image */
     }
     .account-heading {
         margin-bottom: 5px;
@@ -46,31 +50,39 @@
     }
     .content-section {
         margin-top: 20px; /* Add margin for spacing */
+        border: 1px solid #ddd; /* Light grey border */
+        border-radius: 8px; /* Rounded corners */
+        padding: 20px; /* Padding inside the section */
+        background: #ffffff; /* White background */
     }
     .right {
         margin-top: 20px; /* Add margin for spacing */
         text-align: center; /* Center align content */
     }
     .border-bottom {
-        font-size: 30px;
+        font-size: 24px;
         font-weight: bold;
+        border-bottom: 2px solid #ccc; /* Border for separation */
+        padding-bottom: 10px; /* Space below the title */
     }
     label {
         font-weight: bold; /* Make input labels bold */
+        margin-bottom: 5px; /* Space below labels */
+        display: block; /* Block display for labels */
     }
     .btn-update {
-        background-color: #ad2ead; /* Violet background */
+        background-color: #6a0dad; /* Violet background */
         color: white; /* White text color */
-        border: 1px solid violet; /* Violet border */
+        border: 1px solid #6a0dad; /* Violet border */
         padding: 10px 20px; /* Padding */
         font-size: 16px; /* Font size */
         border-radius: 5px; /* Rounded corners */
-        cursor: pointer; /* Cursor style */
+        cursor: pointer; /* Pointer cursor */
         transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition */
     }
     .btn-update:hover {
-        background-color: #8a2be2; /* Darker violet on hover */
-        border-color: #8a2be2; /* Darker border on hover */
+        background-color: #5a0cac; /* Darker violet on hover */
+        border-color: #5a0cac; /* Darker border on hover */
     }
     .back-button {
         position: absolute;

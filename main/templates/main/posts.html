@@ -10,7 +10,6 @@
         justify-content: space-between;
         align-items: center;
     }
-    
     .report-body {
         margin-top: 20px;
     }
@@ -41,7 +40,6 @@
     .upcoming {
         color: blue;
     }
-    /* Your existing CSS styles */
     .view-button {
         display: inline-block;
         padding: 10px 20px;
@@ -56,31 +54,34 @@
     .view-button:hover {
         background-color: #6c3483;
     }
-    .sb{
-        height:35px;
-        width:200px;
+    .sb {
+        height: 35px; 
+        width: 200px;
+        margin-right: 10px;
     }
+    
+
+    {% comment %} text-align: center;
+    padding-left: 30px;
+    padding-right: 30px; {% endcomment %}
+
 </style>
 
 <div class="report-container">
     <div class="report-header">
         <h1 class="recent-Articles">All Trips</h1>
         <div class="searchbar">
-            <input type="text" 
-                   placeholder="Search">
-            <div class="searchbtn">
-                <i class="fa-solid fa-magnifying-glass icn srchicn" style="color: white;"></i>
-              
-              </div>
+            <form method="get" action="{% url 'all_travel_plans' %}">
+                <input type="text" name="search" value="{{ search_query }}" placeholder="Search" class="sb">
+                <button type="submit" class="view-button">Search</button>
+            </form>
         </div>
-
-        
         <button class="view">View All</button>
     </div>
 
     <div class="report-body">
         <div class="report-topic-heading">
-            <h3 class="t-op">Organizer </h3>
+            <h3 class="t-op">Organizer</h3>
             <h3 class="t-op">Source Place</h3>
             <h3 class="t-op">Destination Place</h3>
             <h3 class="t-op">Date</h3>
@@ -103,7 +104,7 @@
             </div>
             {% endfor %}
             {% else %}
-                <p>There is no post created yet!!!!!!!!.</p>
+                <p>There are no posts created yet!</p>
             {% endif %}
         </div>
     </div>

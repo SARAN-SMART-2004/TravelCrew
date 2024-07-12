@@ -74,7 +74,8 @@
                     <h5 class="card-title">{{ user.username }}</h5>
                     <p class="card-text"><b>Email:</b> {{ user.email }}</p>
                     <p class="card-text"><b>Phone:</b> {{ user.phone_number }}</p>
-                    <a href="#" class="btn btn-primary">Know More</a>
+                    <a href="{% url 'user_profile' user.id %}" class="btn btn-primary">Know More</a>
+
                 </div>
             </div>
         {% endfor %}

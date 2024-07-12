@@ -165,11 +165,12 @@ MEDIA_URL = '/media/'
 # Email settings
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_FROM = config('EMAIL_HOST_USER')
 EMAIL_HOST_USER = config('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')  # Use config to maintain consistency
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER  # Use the same email as the default sender
+
 
 # Password reset timeout (in seconds)
 PASSWORD_RESET_TIMEOUT = 14400  # 4 hours

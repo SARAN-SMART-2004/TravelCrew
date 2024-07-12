@@ -14,6 +14,12 @@ urlpatterns = [
     path('edit-travel-plan/<int:pk>/', views.edit_travel_plan, name='edit_travel_plan'),
     path('user-post-history/', views.user_post_history, name='user_post_history'),
     path('travel_plan/<int:pk>/', views.travel_plan_details, name='travel_plan_details'),
+    path('accept_trip/<int:pk>/', views.accept_trip, name='accept_trip'),
+    path('travel_plan/<int:pk>/', views.TravelPlanDetailView.as_view(), name='travel_plan_detail'),
+    path('people/<int:pk>/', views.user_profile, name='user_profile'),  
+    path('search/', views.search_travel_plans, name='search_travel_plans'),
+    
+    
     
     
     
