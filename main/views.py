@@ -46,11 +46,12 @@ def people(request):
     context = get_user_context(request)
     context['users'] = CustomUser.objects.all()
     return render(request, 'main/people.html', context)
+
 def user_profile(request, pk):
+    context = get_user_context(request)
     user = get_object_or_404(CustomUser, pk=pk)
-    context = {
-        'user': user,
-    }
+    context.update({'user': user})
+    
     return render(request, 'main/user_profile.html', context)
 
 
@@ -327,3 +328,68 @@ def search_travel_plans(request):
         'search_query': search_query,
     }
     return render(request, 'main/posts.html', context)
+from django.core.mail import send_mail
+from django.conf import settings
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib import messages
+from .models import TravelPlan, JoinRequest
+
+@login_required
+def travel_plan_details(request, pk):
+    travel_plan = get_object_or_404(TravelPlan, pk=pk)
+    is_member = request.user in travel_plan.members.all()
+    join_request = JoinRequest.objects.filter(user=request.user, travel_plan=travel_plan, is_accepted=False).first()
+    context = get_user_context(request)
+    if request.method == "POST":
+        if 'join' in request.POST:
+            if not join_request:
+                join_request = JoinRequest.objects.create(user=request.user, travel_plan=travel_plan)
+                send_mail(
+                    'Join Request',
+                    f'{request.user.username} wants to join your travel plan. Could you accept it?\n '
+                    'If you are interested in traveling with the user, then log in to the TravelCrew app and accept the request.\n\n'
+                    'Thank you,\n'
+                    'Team TravelCrew',
+                    settings.EMAIL_HOST_USER,
+                    [travel_plan.organizer.email],
+                )
+                messages.success(request, "Join request sent.")
+        elif 'accept' in request.POST:
+            join_request_id = request.POST.get('accept')
+            join_request = get_object_or_404(JoinRequest, id=join_request_id)
+            join_request.is_accepted = True
+            join_request.save()
+            travel_plan.members.add(join_request.user)
+            send_mail(
+                'Join Request Accepted',
+                f'Your request to join the travel plan has been accepted.\n'
+                'I hope this message finds you well. TravelCrew team pleased to inform you that trip organizer accept your invitation to join the upcoming trip.\n'
+                'Thank you ,\n'
+                'Team TravelCrew',
+                settings.EMAIL_HOST_USER,
+                [join_request.user.email],
+            )
+            messages.success(request, "Member accepted.")
+        elif 'cancel' in request.POST:
+            travel_plan.members.remove(request.user)
+            send_mail(
+                'Member trip Cancellation',
+                f'{request.user.username} has canceled their Trip membership.\n'
+                'we hope this message finds you well. We regret to inform you that due to unforeseen personal circumstances of the member,\n'
+                ' Member has cancel the  acceptance of the trip.'
+                'We apologize for any inconvenience this may cause and kindly request your understanding regarding this matter.'
+                'Thank you for your consideration.\n'
+                'Thank you ,\n'
+                'Team TravelCrew',
+                settings.EMAIL_HOST_USER,
+                [travel_plan.organizer.email],
+            )
+            messages.success(request, "Membership canceled.")
+        return redirect('travel_plan_details', pk=travel_plan.pk)
+
+    
+    context.update({'travel_plan': travel_plan})
+    context.update({'is_member': is_member})
+    context.update({'join_request': join_request})
+    
+    return render(request, 'main/travel_plan_details.html', context)

@@ -1,13 +1,33 @@
 {% extends "main/header.html" %}
 {% block content %}
 <style>
+    
     .item1 {
         display: flex;
         justify-content: center;
-        align-items: flex-start;
-        flex-direction: column-reverse;
-        flex-wrap: nowrap;
+        flex-wrap: wrap;
         align-content: stretch;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .join-button{
+        background-color: blue;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-right: 10px;
+    }
+    .profile-button{
+
+        background-color: blue;
+        color: white;
+        padding: 8px 20px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        margin-right: 10px;
     }
     .accept-button {
         background-color: green;
@@ -28,6 +48,7 @@
     }
     li {
         list-style: none;
+        margin-bottom:20px;
     }
 </style>
 <div class="report-container">
@@ -38,40 +59,58 @@
 
         <div class="items">
             <div class="item1">
-                <h3>Members who accepted:</h3>
+                
                 <br>
-                <br>
+                
                 <h3>Organizer:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ travel_plan.organizer }}</h3>
                 <h3>Source Place:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ travel_plan.source_place }}</h3>
                 <h3>Destination Place:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ travel_plan.destination_place }}</h3>
                 <h3>Date:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ travel_plan.date }}</h3>
                 <h3>Leaving Time:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ travel_plan.leaving_time }}</h3>
                 <h3>Waiting Time:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ travel_plan.waiting_time }}</h3>
-            </div>
-            <div class="item1">
-                <ul>
-                    {% for member in travel_plan.members.all %}
-                        <b><li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ member.username }}</li></b>
-                    {% endfor %}
-                </ul>
-            </div>
-            <br>
-            <br>
-            {% if request.user != travel_plan.organizer %}
-            <div class="button-container">
-                {% if not is_past_trip %}
-                <form action="{% url 'accept_trip' travel_plan.id %}" method="post">
+                <br><br>
+                <h3>Members who accepted:</h3>
+            <ul>
+                {% for member in travel_plan.members.all %}
+                    <li>{{ member.username }}</li>
+                    
+                {% endfor %}
+            </ul>
+
+            {% if request.user != travel_plan.organizer and not is_member and not join_request %}
+                <form method="post">
                     {% csrf_token %}
-                    {% if request.user in travel_plan.members.all %}
-                        <button type="submit" name="cancel" class="decline-button">Cancel</button>
-                    {% else %}
-                        <button type="submit" name="accept" class="accept-button">Accept</button>
-                    {% endif %}
+                    <button type="submit" name="join" class="join-button">Join</button>
                 </form>
-                {% endif %}
-            </div>
+            {% elif join_request and not join_request.is_accepted %}
+                <p>Join request sent. Waiting for organizer's approval.</p>
+            {% elif is_member %}
+                <form method="post">
+                    {% csrf_token %}
+                    <button type="submit" name="cancel" class="decline-button">Cancel</button>
+                </form>
             {% endif %}
         </div>
+        {% if request.user == travel_plan.organizer %}
+            <h3>Join Requests:</h3>
+            <br>
+            <ul>
+                {% for request in travel_plan.joinrequest_set.all %}
+                    {% if not request.is_accepted %}
+                    
+                        <li>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ request.user.username }}
+                            <form method="post" style="display:inline;">
+                                {% csrf_token %}
+                                <a class="profile-button" href="{% url 'user_profile' request.user.id %}">View Profile</a> <!-- Updated URL -->
+                                <button type="submit" name="accept" value="{{ request.id }}" class="accept-button">Accept</button>
+                            </form>
+                        </li>
+                        
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        {% endif %}
     </div>
 </div>
-{% endblock content %}
+{% endblock %}

@@ -80,28 +80,30 @@
     <!-- for header part -->
     <header>
         <div class="logosec">
-            <div class="logo">Travel Partner</div>
+            <div class="logo">Travel Crew</div>
             <i class="fa-solid fa-bars icn menuicn" id="menuicn" style="color: #410099;"></i>
             
         </div>
-        <div class="searchbar">
-            <form method="get" action="{% url 'search_travel_plans' %}">
-                <input type="text" name="search" placeholder="Search">
-                <button type="submit" class="view-button">Search</button>
-            </form>
-        </div>
-            
         
-
-        <div class="message">
-            <div class="circle"></div>
-            <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210183322/8.png" class="icn" alt="">
-        </div>
 
         <!-- User profile section -->
         <div class="message">
+            
             {% comment %} <div class="circle"></div> {% endcomment %}
             {% if current_user.is_authenticated %}
+            <div class="searchbar">
+                <form method="get" action="{% url 'search_travel_plans' %}">
+                    <input type="text" name="search" placeholder="Search">
+                    <button type="submit" class="view-button">Search</button>
+                </form>
+            </div>
+                
+            
+    
+            <div class="message">
+                <div class="circle"></div>
+                <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210183322/8.png" class="icn" alt="">
+            </div>
                 {% if current_user.image %}
                     <a href="{% url 'profile' current_user.username %}"  class="profile-link">
                         <img class="pimg" src="{{ current_user.image.url }}" alt="{{ current_user.username }}">
@@ -127,45 +129,45 @@
                 <div class="nav-upper-options">
                     {% if user.is_authenticated %}
                         {% if user.is_superuser %}
+                        <a href="{% url 'admin:index' %}" >
                         <div class="option2 nav-option">
                             <i class="fa-solid fa-user-tie" style="color: #3f0097;"></i>
                                 <h3> 
-                                    <a href="{% url 'admin:index' %}" >Admin</a></h3>
+                                    Admin</h3>
                             
                         </div>
+                    </a>
 
                         {% endif %}
 
-
-
-
-                    <div class="nav-option option1">
-                        <img src=
-"https://media.geeksforgeeks.org/wp-content/uploads/20221210182148/Untitled-design-(29).png"
-                            class="nav-img" 
-                            alt="dashboard">
+                        <a  href="{% url 'dashboard' %}"  class="custom-link"> <div class="nav-option option1">
+                            <i class="fa-solid fa-chart-pie" style="color:white;"></i>
                         
-                        <h3 > <a  href="{% url 'dashboard' %}"  class="custom-link"> Dashboard</h3></a>
+                        <h3 >  Dashboard</h3>
                     </div>
+                </a>
 
+                <a href="{% url 'all_travel_plans' %}" >
                     <div class="option2 nav-option">
                         <i class="fa-solid fa-earth-americas" style="color: #3f0097;"></i>
-                            <h3> <a href="{% url 'all_travel_plans' %}" > Post</h3></a>
+                            <h3>  Post</h3>
                     </div>
-
+                </a>
+                <a href="{% url 'edit_all_travel_plans' %}">
                     <div class="nav-option option3">
                         <i class="fa-solid fa-file-pen" style="color: #3f0097;"></i>
-                        <h3> <a href="{% url 'edit_all_travel_plans' %}">Edit Post</a></h3>
+                        <h3> Edit Post</h3>
                     </div>
-
+                </a>
+                    <a href="{% url 'submit_travel_plan' %}">
                     <div class="nav-option option4">
                         <i class="fa-solid fa-pen-to-square" style="color: #3f0097;"></i>
-                            <h3><a href="{% url 'submit_travel_plan' %}">
+                            <h3>
                                  Create Post
-                            </a></h3>
+                            </h3>
                         
                     </div>
-
+                </a>
                     {% comment %} <div class="nav-option option5">
                         <i class="fa-solid fa-taxi"  style="color: #3f0097;"></i>
                             <h3><a href="{% url 'upcoming_trips' %}">
@@ -194,29 +196,28 @@
 
 
 
-
+                    <a href="{% url 'people' %}">
                     <div class="nav-option option5">
                         <i class="fa-solid fa-user-group" style="color: #3f0097;"></i> 
-                            <h3><a href="{% url 'people' %}">
+                            <h3>
                                 People
-                           </a></h3>
+                           </h3>
                     </div>
-
+                </a>
+                <a href="{% url 'user_post_history' %}">
                     <div class="nav-option option6">
                         <i class="fa-solid fa-square-poll-vertical" style="color: #3f0097;"></i>
-                            <h3> <a href="{% url 'user_post_history' %}"> My Trips</a></h3>
+                            <h3>  My Trips</h3>
                     </div>
-                    
-
+                </a>
+                <a href="{% url 'logout' %}">
                     <div class="nav-option logout">
-                        <img src=
-"https://media.geeksforgeeks.org/wp-content/uploads/20221210183321/7.png"
-                            class="nav-img" 
-                            alt="logout">
-                            <a href="{% url 'logout' %}">
+                        <i class="fa-solid fa-right-from-bracket" style="color: #3f0097;"></i>
+                            
                                 <h3>Logout</h3>
-                            </a>
+                            
                     </div>
+                </a>
 
                     <div class="nav-option logout">
                         {% if current_user and current_user.username %}

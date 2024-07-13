@@ -15,8 +15,21 @@ class TravelPlan(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     members = models.ManyToManyField(User, related_name='accepted_travel_plans')
 
+
     def __str__(self):
         return f"{self.source_place} to {self.destination_place} on {self.date}"
+    
+
+class JoinRequest(models.Model):
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+    travel_plan = models.ForeignKey(TravelPlan, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    is_accepted = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.user.username} -> {self.travel_plan}"
+
+    
 
 
     
