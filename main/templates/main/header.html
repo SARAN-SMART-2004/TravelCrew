@@ -102,7 +102,8 @@
     
             <div class="message">
                 <div class="circle"></div>
-                <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210183322/8.png" class="icn" alt="">
+                
+                <a href="{% url 'messages' %}" > <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210183322/8.png" class="icn" alt=""></a>
             </div>
                 {% if current_user.image %}
                     <a href="{% url 'profile' current_user.username %}"  class="profile-link">
@@ -191,8 +192,15 @@
 
 
 
-
-
+                    
+                    <a href="{% url 'requests' %}">
+                        <div class="nav-option option5">
+                            <i class="fa-solid fa-bullhorn" style="color: #410099;"></i>
+                                <h3>
+                                    Requests
+                               </h3>
+                        </div>
+                    </a>
 
 
 

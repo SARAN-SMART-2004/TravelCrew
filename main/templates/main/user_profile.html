@@ -1,27 +1,115 @@
 {% extends "main/header.html" %}
+{% load static %}
 {% block content %}
 <style>
+    body {
+       
+        backdrop-filter: blur(10px);
+    }
+    
     .profile-container {
         margin: 2em auto;
-        max-width: 600px;
-        padding: 1em;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        background-color: #fff;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        max-width: 400px;
+        padding: 2em;
+        border-radius: 15px;
+        background: white; /* Semi-transparent background */
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.3);
     }
+    
+    .profile-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1.5em;
+    }
+    
     .profile-img {
-        width: 150px;
+        width: 100px;
+        height: 100px;
         border-radius: 50%;
-        margin-bottom: 1em;
+        margin-right: 1em;
+        border: 2px solid rgba(255, 255, 255, 0.5);
+    }
+    
+    .profile-header h2 {
+        margin: 0;
+        color: white; /* Text color */
+    }
+    
+    .profile-details {
+        margin: 1em 0;
+        color: black; /* Text color */
+    }
+    
+    .profile-details p {
+        margin: 0.5em 0;
+    }
+    
+    .social-links {
+        margin-top: 1.5em;
+    }
+    
+    .social-links a {
+        margin-right: 10px;
+        text-decoration: none;
+        color: #007bff; /* Bootstrap link color */
+        transition: color 0.3s ease;
+    }
+    
+    .social-links a:hover {
+        color: #0056b3; /* Darker on hover */
+    }
+    /* Responsive styles */
+    @media (max-width: 600px) {
+        .profile-container {
+            padding: 1.5em;
+            max-width: 90%; /* Allow for more width on smaller screens */
+        }
+
+        .profile-header {
+            flex-direction: column; /* Stack image and text vertically */
+            align-items: center;
+            text-align: center; /* Center text */
+        }
+
+        .profile-img {
+            margin-right: 0; /* Remove margin for smaller screens */
+            margin-bottom: 1em; /* Add space below image */
+        }
+
+        .social-links {
+            text-align: center; /* Center social links */
+        }
     }
 </style>
 
 <div class="profile-container">
-    <img src="{{ user.image.url }}" class="profile-img" alt="{{ user.username }}">
-    <h2>{{ user.username }}</h2>
-    <p><b>Email:</b> {{ user.email }}</p>
-    <p><b>Phone:</b> {{ user.phone_number }}</p>
-    <p><b>Bio:</b> {{ user.bio }}</p>  <!-- Add any other fields you want to show -->
+    <div class="profile-header">
+        <img src="{{ user.image.url }}" class="profile-img" alt="{{ user.username }}">
+        <div>
+            <h2>{{ user.username }}</h2>
+            <p><b>Email:</b> {{ user.email }}</p>
+        </div>
+    </div>
+    <div class="profile-details">
+        <p><b>Phone:</b> {{ user.phone_number }}</p>
+        <p><b>Bio:</b> {{ user.description }}</p>
+        <p><b>Age:</b> {{ user.age }}</p>
+        <p><b>Designation:</b> {{ user.designation }}</p>
+        <p><b>Address:</b> {{ user.address }}</p>
+        <p><b>City:</b> {{ user.city_name }}</p>
+        <p><b>District:</b> {{ user.district_name }}</p>
+        <p><b>Postcode:</b> {{ user.postcode }}</p>
+    </div>
+    
+    <div class="social-links">
+        <h4>Social Media Links:</h4>
+        <p>
+            <b>Instagram:</b> <a href="{{ user.social_media_links.instagram }}" target="_blank">{{ user.social_media_links.instagram }}</a><br>
+            <b>Twitter:</b> <a href="{{ user.social_media_links.twitter }}" target="_blank">{{ user.social_media_links.twitter }}</a><br>
+            <b>Facebook:</b> <a href="{{ user.social_media_links.facebook }}" target="_blank">{{ user.social_media_links.facebook }}</a><br>
+            <b>LinkedIn:</b> <a href="{{ user.social_media_links.linkedin }}" target="_blank">{{ user.social_media_links.linkedin }}</a>
+        </p>
+    </div>
 </div>
 {% endblock content %}

@@ -14,7 +14,8 @@ from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
 from django.http import HttpResponseRedirect
 from django.urls import reverse
-from .forms import TravelPlanForm
+from .forms import TravelPlanForm,TripMessage
+from django.utils import timezone
 
 from django.shortcuts import render, get_object_or_404, redirect
 
@@ -190,7 +191,7 @@ def user_post_history(request):
 def travel_plan_details(request, pk):
     context = get_user_context(request)
     travel_plan = get_object_or_404(TravelPlan, pk=pk)
-
+    now = timezone.now()
     # Check if the trip date is in the past
     current_date = timezone.now().date()
     is_past_trip = travel_plan.date < current_date
@@ -198,32 +199,38 @@ def travel_plan_details(request, pk):
     context.update({
         'travel_plan': travel_plan,
         'is_past_trip': is_past_trip,
+        'now': now,
     })
     return render(request, 'main/travel_plan_details.html', context)
 
 
 
-@login_required
-def accept_trip(request, trip_id):
-    travel_plan = get_object_or_404(TravelPlan, id=trip_id)
-    user = request.user
+# @login_required
+# def accept_trip(request, trip_id):
+#     travel_plan = get_object_or_404(TravelPlan, id=trip_id)
+#     user = request.user
 
-    if user != travel_plan.organizer:
-        travel_plan.members.add(user)
-        travel_plan.save()
+#     if user != travel_plan.organizer:
+#         travel_plan.members.add(user)
+#         travel_plan.save()
+#          # Create message for acceptance
+#         TripMessage.objects.create(
+#             sender=user,
+#             recipient=travel_plan.organizer,
+#             content=f'{user.username} has accepted the trip from {travel_plan.source_place} to {travel_plan.destination_place}.',
+#         )
+#         send_mail(
+#             'Trip Accepted',
+#             f'{user.username} has accepted your trip',
+#             'from@example.com',  # Replace with your email or settings.DEFAULT_FROM_EMAIL
+#             [travel_plan.organizer.email],
+#             fail_silently=False,
+#         )
+#         messages.success(request, "You have successfully accepted the trip.")
+#     else:
+#         messages.error(request, "You cannot accept your own trip.")
 
-        send_mail(
-            'Trip Accepted',
-            f'{user.username} has accepted your trip',
-            'from@example.com',  # Replace with your email or settings.DEFAULT_FROM_EMAIL
-            [travel_plan.organizer.email],
-            fail_silently=False,
-        )
-        messages.success(request, "You have successfully accepted the trip.")
-    else:
-        messages.error(request, "You cannot accept your own trip.")
-
-    return HttpResponseRedirect(reverse('travel_plan_detail', args=[trip_id]))
+#     return HttpResponseRedirect(reverse('travel_plan_detail', args=[trip_id]))
 # views.py
 
 
@@ -242,6 +249,14 @@ def accept_trip(request, pk):
     if 'accept' in request.POST:
 
         travel_plan.members.add(user)
+         # Create message for acceptance
+
+        TripMessage.objects.create(
+            sender=user,
+            recipient=travel_plan.organizer,
+            content=f'{user.username} has accepted the trip from {travel_plan.source_place} to {travel_plan.destination_place}.',
+        )
+
         message = render_to_string('main/template_trip_accepted.html', {'user': user})
         send_mail(
             'Trip Accepted',
@@ -253,7 +268,13 @@ def accept_trip(request, pk):
         messages.success(request, f"You have successfully Accepted the Trip !!!")
     elif 'cancel' in request.POST:
         travel_plan.members.remove(user)
+         # Create message for cancellation
         message = render_to_string('main/template_trip_canceled.html', {'user': user})
+        TripMessage.objects.create(
+            sender=user,
+            recipient=travel_plan.organizer,
+            content=f"{user.username} has canceled their trip membership for '{travel_plan.source_place} to {travel_plan.destination_place}' scheduled on {travel_plan.date}.",
+        )
         send_mail(
             'Trip Canceled',
             message,
@@ -272,6 +293,7 @@ def all_travel_plans(request):
 
     # Get all travel plans
     travel_plans = TravelPlan.objects.all()
+    travel_plans = travel_plans.order_by('-id')
     current_date = timezone.now().date()
 
     # Implement search functionality
@@ -338,8 +360,19 @@ from .models import TravelPlan, JoinRequest
 def travel_plan_details(request, pk):
     travel_plan = get_object_or_404(TravelPlan, pk=pk)
     is_member = request.user in travel_plan.members.all()
+    # Determine if the travel plan is upcoming
+    current_date = timezone.now().date()
+    is_upcoming_trip = travel_plan.date > current_date
+    
     join_request = JoinRequest.objects.filter(user=request.user, travel_plan=travel_plan, is_accepted=False).first()
     context = get_user_context(request)
+    context.update({
+        'travel_plan': travel_plan,
+        'is_member': is_member,
+        'join_request': join_request,
+        'is_upcoming_trip': is_upcoming_trip,
+        
+    })
     if request.method == "POST":
         if 'join' in request.POST:
             if not join_request:
@@ -354,12 +387,20 @@ def travel_plan_details(request, pk):
                     [travel_plan.organizer.email],
                 )
                 messages.success(request, "Join request sent.")
+                user=request.user
+                # When a user requests to join a trip
+                TripMessage.objects.create(
+                sender=user,  # the user who is sending the request
+                recipient=travel_plan.organizer,  # the organizer of the trip
+                content=f"{user.username} wants to join the trip from {travel_plan.source_place} to {travel_plan.destination_place}."
+                )
         elif 'accept' in request.POST:
             join_request_id = request.POST.get('accept')
             join_request = get_object_or_404(JoinRequest, id=join_request_id)
             join_request.is_accepted = True
             join_request.save()
             travel_plan.members.add(join_request.user)
+            
             send_mail(
                 'Join Request Accepted',
                 f'Your request to join the travel plan has been accepted.\n'
@@ -370,6 +411,13 @@ def travel_plan_details(request, pk):
                 [join_request.user.email],
             )
             messages.success(request, "Member accepted.")
+            user=request.user
+            # When the organizer accepts a join request
+            TripMessage.objects.create(
+            sender=travel_plan.organizer,  # the organizer sending the message
+            recipient=user,  # the user who requested to join
+            content=f"Organizer has accepted the trip from {travel_plan.source_place} to {travel_plan.destination_place}."
+            )
         elif 'cancel' in request.POST:
             travel_plan.members.remove(request.user)
             send_mail(
@@ -385,6 +433,11 @@ def travel_plan_details(request, pk):
                 [travel_plan.organizer.email],
             )
             messages.success(request, "Membership canceled.")
+            user=request.user
+            TripMessage.objects.create(
+            sender=user,
+            recipient=travel_plan.organizer,
+            content=f'{user.username} has cancelled the trip from {travel_plan.source_place} to {travel_plan.destination_place}.',)
         return redirect('travel_plan_details', pk=travel_plan.pk)
 
     
@@ -393,3 +446,51 @@ def travel_plan_details(request, pk):
     context.update({'join_request': join_request})
     
     return render(request, 'main/travel_plan_details.html', context)
+ # Adjust based on your actual model structure
+
+  # Updated import to reflect the new class name
+from .models import TripMessage  # Update this based on your actual model name
+
+
+@login_required
+def user_messages(request):
+    received_messages = TripMessage.objects.filter(recipient=request.user)
+
+    organizer_messages = []  # For join requests
+    member_messages = []  # For acceptance notifications
+    cancellation_messages = []  # For cancellation notifications
+
+    for message in received_messages:
+        if "wants to join the trip" in message.content:
+            organizer_messages.append(message)
+        elif "has accepted the trip" in message.content:
+            member_messages.append(message)
+        elif "has canceled the trip" in message.content:
+            cancellation_messages.append(message)
+
+    context = {
+        'member_messages': member_messages,
+        'organizer_messages': organizer_messages,
+        'cancellation_messages': cancellation_messages,
+    }
+    return render(request, 'main/message.html', context)
+from .models import Request, TravelPlan
+
+
+
+
+
+@login_required
+def requests(request):
+    travel_plans = TravelPlan.objects.all()
+    sent_requests = JoinRequest.objects.filter(user=request.user)  # Join requests sent by the user
+    sent_requests = sent_requests.order_by('-id')
+    received_requests = JoinRequest.objects.filter(travel_plan__organizer=request.user, is_accepted=False)  # Join requests received by the user
+    received_requests = received_requests.order_by('-id')
+    context = {
+        'sent_requests': sent_requests,
+        'received_requests': received_requests,
+        'travel_plans':travel_plans,
+    }
+    
+    return render(request, 'main/requests.html', context)

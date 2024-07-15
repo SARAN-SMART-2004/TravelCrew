@@ -18,6 +18,11 @@ urlpatterns = [
     path('travel_plan/<int:pk>/', views.TravelPlanDetailView.as_view(), name='travel_plan_detail'),
     path('people/<int:pk>/', views.user_profile, name='user_profile'),  
     path('search/', views.search_travel_plans, name='search_travel_plans'),
+    path('messages/', views.user_messages, name='messages'),
+    path('requests/', views.requests, name='requests'),
+    
+
+
     
     
     

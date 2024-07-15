@@ -3,8 +3,64 @@
 {% if user.is_authenticated %}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <style>
+    
     .report-container {
-        margin: 0px;
+        
+        
+        padding: 20px;
+        background-color: #fff;
+        border: 1px solid #ccc;
+        border-radius: 30px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    .report-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+    .recent-Articles {
+        font-size: 24px;
+        font-weight: bold;
+        color: #5500cb;
+        margin: 0;
+    }
+    .view {
+        background-color: #5500cb;
+        color: white;
+        padding: 8px 12px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
+        text-decoration: none;
+    }
+    .report-body {
+        margin-top: 20px;
+    }
+    .report-topic-heading {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+        gap: 10px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid #ccc;
+    }
+    .t-op {
+        font-size:  20px;
+        font-weight: bold;
+        color: #555;
+        text-align: center;
+    }
+    .items {
+        margin-top: 10px;
+    }
+    .item1 {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+        gap: 10px;
+        padding: 10px 0;
+        border-bottom: 1px solid #eee;
+        align-items: center;
     }
     .home-icon a {
         color: #000000;
@@ -15,6 +71,44 @@
     }
     .danger {
         color: #ff0000;
+        text-align:center;
+        
+    }
+    .t-op-nextlvl {
+        font-size: 14px;
+        color: #333;
+        text-align: center;
+    }
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .report-container {
+            margin: 10px;
+            padding: 15px;
+        }
+        .report-topic-heading, .item1 {
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+        }
+        .t-op, .t-op-nextlvl {
+            font-size: 0.9em;
+        }
+        .home-icon a, .danger {
+            font-size: 0.9em;
+        }
+    }
+    @media (max-width: 480px) {
+        .report-container {
+            margin: 5px;
+            padding: 10px;
+        }
+        .report-topic-heading, .item1 {
+            grid-template-columns: 1fr 1fr 1fr;
+        }
+        .t-op, .t-op-nextlvl {
+            font-size: 0.8em;
+        }
+        .home-icon a, .danger {
+            font-size: 0.8em;
+        }
     }
 </style>
 
@@ -38,20 +132,22 @@
                 {% for plan in travel_plans %}
                 <div class="item1">
                     {% if plan.date > today %}
-                        <div class="home-icon">
-                            <a href="{% url 'edit_travel_plan' plan.pk %}">
-                                <i class="fa-solid fa-pen-to-square"></i>
-                            </a>
-                        </div>
-                    {% else %}
-                        <div class="danger">
-                            <i class="fa-solid fa-exclamation-triangle"></i> 
-                        </div>
-                    {% endif %}
+                    <div class="home-icon">
+                        <a href="{% url 'edit_travel_plan' plan.pk %}">
+                          <center>  <i class="fa-solid fa-pen-to-square"></i></center>
+                        </a>
+                    </div>
+                {% else %}
+                    <div class="danger">
+                        <i class="fa-solid fa-exclamation-triangle"></i>
+                    </div>
+                {% endif %}
+                   
                     <h3 class="t-op-nextlvl">{{ plan.source_place }}</h3>
                     <h3 class="t-op-nextlvl">{{ plan.destination_place }}</h3>
                     <h3 class="t-op-nextlvl">{{ plan.date }}</h3>
                     <h3 class="t-op-nextlvl">{{ plan.leaving_time }}</h3>
+                    
                 </div>
                 {% endfor %}
             {% else %}
@@ -59,6 +155,7 @@
             {% endif %}
         </div>
     </div>
+</div>
 {% else %}
     <p>You are not allowed to view this page.</p>
 {% endif %}

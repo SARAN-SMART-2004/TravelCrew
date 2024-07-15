@@ -40,10 +40,33 @@ class UserLoginForm(AuthenticationForm):
 class UserUpdateForm(forms.ModelForm):
     email = forms.EmailField()
     phone_number = forms.CharField(max_length=15, required=False, help_text='Enter your phone number')
-
+    age = forms.IntegerField(required=False, help_text='Enter your age')
+    designation = forms.ChoiceField(choices=[('student', 'Student'), ('others', 'Others')], required=False)
+    address = forms.CharField(max_length=255, required=False, help_text='Enter your address')
+    city_name = forms.CharField(max_length=100, required=False, help_text='Enter your city name')
+    district_name = forms.CharField(max_length=100, required=False, help_text='Enter your district name')
+    postcode = forms.CharField(max_length=10, required=False, help_text='Enter your postcode')
+    instagram = forms.URLField(required=False, help_text='Enter your Instagram profile URL')
+    twitter = forms.URLField(required=False, help_text='Enter your Twitter profile URL')
+    facebook = forms.URLField(required=False, help_text='Enter your Facebook profile URL')
+    linkedin = forms.URLField(required=False, help_text='Enter your LinkedIn profile URL')
     class Meta:
         model = get_user_model()
-        fields = ['first_name', 'last_name', 'email', 'image', 'description', 'phone_number']
+        fields = [
+            'first_name', 'last_name', 'email', 'image', 'description', 'phone_number',
+            'age', 'designation', 'address', 'city_name', 'district_name', 'postcode', 'instagram', 'twitter', 'facebook', 'linkedin'
+        ]
+    def save(self, commit=True):
+        user = super(UserUpdateForm, self).save(commit=False)
+        user.social_media_links = {
+            'instagram': self.cleaned_data['instagram'],
+            'twitter': self.cleaned_data['twitter'],
+            'facebook': self.cleaned_data['facebook'],
+            'linkedin': self.cleaned_data['linkedin'],
+        }
+        if commit:
+            user.save()
+        return user
 
 
 class SetPasswordForm(SetPasswordForm):

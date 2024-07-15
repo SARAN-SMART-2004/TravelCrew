@@ -1,0 +1,98 @@
+{% extends "main/header.html" %}
+
+{% block content %}
+<div class="message-container">
+    <h2>Your Messages</h2>
+
+<h3>Join Requests</h3>
+{% if organizer_messages %}
+    {% for message in organizer_messages %}
+        <p>
+            From: {{ message.sender.username }}<br>
+            Message: {{ message.content }}<br>
+            Received At: {{ message.timestamp|date:"F j, Y, g:i a" }}<br>
+        </p>
+    {% endfor %}
+{% else %}
+    <p>No join requests.</p>
+{% endif %}
+
+<h3>Acceptance Notifications</h3>
+{% if member_messages %}
+    {% for message in member_messages %}
+        <p>
+            From: {{ message.sender.username }}<br>
+            Message: {{ message.content }}<br>
+            Received At: {{ message.timestamp|date:"F j, Y, g:i a" }}<br>
+        </p>
+    {% endfor %}
+{% else %}
+    <p>No acceptance notifications.</p>
+{% endif %}
+
+<h3>Cancellation Notifications</h3>
+{% if cancellation_messages %}
+    {% for message in cancellation_messages %}
+        <p>
+            From: {{ message.sender.username }}<br>
+            Message: {{ message.content }}<br>
+            Received At: {{ message.timestamp|date:"F j, Y, g:i a" }}<br>
+        </p>
+    {% endfor %}
+{% else %}
+    <p>No cancellation notifications.</p>
+{% endif %}
+
+
+
+<style>
+    .message-container {
+        max-width: 600px;
+        margin: 20px auto;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        background-color: #f9f9f9;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+        text-align: center;
+        color: #333;
+    }
+
+    .message-list {
+        margin-top: 10px;
+    }
+
+    .message-item {
+        padding: 10px;
+        border-bottom: 1px solid #eee;
+    }
+
+    .message-item:last-child {
+        border-bottom: none;
+    }
+
+    .timestamp {
+        font-size: 0.8em;
+        color: #777;
+    }
+
+    .no-messages {
+        text-align: center;
+        color: #999;
+        font-style: italic;
+    }
+
+    @media (max-width: 600px) {
+        .message-container {
+            padding: 15px;
+        }
+
+        h2 {
+            font-size: 1.5em;
+        }
+    }
+</style>
+{% endblock %}

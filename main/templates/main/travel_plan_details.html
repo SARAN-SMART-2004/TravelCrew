@@ -78,17 +78,26 @@
             </ul>
 
             {% if request.user != travel_plan.organizer and not is_member and not join_request %}
+                
+            {% if is_upcoming_trip %}
                 <form method="post">
                     {% csrf_token %}
                     <button type="submit" name="join" class="join-button">Join</button>
                 </form>
+            {% else %}
+                <p>Sorry!!!!!! its to late to join the trip</p>
+            
+                {% endif %}
+                
             {% elif join_request and not join_request.is_accepted %}
                 <p>Join request sent. Waiting for organizer's approval.</p>
             {% elif is_member %}
+            {% if is_upcoming_trip %}
                 <form method="post">
                     {% csrf_token %}
                     <button type="submit" name="cancel" class="decline-button">Cancel</button>
                 </form>
+                {% endif %}
             {% endif %}
         </div>
         {% if request.user == travel_plan.organizer %}
