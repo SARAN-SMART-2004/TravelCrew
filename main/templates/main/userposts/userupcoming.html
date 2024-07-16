@@ -1,0 +1,48 @@
+{% extends "main/design/header.html" %}
+{% block content %}
+{% load static %}
+{% if user.is_authenticated %}
+
+<link href="{% static 'userpoststyle.css' %}" rel="stylesheet" type="text/css">
+<div class="report-container some">
+    <div class="report-header">
+        <h1 class="recent-Articles">My Upcoming Trips</h1>
+        <button class="view">View All</button>
+    </div>
+
+    <div class="report-body">
+        <div class="report-topic-heading">
+            <h3 class="t-op">Organizer </h3>
+            <h3 class="t-op">From Place</h3>
+            <h3 class="t-op">Date</h3>
+            <h3 class="t-op">To Place</h3>
+           
+            
+            <h3 class="t-op"></h3>
+             
+        </div>
+
+        <div class="items">
+            {% if upcoming_trips %}
+            {% for trip in upcoming_trips %}
+            <div class="item1">
+                <h3 class="t-op-nextlvl">{{ trip.organizer }}</h3>
+                <h3 class="t-op-nextlvl">{{ trip.source_place }}</h3>
+                <h3 class="t-op-nextlvl">{{ trip.date }}</h3>
+                <h3 class="t-op-nextlvl">{{ trip.destination_place }}</h3>
+                <a href="{% url 'travel_plan_details' trip.pk %}" class="view-button vp">View</a>
+             
+            </div>
+            {% endfor %}
+            {% else %}
+            <p>No upcoming trips found.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+
+{% else %}
+    <p>You are not allowed to view this page.</p>
+{% endif %}
+{% endblock content %}

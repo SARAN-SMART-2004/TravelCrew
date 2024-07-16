@@ -1,7 +1,6 @@
-{% extends "main/header.html" %}
+{% extends "main/design/header.html" %}
 {% block content %}
 <style>
-  
     .container {
         margin: 20px auto;
         padding: 20px;
@@ -17,25 +16,19 @@
     li {
         list-style: none;
     }
-    .profile-button {
+    .profile-button, .request-button, .view {
         background-color: #5500cb;
         color: white;
         padding: 8px 12px;
         border: none;
         border-radius: 4px;
         cursor: pointer;
-        margin-right: 10px;
-        text-decoration: none;
         font-size: 14px;
+        text-decoration: none;
+        margin-right: 10px;
     }
     .request-button {
         background-color: #cc0000;
-        color: white;
-        padding: 8px 12px;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        font-size: 14px;
     }
     .report-container {
         margin-bottom: 20px;
@@ -49,18 +42,7 @@
     .recent-Articles {
         font-size: 24px;
         font-weight: bold;
-        margin: 0;
         color: #5500cb;
-    }
-    .view {
-        background-color: #5500cb;
-        color: white;
-        padding: 8px 12px;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        font-size: 14px;
-        text-decoration: none;
     }
 
     /* Responsive adjustments */
@@ -101,12 +83,13 @@
             font-size: 1em;
         }
     }
+
     .hidden-requests {
-        display: none; /* Initially hidden */
+        display: none;
     }
     .visible {
-        display: block; /* Show the requests */
-        animation: fadeIn 0.5s; /* Fade-in animation */
+        display: block;
+        animation: fadeIn 0.5s;
     }
 
     @keyframes fadeIn {
@@ -127,16 +110,12 @@
                     Request to join the trip from {{ request.travel_plan.source_place }} to {{ request.travel_plan.destination_place }} 
                     at {{request.travel_plan.date}}
                     (Status: {% if request.is_accepted %}Accepted{% else %}Pending{% endif %})
-                
                     <button type="button" class="profile-button" onclick="redirectToPlan({{ request.travel_plan.id }})">View</button>
-                    <br>
-                    <hr>
+                    <br><hr>
                 </li>
-                
                 {% if forloop.counter == 5 %}
                     <ul class="hidden-requests" id="sent-requests">
                 {% endif %}
-           
             {% empty %}
                 <li>No sent requests.</li>
             {% endfor %}
@@ -159,23 +138,16 @@
             {% for request in received_requests %}
                 <li class="request-item">
                     {{ request.user.username }} wants to join the trip from {{ request.travel_plan.source_place }} to {{ request.travel_plan.destination_place }}
-                    
                     <form method="post" style="display:inline;">
                         {% csrf_token %}
                         <a class="profile-button" href="{% url 'user_profile' request.user.id %}">View Profile</a>
                         <button type="button" class="request-button" onclick="redirectToPlan({{ request.travel_plan.id }})">Accept</button>
                     </form>
-                </br>
-                <hr>
-                
+                    <br><hr>
                 </li>
-
                 {% if forloop.counter == 5 %}
                     <ul class="hidden-requests" id="received-requests">
                 {% endif %}
-            {% if forloop.counter > 5 %}
-                <li class="request-item">{{ request.user.username }} wants to join the trip from {{ request.travel_plan.source_place }} to {{ request.travel_plan.destination_place }}</li>
-            {% endif %}
             {% empty %}
                 <li>No received requests.</li>
             {% endfor %}

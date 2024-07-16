@@ -1,0 +1,261 @@
+{% extends "main/design/header.html" %}
+{% load static %}
+{% block content %}
+<style>
+    body {
+        backdrop-filter: blur(10px);
+    }
+
+    .scroll-container {
+        display: flex;
+        overflow-x: auto;
+        width: 100%;
+    }
+
+    .profile-container, .history-container {
+        flex: 0 0 auto;
+        width: 45%;
+        padding: 2em;
+        border-radius: 15px;
+        background: white; /* Semi-transparent background */
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        margin-right: 20px;
+    }
+
+    .profile-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1.5em;
+    }
+
+    .profile-img {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        margin-right: 1em;
+        border: 2px solid rgba(255, 255, 255, 0.5);
+    }
+
+    .profile-header h2 {
+        margin: 0;
+        color: black; /* Text color */
+    }
+
+    .profile-details {
+        margin: 1em 0;
+        color: black; /* Text color */
+    }
+
+    .profile-details p {
+        margin: 0.5em 0;
+    }
+
+    .social-links {
+        margin-top: 1.5em;
+    }
+
+    .social-links a {
+        margin-right: 10px;
+        text-decoration: none;
+        color: #007bff; /* Bootstrap link color */
+        transition: color 0.3s ease;
+    }
+
+    .social-links a:hover {
+        color: #0056b3; /* Darker on hover */
+    }
+
+    /* Responsive styles */
+    @media (max-width: 600px) {
+        .scroll-container {
+            flex-direction: column; /* Stack profile and history containers vertically */
+        }
+
+        .profile-container, .history-container {
+            width: 100%; /* Allow for more width on smaller screens */
+            margin-right: 0;
+            margin-bottom: 20px;
+        }
+
+        .profile-header {
+            flex-direction: column; /* Stack image and text vertically */
+            align-items: center;
+            text-align: center; /* Center text */
+        }
+
+        .profile-img {
+            margin-right: 0; /* Remove margin for smaller screens */
+            margin-bottom: 1em; /* Add space below image */
+        }
+
+        .social-links {
+            text-align: center; /* Center social links */
+        }
+    }
+
+    .classic-button {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #5500cb;
+        color: white;
+        text-decoration: none;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+        font-family: 'Arial', sans-serif;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    .classic-button:hover {
+        background-color: #3f0097;
+        transform: translateY(-2px);
+    }
+
+    .classic-button:active {
+        background-color: #3f0097;
+        transform: translateY(0);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .history-container {
+        display: none;
+    }
+
+    .travel-list {
+        color: black; /* Text color */
+    }
+
+    .travel-list h3 {
+        margin-top: 0;
+    }
+
+    .feedback-container {
+        margin-top: 2em;
+        color: black; /* Text color */
+    }
+
+    .feedback-list h3 {
+        margin-top: 0;
+    }
+
+    .feedback-item {
+        margin-bottom: 1em;
+        padding: 1em;
+        border-radius: 5px;
+        background: rgba(0, 0, 0, 0.05);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+</style>
+
+<div class="scroll-container">
+    <div class="profile-container">
+        <div class="profile-header">
+            <img src="{{ user.image.url }}" class="profile-img" alt="{{ user.username }}">
+            <div>
+                <h2>{{ user.username }}</h2>
+            </div>
+        </div>
+        <div class="profile-details">
+            <p><b>Email:</b> {{ user.email }}</p>
+            <p><b>Phone:</b> {{ user.phone_number }}</p>
+            <p><b>Bio:</b> {{ user.description }}</p>
+            <p><b>Age:</b> {{ user.age }}</p>
+            <p><b>Designation:</b> {{ user.designation }}</p>
+            <p><b>Address:</b> {{ user.address }}</p>
+            <p><b>City:</b> {{ user.city_name }}</p>
+            <p><b>District:</b> {{ user.district_name }}</p>
+            <p><b>Postcode:</b> {{ user.postcode }}</p>
+        </div>
+
+        <div class="social-links">
+            <h4>Social Media Links:</h4>
+            <p>
+                <b>Instagram:</b> <a href="{{ user.social_media_links.instagram }}" target="_blank">{{ user.social_media_links.instagram }}</a><br>
+                <b>Twitter:</b> <a href="{{ user.social_media_links.twitter }}" target="_blank">{{ user.social_media_links.twitter }}</a><br>
+                <b>Facebook:</b> <a href="{{ user.social_media_links.facebook }}" target="_blank">{{ user.social_media_links.facebook }}</a><br>
+                <b>LinkedIn:</b> <a href="{{ user.social_media_links.linkedin }}" target="_blank">{{ user.social_media_links.linkedin }}</a>
+            </p>
+        </div>
+        <button class="classic-button" onclick="toggleHistory()">History</button>
+        
+
+
+    </div>
+
+    <div class="history-container" id="history-container">
+        <div class="travel-list">
+            <h3>Completed Travels</h3>
+            <ul>
+                {% for travel in completed_travels %}
+                    <li>{{ travel.source_place }} to {{ travel.destination_place }} on {{ travel.date }}</li>
+                {% empty %}
+                    <li>No completed travels.</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="travel-list">
+            <h3>Ongoing Travels</h3>
+            <ul>
+                {% for travel in ongoing_travels %}
+                    <li>{{ travel.source_place }} to {{ travel.destination_place }} on {{ travel.date }}</li>
+                {% empty %}
+                    <li>No ongoing travels.</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div>
+            <h3>Feedbacks</h3>
+            <ul>
+                {% for feedback in feedbacks %}
+                    <li>
+                        <p><b>Name:</b> {{ feedback.name }}</p>
+                        <p><b>Email:</b> {{ feedback.email }}</p>
+                        <p><b>Feedback:</b> {{ feedback.feedback }}</p>
+                        <p><i>Submitted on {{ feedback.created_at }}</i></p>
+                    </li>
+                {% empty %}
+                    <li>No feedback available.</li>
+                {% endfor %}
+            </ul>
+        
+            <h3>Submit Feedback</h3>
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit">Submit Feedback</button>
+            </form>
+        </div>
+        
+        
+        
+    </div>
+</div>
+
+<script>
+    function toggleHistory() {
+        var historyContainer = document.getElementById('history-container');
+        if (historyContainer.style.display === 'none' || historyContainer.style.display === '') {
+            historyContainer.style.display = 'block';
+        } else {
+            historyContainer.style.display = 'none';
+        }
+    }
+   
+
+
+    function toggleFeedback() {
+        var feedbackContainer = document.getElementById('feedback-container');
+        if (feedbackContainer.style.display === 'none' || feedbackContainer.style.display === '') {
+            feedbackContainer.style.display = 'block';
+        } else {
+            feedbackContainer.style.display = 'none';
+        }
+    }
+
+</script>
+{% endblock content %}

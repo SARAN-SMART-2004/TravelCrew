@@ -1,0 +1,150 @@
+{% extends "main/design/header.html" %}
+{% block content %}
+{% load static %}
+{% if user.is_authenticated %}
+
+<link href="{% static 'userpoststyle.css' %}" rel="stylesheet" type="text/css">
+
+<style>
+    .report-container {
+        max-width: 600px;
+    }
+    
+    .container {
+        max-width: 600px;
+        margin: auto;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+    }
+    h2 {
+        text-align: center;
+        color: #333;
+    }
+    .form-group {
+        margin-bottom: 15px;
+    }
+    label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+        color: #555;
+    }
+    input[type="text"],
+    input[type="date"] {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+    button {
+        background-color: #007bff;
+        color: white;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: bold;
+        width: 100%;
+    }
+    button:hover {
+        background-color: #0056b3;
+    }
+    @media (max-width: 600px) {
+        h2 {
+            font-size: 24px;
+        }
+    }
+    li{
+        list-style:none;
+    }
+    .btn{
+        background-color:#3f0097;
+    }
+</style>
+
+<div class="report-container">
+    <div class="container">
+        <h2>Travel Plan Filters</h2>
+        <form method="post" action="{% url 'filter_travel_plans' %}">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="source-place">Source Place:</label>
+                <input type="text" id="source-place" name="source_place" placeholder="Enter source place" autocomplete="off">
+                <ul id="source-suggestions" class="suggestions-list"></ul>
+            </div>
+            <div class="form-group">
+                <label for="destination-place">Destination Place:</label>
+                <input type="text" id="destination-place" name="destination_place" placeholder="Enter destination place" autocomplete="off">
+                <ul id="destination-suggestions" class="suggestions-list"></ul>
+            </div>
+            <div class="form-group">
+                <label for="travel-date">Date:</label>
+                <input type="date" id="travel-date" name="travel_date">
+            </div>
+            <button class="btn" type="submit">Apply Filters</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    const sourceSuggestions = ['School', 'College', 'Home', 'Office', 'Park','Theni','Ariyalur', 'Chennai', 'Coimbatore', 'Cuddalore', 'Dharmapuri',
+    'Dindigul', 'Erode', 'Kanchipuram', 'Kanyakumari', 'Karur',
+    'Krishnagiri', 'Madurai', 'Nagapattinam', 'Namakkal', 'Perambalur',
+    'Pudukkottai', 'Ramanathapuram', 'Salem', 'Sivagangai', 'Thanjavur',
+    'Theni', 'Tiruchirappalli', 'Tirunelveli', 'Tirupathur', 'Tiruvallur',
+    'Tiruvannamalai', 'Vellore', 'Villupuram', 'Virudhunagar','Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh',
+    'Goa', 'Gujarat', 'Haryana', 'Himachal Pradesh', 'Jharkhand',
+    'Karnataka', 'Kerala', 'Madhya Pradesh', 'Maharashtra', 'Manipur',
+    'Meghalaya', 'Mizoram', 'Nagaland', 'Odisha', 'Punjab',
+    'Rajasthan', 'Sikkim', 'Tamil Nadu', 'Telangana', 'Tripura',
+    'Uttar Pradesh', 'Uttarakhand', 'West Bengal'];
+    const destinationSuggestions = ['School', 'Home', 'Office', 'Park','Ariyalur', 'Chennai', 'Coimbatore', 'Cuddalore', 'Dharmapuri',
+    'Dindigul', 'Erode', 'Kanchipuram', 'Kanyakumari', 'Karur',
+    'Krishnagiri', 'Madurai', 'Nagapattinam', 'Namakkal', 'Perambalur',
+    'Pudukkottai', 'Ramanathapuram', 'Salem', 'Sivagangai', 'Thanjavur',
+    'Theni', 'Tiruchirappalli', 'Tirunelveli', 'Tirupathur', 'Tiruvallur',
+    'Tiruvannamalai', 'Vellore', 'Villupuram', 'Virudhunagar','Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh',
+    'Goa', 'Gujarat', 'Haryana', 'Himachal Pradesh', 'Jharkhand',
+    'Karnataka', 'Kerala', 'Madhya Pradesh', 'Maharashtra', 'Manipur',
+    'Meghalaya', 'Mizoram', 'Nagaland', 'Odisha', 'Punjab',
+    'Rajasthan', 'Sikkim', 'Tamil Nadu', 'Telangana', 'Tripura',
+    'Uttar Pradesh', 'Uttarakhand', 'West Bengal'];
+
+    const sourceInput = document.getElementById('source-place');
+    const sourceList = document.getElementById('source-suggestions');
+    
+    const destinationInput = document.getElementById('destination-place');
+    const destinationList = document.getElementById('destination-suggestions');
+
+    function showSuggestions(input, suggestions, list) {
+        list.innerHTML = '';
+        const value = input.value.toLowerCase();
+        
+        suggestions.forEach((suggestion) => {
+            if (suggestion.toLowerCase().includes(value) && value) {
+                const listItem = document.createElement('li');
+                listItem.textContent = suggestion;
+                listItem.onclick = () => {
+                    input.value = suggestion;
+                    list.innerHTML = '';  // Clear suggestions
+                };
+                list.appendChild(listItem);
+            }
+        });
+    }
+
+    sourceInput.addEventListener('input', () => {
+        showSuggestions(sourceInput, sourceSuggestions, sourceList);
+    });
+
+    destinationInput.addEventListener('input', () => {
+        showSuggestions(destinationInput, destinationSuggestions, destinationList);
+    });
+</script>
+
+{% else %}
+    <p>You are not allowed to view this page.</p>
+{% endif %}
+{% endblock content %}

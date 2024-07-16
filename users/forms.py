@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, SetPasswordForm, PasswordResetForm
 from django.contrib.auth import get_user_model
 from captcha.fields import CaptchaField
-
+from .models import Feedback
 
 
 class UserRegistrationForm(UserCreationForm):
@@ -83,3 +83,10 @@ from django import forms
 
 class OTPForm(forms.Form):
     otp = forms.CharField(max_length=6, widget=forms.TextInput(attrs={'placeholder': 'Enter OTP'}))
+
+
+
+class FeedbackForm(forms.ModelForm):
+    class Meta:
+        model = Feedback
+        fields = ['name', 'email', 'feedback']

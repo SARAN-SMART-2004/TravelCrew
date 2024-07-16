@@ -263,19 +263,7 @@ header {
 .box:nth-child(1) {
   background-color: var(--one-use-color);
 }
-.box:nth-child(6) {
-  background-color: var(--one-use-color);
-}
-.box:nth-child(8) {
-  background-color: var(--one-use-color);
-}
 .box:nth-child(2) {
-  background-color: var(--two-use-color);
-}
-.box:nth-child(5) {
-  background-color: var(--two-use-color);
-}
-.box:nth-child(7) {
   background-color: var(--two-use-color);
 }
 .box:nth-child(3) {
@@ -284,6 +272,47 @@ header {
 .box:nth-child(4) {
   background-color: var(--two-use-color);
 }
+.box:nth-child(6) {
+  background-color: var(--one-use-color);
+}
+.box:nth-child(5) {
+  background-color: var(--two-use-color);
+}
+.box:nth-child(8) {
+  background-color: var(--one-use-color);
+}
+.box:nth-child(7) {
+  background-color: var(--two-use-color);
+}
+.box:nth-child(8) {
+  background-color: var(--one-use-color);
+}
+.box:nth-child(10) {
+  background-color: var(--two-use-color);
+}
+.box:nth-child(9) {
+  background-color: var(--one-use-color);
+}
+.box:nth-child(11) {
+  background-color: var(--one-use-color);
+}
+.box:nth-child(13) {
+  background-color: var(--one-use-color);
+}
+.box:nth-child(12) {
+  background-color: var(--two-use-color);
+}
+.box:nth-child(15) {
+  background-color: var(--one-use-color);
+}
+.box:nth-child(14) {
+  background-color: var(--two-use-color);
+}
+.box:nth-child(16) {
+  background-color: var(--one-use-color);
+}
+
+
 
 .box img {
   height: 50px;
@@ -376,3 +405,8 @@ header {
   color: white;
   border-radius: 4px;
 }
+
+
+
+
+

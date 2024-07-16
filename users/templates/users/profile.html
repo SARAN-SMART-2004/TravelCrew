@@ -1,4 +1,4 @@
-{% extends "main/header.html" %}
+{% extends "main/design/header.html" %}
 {% load crispy_forms_tags %}
 {% load static %} 
 {% block content %}
@@ -100,7 +100,7 @@
 <div class="report-container">
     <div class="content-section">
         <a href="{% url 'homepage' %}" class="btn btn-outline-secondary back-button">Back</a>
-        <legend class="border-bottom mb-4">Profile Information:</legend>
+        <center><legend class="border-bottom mb-4">Profile Information:</legend></center>
         <div class="align">
             <div class="media">
                 {% if user.username == form.instance.username %}

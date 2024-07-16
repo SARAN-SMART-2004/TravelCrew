@@ -1,0 +1,209 @@
+{% extends "main/design/header.html" %}
+{% block content %}
+{% if user.is_authenticated %}
+<style>
+    .report-container{
+    margin: 0px;}
+</style>
+
+             <div class="box-container">
+
+                <div class="box box1">
+                    <div class="text">
+                        <h2 class="topic-heading">60.5k</h2>
+                        <h2 class="topic"> <a href="{% url 'all_travel_plans' %}">All Post</a></h2>
+                    </div>
+
+                    <i class="fa-solid fa-earth-americas" style="color: white;"></i>
+                </div>
+
+                <div class="box box2"  >
+                    <div class="text">
+                        <h2 class="topic-heading">150</h2>
+                        <h2 class="topic"> <a href="{% url 'edit_all_travel_plans' %}">Edit Post</a></h2>
+                    </div>
+
+                    <i class="fa-solid fa-file-pen" style="color: white;"></i>
+
+                </div>
+
+                <div class="box box3">
+                    <div class="text">
+                        <h2 class="topic-heading">320</h2>
+                        <h2 class="topic"> <a href="{% url 'submit_travel_plan' %}">create Post</a></h2>
+                    </div>
+
+                    <i class="fa-solid fa-pen-to-square" style="color: white;"></i>
+                </div>
+
+                <div class="box box4">
+                    <div class="text">
+                        <h2 class="topic-heading">70</h2>
+                        <h2 class="topic"> <a href="{% url 'search' %}">Search</a></h2>
+                    </div>
+
+                    <i class="fa-solid fa-magnifying-glass fa-spin" style="color: #ffffff;"></i>
+                </div>
+
+
+
+
+
+
+
+                <div class="box box1">
+                    <div class="text">
+                        <h2 class="topic-heading">60.5k</h2>
+                        <h2 class="topic"> <a href="{% url 'upcoming_trips' %}">All Upcoming Trips</a></h2>
+                    </div>
+
+                    <i class="fa-solid fa-car fa-beat" style="color: #fcfcfd;"></i>
+                </div>
+
+                <div class="box box2"  >
+                    <div class="text">
+                        <h2 class="topic-heading">150</h2>
+                        <h2 class="topic"> <a href="{% url 'past_trips' %}">All Past Trips</a></h2>
+                    </div>
+
+                    <i class="fa-solid fa-plane-circle-check fa-bounce" style="color: #ffffff;"></i>
+                </div>
+
+                <div class="box box3">
+                    <div class="text">
+                        <h2 class="topic-heading">320</h2>
+                        <h2 class="topic"> <a href="{% url 'ongoing_trips' %}">All Ongoing Trips</a></h2>
+                    </div>
+
+                    <i class="fa-solid fa-road fa-beat-fade" style="color: #ffffff;"></i>
+                </div>
+
+                <div class="box box4">
+                    <div class="text">
+                        <h2 class="topic-heading">70</h2>
+                        <h2 class="topic"> <a href="{% url 'people' %}">Peoples</a></h2>
+                    </div>
+
+                    <i class="fa-solid fa-people-group fa-flip" style="color: #ffffff;"></i>
+                </div>
+          
+
+
+
+
+
+
+
+
+            
+            <div class="box box1">
+                <div class="text">
+                    <h2 class="topic-heading">60.5k</h2>
+                    <h2 class="topic"> <a href="{% url 'user_upcoming_history' %}">My Upcoming Trips</a></h2>
+                </div>
+
+                <i class="fa-solid fa-plane-departure fa-bounce" style="color: #ffffff;"></i>
+            </div>
+
+            <div class="box box2"  >
+                <div class="text">
+                    <h2 class="topic-heading">150</h2>
+                    <h2 class="topic"> <a href="{% url 'user_past_history' %}">My past Trips</a></h2>
+                </div>
+
+                <i class="fa-solid fa-plane-arrival fa-fade" style="color: #ffffff;"></i>
+
+            </div>
+
+            <div class="box box3">
+                <div class="text">
+                    <h2 class="topic-heading">320</h2>
+                    <h2 class="topic"> <a href="{% url 'user_ongoing_history' %}">My Ongoing Trips</a></h2>
+                </div>
+
+                <i class="fa-solid fa-plane fa-beat" style="color: #ffffff;"></i>
+            </div>
+
+            <div class="box box4">
+                <div class="text">
+                    <h2 class="topic-heading">70</h2>
+                    <h2 class="topic"> <a href="{% url 'requests' %}">Requests</a></h2>
+                </div>
+
+                <i class="fa-solid fa-square-poll-vertical" style="color: white;"></i>
+            </div>
+
+
+
+            
+
+
+
+
+
+            
+            <div class="box box1">
+                <div class="text">
+                    <h2 class="topic-heading">60.5k</h2>
+                    <h2 class="topic"> <a href="{% url 'all_travel_plans' %}">Health and Wellness</a></h2>
+                </div>
+
+                <i class="fa-solid fa-briefcase-medical" style="color: #ffffff;"></i>
+            </div>
+
+            <div class="box box2"  >
+                <div class="text">
+                    <h2 class="topic-heading">150</h2>
+                    <h2 class="topic"> <a href="{% url 'edit_all_travel_plans' %}">Travel Hacks</a></h2>
+                </div>
+
+                <i class="fa-solid fa-cubes-stacked" style="color: #ffffff;"></i>
+
+            </div>
+
+            <div class="box box3">
+                <div class="text">
+                    <h2 class="topic-heading">320</h2>
+                    <h2 class="topic"> <a href="{% url 'submit_travel_plan' %}">Multimedia and Learnings</a></h2>
+                </div>
+                <i class="fa-solid fa-photo-film"style="color: white;"></i>
+                
+            </div>
+
+            <div class="box box4">
+                <div class="text">
+                    <h2 class="topic-heading">70</h2>
+                    <h2 class="topic"> <a href="{% url 'user_past_history' %}">Local Guides</a></h2>
+                </div>
+
+                <i class="fa-solid fa-person-chalkboard fa-shake" style="color: #ffffff;"></i>
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        </div>
+
+
+
+
+            {% else %}
+            <div class="box-container">
+                <p>please login</p>
+            </div>
+
+            {% endif %}
+            {% endblock content %}

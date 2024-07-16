@@ -1,0 +1,44 @@
+{% extends "main/design/header.html" %}
+{% block content %}
+{% load static %}
+{% if user.is_authenticated %}
+
+<link href="{% static 'userpoststyle.css' %}" rel="stylesheet" type="text/css">
+
+<div class="report-container">
+    <div class="report-header">
+        <h1>My Ongoing Trips</h1>
+        <button class="view-button">View All</button>
+    </div>
+
+    <div class="report-body">
+        <div class="report-topic-heading">
+            <div>Organizer</div>
+            <div>From Place</div>
+            <div>Date</div>
+            <div>To Place</div>
+            <h3 class="t-op"></h3>
+        </div>
+
+        <div class="items">
+            {% if ongoing_trips %}
+            {% for trip in ongoing_trips %}
+            <div class="item1">
+                <div class="t-op-nextlvl">{{ trip.organizer }}</div>
+                <div class="t-op-nextlvl">{{ trip.source_place }}</div>
+                <div class="t-op-nextlvl">{{ trip.date }}</div>
+                <div class="t-op-nextlvl">{{ trip.destination_place }}</div>
+                <a href="{% url 'travel_plan_details' trip.pk %}" class="view-button vp">View</a>
+            </div>
+            {% endfor %}
+            {% else %}
+            <p>No ongoing trips found.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% else %}
+    <p>You are not allowed to view this page.</p>
+{% endif %}
+{% endblock content %}

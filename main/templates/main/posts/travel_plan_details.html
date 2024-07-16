@@ -1,0 +1,133 @@
+{% extends "main/design/header.html" %}
+{% block content %}
+<style>
+    .report-container {
+        max-width: 800px;
+        margin: auto;
+        padding: 20px;
+        background-color: #f9f9f9;
+        border-radius: 30px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    report-topic-heading, .item1 {
+        width: 800px;
+        display: flex;
+        justify-content: center;
+        flex-wrap: nowrap;
+        align-items: baseline;
+        flex-direction: column;
+    }
+    report-body {
+        max-width: 800px;
+        overflow-x: none; 
+        padding: 20px;
+    }
+    .items h3 {
+        color: #333;
+        margin: 10px 0;
+    
+    }
+    h1{
+        text-align:center;
+    }
+    ul {
+        padding-left: 20px;
+    }
+    .join-button, .profile-button, .accept-button, .decline-button {
+        padding: 10px 15px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: bold;
+        margin-right: 10px;
+    }
+    .join-button {
+        background-color: #007bff; /* Bootstrap primary color */
+        color: white;
+    }
+    .profile-button {
+        background-color: #6c757d; /* Bootstrap secondary color */
+        color: white;
+    }
+    .accept-button {
+        background-color: #28a745; /* Bootstrap success color */
+        color: white;
+    }
+    .decline-button {
+        background-color: #dc3545; /* Bootstrap danger color */
+        color: white;
+    }
+    .text-danger {
+        color: #dc3545; /* Bootstrap danger color */
+        font-weight: bold;
+    }
+    span{
+        font-size:30px;
+    }
+</style>
+
+<div class="report-container">
+    <div class="report-body">
+        <div class="report-topic-heading">
+            <center><h1>Travel Plan Details</h1></center>
+        </div>
+
+        <div class="items">
+            <div class="item1">
+                <h3><span>Organizer:</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ travel_plan.organizer }}</h3>
+                <h3><span>Source Place:</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ travel_plan.source_place }}</h3>
+                <h3><span>Waiting Place:</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ travel_plan.waiting_place }}</h3>
+                <h3><span>Destination Place:</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ travel_plan.destination_place }}</h3>
+                <h3><span>Date: </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ travel_plan.date }}</h3>
+                <h3><span>Leaving Time:</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ travel_plan.leaving_time }}</h3>
+                <h3><span>Waiting Time:</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ travel_plan.waiting_time }}</h3>
+
+                <h3>Members who accepted:</h3>
+                <ul>
+                    {% for member in travel_plan.members.all %}
+                        <li>{{ member.username }}</li>
+                    {% endfor %}
+                </ul>
+
+                {% if request.user != travel_plan.organizer and not is_member and not join_request %}
+                    {% if is_upcoming_trip %}
+                        <form method="post">
+                            {% csrf_token %}
+                            <button type="submit" name="join" class="join-button">Join</button>
+                        </form>
+                    {% else %}
+                        <p class="text-danger">Sorry! It's too late to join the trip.</p>
+                    {% endif %}
+                {% elif join_request and not join_request.is_accepted %}
+                    <p>Join request sent. Waiting for organizer's approval.</p>
+                {% elif is_member %}
+                    {% if is_upcoming_trip %}
+                        <form method="post">
+                            {% csrf_token %}
+                            <button type="submit" name="cancel" class="decline-button">Cancel</button>
+                        </form>
+                    {% endif %}
+                {% endif %}
+            </div>
+
+            {% if request.user == travel_plan.organizer %}
+                <h3>Join Requests:</h3>
+                <ul>
+                    {% for request in travel_plan.joinrequest_set.all %}
+                        {% if not request.is_accepted %}
+                            <li>
+                                {{ request.user.username }}
+                                <form method="post" style="display:inline;">
+                                    {% csrf_token %}
+                                    <a class="profile-button" href="{% url 'user_profile' request.user.id %}">View Profile</a>
+                                    <button type="submit" name="accept" value="{{ request.id }}" class="accept-button">Accept</button>
+                                </form>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

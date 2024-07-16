@@ -1,0 +1,110 @@
+{% extends "main/design/header.html" %}
+{% load static %}
+{% block content %}
+<style>
+    body {
+        backdrop-filter: blur(10px);
+    }
+
+    .feedback-container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 2em;
+        border-radius: 15px;
+        background: white; /* Semi-transparent background */
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .feedback-header {
+        text-align: center;
+        margin-bottom: 1.5em;
+    }
+
+    .feedback-header h2 {
+        margin: 0;
+        color: #333; /* Text color */
+        font-family: 'Arial', sans-serif;
+    }
+
+    .feedback-form label {
+        display: block;
+        margin-bottom: 0.5em;
+        color: #333; /* Text color */
+        font-weight: bold;
+    }
+
+    .feedback-form input[type="text"],
+    .feedback-form input[type="email"],
+    .feedback-form textarea {
+        width: 100%;
+        padding: 0.75em;
+        margin-bottom: 1em;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-family: 'Arial', sans-serif;
+    }
+
+    .feedback-form textarea {
+        resize: vertical;
+        min-height: 150px;
+    }
+
+    .feedback-form button {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #5500cb;
+        color: white;
+        text-decoration: none;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+        font-family: 'Arial', sans-serif;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: background-color 0.3s ease, transform 0.3s ease;
+        margin-top: 10px;
+        width: 100%; /* Full width on smaller screens */
+    }
+
+    .feedback-form button:hover {
+        background-color: #3f0097;
+        transform: translateY(-2px);
+    }
+
+    .feedback-form button:active {
+        background-color: #3f0097;
+        transform: translateY(0);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    @media (max-width: 600px) {
+        .feedback-container {
+            padding: 1.5em;
+            max-width: 90%; /* Allow for more width on smaller screens */
+        }
+
+        .feedback-form button {
+            width: 100%; /* Full width on smaller screens */
+        }
+    }
+</style>
+<div class="feedback-container" id="feedback-container">
+<h3>Write feedback</h3>
+<form method="POST" action="{% url 'feedback' %}">
+    {% csrf_token %}
+    <label for="name">Name:</label>
+    <input type="text" name="name" required>
+    
+    <label for="email">Email:</label>
+    <input type="email" name="email" required>
+    
+    <label for="feedback">Feedback:</label>
+    <textarea name="feedback" rows="4" required></textarea>
+    
+    <button type="submit" class="classic-button">Submit</button>
+</form>
+
+
+</div>
+{% endblock content %}

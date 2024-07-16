@@ -9,6 +9,7 @@ class TravelPlan(models.Model):
     organizer = models.ForeignKey(User, on_delete=models.CASCADE, related_name='organized_travel_plans')
     source_place = models.CharField(max_length=255)
     destination_place = models.CharField(max_length=255)
+    waiting_place = models.CharField(max_length=255 ,null=True)
     date = models.DateField()
     leaving_time = models.TimeField()
     waiting_time = models.TimeField()

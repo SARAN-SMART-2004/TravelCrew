@@ -5,7 +5,8 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from .models import TravelPlan
 from django.db.models import Q
-
+from users.models import Feedback
+from users.forms import FeedbackForm
 from django.utils import timezone
 from django.template.loader import render_to_string
 from datetime import date
@@ -16,7 +17,10 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from .forms import TravelPlanForm,TripMessage
 from django.utils import timezone
-
+from django.contrib.auth import get_user_model
+from django.shortcuts import get_object_or_404
+from users.forms import Feedback
+from users.models import Feedback
 from django.shortcuts import render, get_object_or_404, redirect
 
 def get_user_context(request):
@@ -35,25 +39,60 @@ def get_user_context(request):
 
 def homepage(request):
     context = get_user_context(request)
-    return render(request, 'main/header.html', context)
+    return render(request, 'main/design/header.html', context)
 
 
 
 def dashboard(request):
     context = get_user_context(request)
-    return render(request, 'main/boxindex.html', context)
+    return render(request, 'main/design/boxindex.html', context)
+
+def search(request):
+    context = get_user_context(request)
+    return render(request, 'main/includes/search.html', context)
+
 
 def people(request):
     context = get_user_context(request)
     context['users'] = CustomUser.objects.all()
-    return render(request, 'main/people.html', context)
+    return render(request, 'main/userprofile/people.html', context)
+
+
+
 
 def user_profile(request, pk):
     context = get_user_context(request)
-    user = get_object_or_404(CustomUser, pk=pk)
-    context.update({'user': user})
+    user = get_object_or_404(get_user_model(), id=pk)
+    feedbacks = user.feedbacks.all()  # Get feedback related to the user
+
+    if request.method == 'POST':
+        form = FeedbackForm(request.POST)
+        if form.is_valid():
+            feedback_instance = form.save(commit=False)
+            feedback_instance.user = user  # Link feedback to the user
+            feedback_instance.save()
+            messages.success(request, "Your feedback has been Submitted. You information will be  <b>usefull </b> for others.")
+            return redirect('user_profile', pk=pk)  # Redirect back to the profile page
+    else:
+        form = FeedbackForm()
+
+    context.update({
+        'user': user,
+        'feedbacks': feedbacks,
+        'form': form
+    })
     
-    return render(request, 'main/user_profile.html', context)
+    return render(request, 'main/userprofile/user_profile.html', context)
+
+
+
+
+# def user_profile(request, pk):
+#     context = get_user_context(request)
+#     user = get_object_or_404(CustomUser, pk=pk)
+#     context.update({'user': user})
+    
+#     return render(request, 'main/userprofile/user_profile.html', context)
 
 
 @login_required
@@ -80,7 +119,7 @@ def submit_travel_plan(request):
         messages.success(request, f"You have successfully created the post !!!")
         return redirect('homepage')  # Redirect to a success page or another page of your choice
 
-    return render(request, 'main/createpost.html',context)
+    return render(request, 'main/posts/createpost.html',context)
 
 
 @login_required
@@ -93,7 +132,7 @@ def edit_all_travel_plans(request):
         'travel_plans': travel_plans,
         'today': today
     })
-    return render(request, 'main/editpost.html', context)
+    return render(request, 'main/posts/editpost.html', context)
 
 
 @login_required
@@ -109,15 +148,16 @@ def edit_travel_plan(request, pk):
     else:
         form = TravelPlanForm(instance=travel_plan)
     context.update({'form': form})
-    return render(request, 'main/edit.html', context)
+    return render(request, 'main/posts/edit.html', context)
 
 @login_required
 def past_trips(request):
     context = get_user_context(request)
     current_date = timezone.now().date()
     past_travel_plans = TravelPlan.objects.filter(date__lt=current_date)
+    past_travel_plans = past_travel_plans.order_by('-id')
     context.update({'past_travel_plans': past_travel_plans})
-    return render(request, 'main/past.html',context)
+    return render(request, 'main/posts/past.html',context)
 
 
 
@@ -127,18 +167,18 @@ def upcoming_trips(request):
     current_date = timezone.now().date()
     past_travel_plans = TravelPlan.objects.filter(date__gt=current_date)
     context.update({'past_travel_plans': past_travel_plans})
-    return render(request, 'main/upcoming.html', context)
+    return render(request, 'main/posts/upcoming.html', context)
 
 def ongoing_trips(request):
     context = get_user_context(request)
     current_date = timezone.now().date()
     past_travel_plans = TravelPlan.objects.filter(date=current_date)
     context.update({'past_travel_plans': past_travel_plans})
-    return render(request, 'main/ongoing.html', context)
+    return render(request, 'main/posts/ongoing.html', context)
 
 
 @login_required
-def user_post_history(request):
+def user_past_history(request):
     context = get_user_context(request)
     current_user = request.user
     
@@ -169,23 +209,78 @@ def user_post_history(request):
         'upcoming_trips': upcoming_trips,
         'completed_trips': completed_trips,
     })
-    return render(request, 'main/poststatus.html', context)
-# @login_required
-# def all_travel_plans(request):
-#     context = get_user_context(request)
+    return render(request, 'main/userposts/userpast.html', context)
 
-#     travel_plans = TravelPlan.objects.all()
-#     current_date = timezone.now().date()
-#     for plan in travel_plans:
-#         if plan.date < current_date:
-#             plan.status = 'Completed'
-#         elif plan.date == current_date:
-#             plan.status = 'Ongoing'
-#         else:
-#             plan.status = 'Upcoming'
 
-#     context.update({'travel_plans': travel_plans})
-#     return render(request, 'main/posts.html', context)
+
+@login_required
+def user_upcoming_history(request):
+    context = get_user_context(request)
+    current_user = request.user
+    
+    # Fetching travel plans organized by the user
+    organized_travel_plans = TravelPlan.objects.filter(organizer=current_user)
+    
+    # Fetching travel plans where the user is a member
+    member_travel_plans = TravelPlan.objects.filter(members=current_user)
+
+    # Combining both querysets
+    user_travel_plans = organized_travel_plans | member_travel_plans
+    
+    ongoing_trips = []
+    upcoming_trips = []
+    completed_trips = []
+
+    current_date = timezone.now().date()
+    for plan in user_travel_plans:
+        if plan.date < current_date:
+            completed_trips.append(plan)
+        elif plan.date == current_date:
+            ongoing_trips.append(plan)
+        else:
+            upcoming_trips.append(plan)
+
+    context.update({
+        'ongoing_trips': ongoing_trips,
+        'upcoming_trips': upcoming_trips,
+        'completed_trips': completed_trips,
+    })
+    return render(request, 'main/userposts/userupcoming.html', context)
+
+@login_required
+def user_ongoing_history(request):
+    context = get_user_context(request)
+    current_user = request.user
+    
+    # Fetching travel plans organized by the user
+    organized_travel_plans = TravelPlan.objects.filter(organizer=current_user)
+    
+    # Fetching travel plans where the user is a member
+    member_travel_plans = TravelPlan.objects.filter(members=current_user)
+
+    # Combining both querysets
+    user_travel_plans = organized_travel_plans | member_travel_plans
+    
+    ongoing_trips = []
+    upcoming_trips = []
+    completed_trips = []
+
+    current_date = timezone.now().date()
+    for plan in user_travel_plans:
+        if plan.date < current_date:
+            completed_trips.append(plan)
+        elif plan.date == current_date:
+            ongoing_trips.append(plan)
+        else:
+            upcoming_trips.append(plan)
+
+    context.update({
+        'ongoing_trips': ongoing_trips,
+        'upcoming_trips': upcoming_trips,
+        'completed_trips': completed_trips,
+    })
+    return render(request, 'main/userposts/ongoing.html', context)
+
 
 
 def travel_plan_details(request, pk):
@@ -201,37 +296,8 @@ def travel_plan_details(request, pk):
         'is_past_trip': is_past_trip,
         'now': now,
     })
-    return render(request, 'main/travel_plan_details.html', context)
+    return render(request, 'main/posts/travel_plan_details.html', context)
 
-
-
-# @login_required
-# def accept_trip(request, trip_id):
-#     travel_plan = get_object_or_404(TravelPlan, id=trip_id)
-#     user = request.user
-
-#     if user != travel_plan.organizer:
-#         travel_plan.members.add(user)
-#         travel_plan.save()
-#          # Create message for acceptance
-#         TripMessage.objects.create(
-#             sender=user,
-#             recipient=travel_plan.organizer,
-#             content=f'{user.username} has accepted the trip from {travel_plan.source_place} to {travel_plan.destination_place}.',
-#         )
-#         send_mail(
-#             'Trip Accepted',
-#             f'{user.username} has accepted your trip',
-#             'from@example.com',  # Replace with your email or settings.DEFAULT_FROM_EMAIL
-#             [travel_plan.organizer.email],
-#             fail_silently=False,
-#         )
-#         messages.success(request, "You have successfully accepted the trip.")
-#     else:
-#         messages.error(request, "You cannot accept your own trip.")
-
-#     return HttpResponseRedirect(reverse('travel_plan_detail', args=[trip_id]))
-# views.py
 
 
 from django.views.generic.detail import DetailView
@@ -257,7 +323,7 @@ def accept_trip(request, pk):
             content=f'{user.username} has accepted the trip from {travel_plan.source_place} to {travel_plan.destination_place}.',
         )
 
-        message = render_to_string('main/template_trip_accepted.html', {'user': user})
+        message = render_to_string('main/mail/template_trip_accepted.html', {'user': user})
         send_mail(
             'Trip Accepted',
             message,
@@ -269,7 +335,7 @@ def accept_trip(request, pk):
     elif 'cancel' in request.POST:
         travel_plan.members.remove(user)
          # Create message for cancellation
-        message = render_to_string('main/template_trip_canceled.html', {'user': user})
+        message = render_to_string('main/mail/template_trip_canceled.html', {'user': user})
         TripMessage.objects.create(
             sender=user,
             recipient=travel_plan.organizer,
@@ -317,7 +383,7 @@ def all_travel_plans(request):
             plan.status = 'Upcoming'
 
     context.update({'travel_plans': travel_plans, 'search_query': search_query})
-    return render(request, 'main/posts.html', context)
+    return render(request, 'main/posts/posts.html', context)
 
 
 
@@ -349,7 +415,7 @@ def search_travel_plans(request):
         'travel_plans': travel_plans,
         'search_query': search_query,
     }
-    return render(request, 'main/posts.html', context)
+    return render(request, 'main/posts/posts.html', context)
 from django.core.mail import send_mail
 from django.conf import settings
 from django.shortcuts import render, redirect, get_object_or_404
@@ -445,7 +511,7 @@ def travel_plan_details(request, pk):
     context.update({'is_member': is_member})
     context.update({'join_request': join_request})
     
-    return render(request, 'main/travel_plan_details.html', context)
+    return render(request, 'main/posts/travel_plan_details.html', context)
  # Adjust based on your actual model structure
 
   # Updated import to reflect the new class name
@@ -455,7 +521,7 @@ from .models import TripMessage  # Update this based on your actual model name
 @login_required
 def user_messages(request):
     received_messages = TripMessage.objects.filter(recipient=request.user)
-
+    
     organizer_messages = []  # For join requests
     member_messages = []  # For acceptance notifications
     cancellation_messages = []  # For cancellation notifications
@@ -482,15 +548,68 @@ from .models import Request, TravelPlan
 
 @login_required
 def requests(request):
+    context = get_user_context(request)
     travel_plans = TravelPlan.objects.all()
     sent_requests = JoinRequest.objects.filter(user=request.user)  # Join requests sent by the user
     sent_requests = sent_requests.order_by('-id')
     received_requests = JoinRequest.objects.filter(travel_plan__organizer=request.user, is_accepted=False)  # Join requests received by the user
     received_requests = received_requests.order_by('-id')
-    context = {
+    context.update ({
         'sent_requests': sent_requests,
         'received_requests': received_requests,
         'travel_plans':travel_plans,
-    }
+    })
     
-    return render(request, 'main/requests.html', context)
+    return render(request, 'main/posts/requests.html', context)
+
+
+
+
+
+from django.shortcuts import render, get_object_or_404
+from django.db.models import Q
+from .models import TravelPlan  # Ensure you have this model defined
+
+def filter_travel_plans(request):
+    context = get_user_context(request)
+    if request.method == 'POST':
+        source_place = request.POST.get('source_place', '').lower()
+        destination_place = request.POST.get('destination_place', '').lower()
+        travel_date = request.POST.get('travel_date', '')
+        
+        # Build the query dynamically
+        filters = Q()
+        
+        if source_place:
+            filters &= Q(source_place__iexact=source_place)
+        
+        if destination_place:
+            filters &= Q(destination_place__iexact=destination_place)
+        
+        if travel_date:
+            filters &= Q(date=travel_date)  # Assuming date comparison is exact
+        current_date = timezone.now().date()
+        # Execute the query with the built filters
+        travel_plans = TravelPlan.objects.filter(filters)
+        travel_plans = travel_plans.order_by('-id')
+        for plan in travel_plans:
+            if plan.date < current_date:
+                plan.status = 'Completed'
+            elif plan.date == current_date:
+                plan.status = 'Ongoing'
+            else:
+                plan.status = 'Upcoming'
+
+        # Context to pass to the template
+        context.update({ 
+            'source_place': source_place,
+            'destination_place': destination_place,
+            'travel_date': travel_date,
+            'travel_plans': travel_plans,  # Pass filtered plans
+        })
+        return render(request, 'main/filtered_results.html', context)
+
+    return render(request, 'main/includes/search.html')
+
+
+

@@ -1,4 +1,4 @@
-{% extends "main/header.html" %}
+{% extends "main/design/header.html" %}
 {% block content %}
 {% if user.is_authenticated %}
 <style>
@@ -10,8 +10,8 @@
         justify-content: space-between;
         align-items: center;
     }
-   
     
+   
     .report-body {
         margin-top: 20px;
     }
@@ -33,6 +33,7 @@
         flex: 1;
         text-align: center;
     }
+    /* Your existing CSS styles */
     .view-button {
         display: inline-block;
         padding: 10px 20px;
@@ -51,11 +52,10 @@
         height:35px; 
         width:200px;
     }
-
 </style>
 <div class="report-container">
     <div class="report-header">
-        <h1 class="recent-Articles">Past Trips</h1>
+        <h1 class="recent-Articles">Ongoing Trips</h1>
         
         <button class="view">View All</button>
     </div>
@@ -79,6 +79,7 @@
                 <h3 class="t-op-nextlvl">{{ trip.destination_place }}</h3>
                 <h3 class="t-op-nextlvl">{{ trip.date }}</h3>
                 <h3 class="t-op-nextlvl">{{ trip.leaving_time }}</h3>
+               
                 <a href="{% url 'travel_plan_details' trip.pk %}" class="view-button">View</a>
             </div>
             {% endfor %}

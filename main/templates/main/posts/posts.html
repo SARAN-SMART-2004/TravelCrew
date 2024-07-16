@@ -1,0 +1,164 @@
+{% extends "main/design/header.html" %}
+{% block content %}
+{% if user.is_authenticated %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<style>
+    
+    .report-container {
+        
+        max-width: 1100px;
+        padding: 20px;
+        background-color: #fff;
+        border: 1px solid #ccc;
+        border-radius: 30px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    .report-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+    .recent-Articles {
+        font-size: 24px;
+        font-weight: bold;
+        color: #5500cb;
+        margin: 0;
+    }
+    .view-button, .view {
+        width:100px;
+        background-color: #5500cb;
+        color: white;
+        padding: 5px 10px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        text-decoration: none;
+        transition: background-color 0.3s ease;
+    }
+    .view-button:hover, .view:hover {
+        background-color: #6c3483;
+    }
+    .sb {
+        height: 35px; 
+        width: 200px;
+        margin-right: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        padding: 0 10px;
+    }
+    .report-body {
+        margin-top: 20px;
+    }
+    .report-topic-heading {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 10px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid #ccc;
+    }
+    .t-op {
+        font-size: 16px;
+        font-weight: bold;
+        color: #555;
+        text-align: center;
+    }
+    .items {
+        margin-top: 10px;
+    }
+    .viewp{width:60px;}
+    .item1 {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 10px;
+        padding: 10px 0;
+        border-bottom: 1px solid #eee;
+        align-items: center;
+    }
+    .t-op-nextlvl {
+        font-size: 14px;
+        color: #333;
+        text-align: center;
+    }
+    .completed {
+        color: green;
+    }
+    .ongoing {
+        color: red;
+    }
+    .upcoming {
+        color: blue;
+    }
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .report-container {
+            margin: 10px;
+            padding: 15px;
+        }
+        .report-topic-heading, .item1 {
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+        }
+        .t-op, .t-op-nextlvl {
+            font-size: 0.9em;
+        }
+    }
+    @media (max-width: 480px) {
+        .report-container {
+            margin: 5px;
+            padding: 10px;
+        }
+        .report-topic-heading, .item1 {
+            grid-template-columns: 1fr 1fr 1fr;
+        }
+        .t-op, .t-op-nextlvl {
+            font-size: 0.8em;
+        }
+    }
+</style>
+
+<div class="report-container">
+    <div class="report-header">
+        <h1 class="recent-Articles">All Trips</h1>
+        {% comment %} <div class="searchbar">
+            <form method="get" action="{% url 'all_travel_plans' %}">
+                <input type="text" name="search" value="{{ search_query }}" placeholder="Search" class="sb">
+                <button type="submit" class="view-button">Search</button>
+            </form>
+        </div> {% endcomment %}
+        <button class="view">View All</button>
+    </div>
+
+    <div class="report-body">
+        <div class="report-topic-heading">
+            <h3 class="t-op">Organizer</h3>
+            <h3 class="t-op">Source Place</h3>
+            <h3 class="t-op">Destination Place</h3>
+            <h3 class="t-op">Date</h3>
+            <h3 class="t-op">Leaving Time</h3>
+            <h3 class="t-op">Status</h3>
+            <h3 class="t-op"></h3>
+        </div>
+
+        <div class="items">
+            {% if travel_plans %}
+            {% for plan in travel_plans %}
+            <div class="item1">
+                <h3 class="t-op-nextlvl">{{ plan.organizer }}</h3>
+                <h3 class="t-op-nextlvl">{{ plan.source_place }}</h3>
+                <h3 class="t-op-nextlvl">{{ plan.destination_place }}</h3>
+                <h3 class="t-op-nextlvl">{{ plan.date }}</h3>
+                <h3 class="t-op-nextlvl">{{ plan.leaving_time }}</h3>
+                <h3 class="t-op-nextlvl {% if plan.status == 'Completed' %}completed{% elif plan.status == 'Ongoing' %}ongoing{% elif plan.status == 'Upcoming' %}upcoming{% endif %}">{{ plan.status }}</h3>
+                <a href="{% url 'travel_plan_details' plan.pk %}" class="view-button viewp">View</a>
+            </div>
+            {% endfor %}
+            {% else %}
+                <p>There are no posts created yet!</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% else %}
+    <p>You are not allowed to view this page.</p>
+{% endif %}
+{% endblock content %}
