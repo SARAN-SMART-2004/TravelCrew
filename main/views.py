@@ -64,7 +64,7 @@ def user_profile(request, pk):
     context = get_user_context(request)
     user = get_object_or_404(get_user_model(), id=pk)
     feedbacks = user.feedbacks.all()  # Get feedback related to the user
-
+    ongoing_trips, upcoming_trips, completed_trips,completed_trip_count= get_user_travel_history(user)
     if request.method == 'POST':
         form = FeedbackForm(request.POST)
         if form.is_valid():
@@ -79,7 +79,8 @@ def user_profile(request, pk):
     context.update({
         'user': user,
         'feedbacks': feedbacks,
-        'form': form
+        'form': form,
+        'completed_trip_count': completed_trip_count,
     })
     
     return render(request, 'main/userprofile/user_profile.html', context)
@@ -177,16 +178,12 @@ def ongoing_trips(request):
     return render(request, 'main/posts/ongoing.html', context)
 
 
-@login_required
-def user_past_history(request):
-    context = get_user_context(request)
-    current_user = request.user
-    
+def get_user_travel_history(user):
     # Fetching travel plans organized by the user
-    organized_travel_plans = TravelPlan.objects.filter(organizer=current_user)
+    organized_travel_plans = TravelPlan.objects.filter(organizer=user)
     
     # Fetching travel plans where the user is a member
-    member_travel_plans = TravelPlan.objects.filter(members=current_user)
+    member_travel_plans = TravelPlan.objects.filter(members=user)
 
     # Combining both querysets
     user_travel_plans = organized_travel_plans | member_travel_plans
@@ -203,14 +200,26 @@ def user_past_history(request):
             ongoing_trips.append(plan)
         else:
             upcoming_trips.append(plan)
+     # Count of all trips
+
+    completed_trip_count=len(completed_trips)
+
+    return ongoing_trips, upcoming_trips, completed_trips,completed_trip_count
+
+@login_required
+def user_past_history(request):
+    context = get_user_context(request)
+    current_user = request.user
+    
+    ongoing_trips, upcoming_trips, completed_trips, completed_trip_count= get_user_travel_history(current_user)
 
     context.update({
         'ongoing_trips': ongoing_trips,
         'upcoming_trips': upcoming_trips,
         'completed_trips': completed_trips,
+        'completed_trip_count': completed_trip_count,
     })
     return render(request, 'main/userposts/userpast.html', context)
-
 
 
 @login_required
@@ -218,69 +227,31 @@ def user_upcoming_history(request):
     context = get_user_context(request)
     current_user = request.user
     
-    # Fetching travel plans organized by the user
-    organized_travel_plans = TravelPlan.objects.filter(organizer=current_user)
-    
-    # Fetching travel plans where the user is a member
-    member_travel_plans = TravelPlan.objects.filter(members=current_user)
-
-    # Combining both querysets
-    user_travel_plans = organized_travel_plans | member_travel_plans
-    
-    ongoing_trips = []
-    upcoming_trips = []
-    completed_trips = []
-
-    current_date = timezone.now().date()
-    for plan in user_travel_plans:
-        if plan.date < current_date:
-            completed_trips.append(plan)
-        elif plan.date == current_date:
-            ongoing_trips.append(plan)
-        else:
-            upcoming_trips.append(plan)
+    ongoing_trips, upcoming_trips, completed_trips,completed_trip_count = get_user_travel_history(current_user)
 
     context.update({
         'ongoing_trips': ongoing_trips,
         'upcoming_trips': upcoming_trips,
         'completed_trips': completed_trips,
+        'completed_trip_count': completed_trip_count,
     })
     return render(request, 'main/userposts/userupcoming.html', context)
+
 
 @login_required
 def user_ongoing_history(request):
     context = get_user_context(request)
     current_user = request.user
     
-    # Fetching travel plans organized by the user
-    organized_travel_plans = TravelPlan.objects.filter(organizer=current_user)
-    
-    # Fetching travel plans where the user is a member
-    member_travel_plans = TravelPlan.objects.filter(members=current_user)
-
-    # Combining both querysets
-    user_travel_plans = organized_travel_plans | member_travel_plans
-    
-    ongoing_trips = []
-    upcoming_trips = []
-    completed_trips = []
-
-    current_date = timezone.now().date()
-    for plan in user_travel_plans:
-        if plan.date < current_date:
-            completed_trips.append(plan)
-        elif plan.date == current_date:
-            ongoing_trips.append(plan)
-        else:
-            upcoming_trips.append(plan)
+    ongoing_trips, upcoming_trips, completed_trips,completed_trip_count= get_user_travel_history(current_user)
 
     context.update({
         'ongoing_trips': ongoing_trips,
         'upcoming_trips': upcoming_trips,
         'completed_trips': completed_trips,
+        'completed_trip_count': completed_trip_count,
     })
     return render(request, 'main/userposts/ongoing.html', context)
-
 
 
 def travel_plan_details(request, pk):

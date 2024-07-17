@@ -53,7 +53,7 @@ class UserUpdateForm(forms.ModelForm):
     class Meta:
         model = get_user_model()
         fields = [
-            'first_name', 'last_name', 'email', 'image', 'description', 'phone_number',
+            'first_name', 'last_name', 'email', 'image', 'description', 'phone_number','gender',
             'age', 'designation', 'address', 'city_name', 'district_name', 'postcode', 'instagram', 'twitter', 'facebook', 'linkedin'
         ]
     def save(self, commit=True):

@@ -21,7 +21,12 @@ class CustomUser(AbstractUser):
         ('student', 'Student'),
         ('others', 'Others'),
     )
-
+    GENDER_CHOICES=(
+        ('male', 'Male'),
+        ('female', 'Female'),
+        ('others', 'Others'),
+        ('prefer not to say', 'Prefer not to say'),
+    )
     email = models.EmailField(unique=True)
     status = models.CharField(max_length=100, choices=STATUS_CHOICES, default='regular')
     phone_number = models.CharField(max_length=15, blank=True, null=True, help_text='Enter your phone number')
@@ -30,6 +35,7 @@ class CustomUser(AbstractUser):
     is_phone_verified = models.BooleanField(default=False)
     # New fields
     age = models.PositiveIntegerField(blank=True, null=True)
+    gender = models.CharField(max_length=100, choices=GENDER_CHOICES, default="prefer not to say" ,null=True)
     designation = models.CharField(max_length=100, choices=DESIGNATION_CHOICES, default='others')
     address = models.CharField(max_length=255, blank=True, null=True)
     city_name = models.CharField(max_length=100, blank=True, null=True)

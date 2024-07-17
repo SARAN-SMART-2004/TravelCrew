@@ -1,6 +1,7 @@
 from django.urls import path
 from . import views
-
+from django.conf import settings
+from django.conf.urls.static import static
 urlpatterns = [
     path("", views.homepage, name="homepage"),
     path("edit_all_travel_plans/", views.edit_all_travel_plans, name="edit_all_travel_plans"),
@@ -25,8 +26,8 @@ urlpatterns = [
     path('my-upcoming-history/', views.user_upcoming_history, name='user_upcoming_history'),
     path('my-ongoing-history/', views.user_ongoing_history, name='user_ongoing_history'),
     path('filter/', views.filter_travel_plans, name='filter_travel_plans'),
-    
- 
-    
+      
     
 ] 
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

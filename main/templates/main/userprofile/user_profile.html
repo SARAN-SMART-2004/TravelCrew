@@ -11,6 +11,9 @@
         overflow-x: auto;
         width: 100%;
     }
+    .scroll-container h3{
+        color:#3f0097;
+    }
 
     .profile-container, .history-container {
         flex: 0 0 auto;
@@ -135,10 +138,16 @@
     .feedback-container {
         margin-top: 2em;
         color: black; /* Text color */
+        padding: 2em;
+        border-radius: 15px;
+        background: white;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.3);
     }
 
     .feedback-list h3 {
         margin-top: 0;
+        color: #3f0097;
     }
 
     .feedback-item {
@@ -147,6 +156,73 @@
         border-radius: 5px;
         background: rgba(0, 0, 0, 0.05);
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .feedback-form h3 {
+        color: #3f0097;
+    }
+
+    .feedback-form label {
+        font-weight: bold;
+        color: black; /* Text color */
+    }
+
+    .feedback-form input[type="text"], .feedback-form input[type="email"], .feedback-form textarea {
+        width: 100%;
+        padding: 0.5em;
+        margin: 0.5em 0;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+    .feedback-form textarea {
+        resize: vertical;
+        height: 100px;
+    }
+
+    .feedback-form .submit-button {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #5500cb;
+        color: white;
+        text-decoration: none;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+        font-family: 'Arial', sans-serif;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    .feedback-form .submit-button:hover {
+        background-color: #3f0097;
+        transform: translateY(-2px);
+    }
+
+    .feedback-form .submit-button:active {
+        background-color: #3f0097;
+        transform: translateY(0);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    li {
+        list-style: none;
+    }
+    .lifont li{
+        font-size:10px;
+    }
+    .team-member img {
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        margin-bottom: 5px;
+    }
+    .tasks, .teams, .team-members {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 10px;
     }
 </style>
 
@@ -160,7 +236,9 @@
         </div>
         <div class="profile-details">
             <p><b>Email:</b> {{ user.email }}</p>
+            <p><b>Name:</b> {{ user.first_name }} {{ user.last_name }}</p>
             <p><b>Phone:</b> {{ user.phone_number }}</p>
+            <p><b>Gender:</b> {{ user.gender }}</p>
             <p><b>Bio:</b> {{ user.description }}</p>
             <p><b>Age:</b> {{ user.age }}</p>
             <p><b>Designation:</b> {{ user.designation }}</p>
@@ -187,53 +265,102 @@
 
     <div class="history-container" id="history-container">
         <div class="travel-list">
-            <h3>Completed Travels</h3>
-            <ul>
-                {% for travel in completed_travels %}
-                    <li>{{ travel.source_place }} to {{ travel.destination_place }} on {{ travel.date }}</li>
-                {% empty %}
-                    <li>No completed travels.</li>
-                {% endfor %}
-            </ul>
+           <center> <h3>Completed Travels Count</h3></center>
+            
+           <p>{{ completed_trip_count }}</p>
+
+           {% if completed_trip_count == 0 %}
+           <li>No completed travels.</li>
+            {% endif %}
+               
+            
         </div>
+        <br>
+        <hr>
 
         <div class="travel-list">
-            <h3>Ongoing Travels</h3>
+            <center><h3>Any backmarks/report by other users.</h3></center>
             <ul>
                 {% for travel in ongoing_travels %}
                     <li>{{ travel.source_place }} to {{ travel.destination_place }} on {{ travel.date }}</li>
                 {% empty %}
-                    <li>No ongoing travels.</li>
+                    <li>No</li>
                 {% endfor %}
             </ul>
         </div>
+        <br>
+        <hr>
 
-        <div>
-            <h3>Feedbacks</h3>
+        <div class="profile-section-image">
+           <center> <h3>Travels most with...</h3></center>
+            <div class="team-members">
+                <div class="team-member">
+                    <img src="{% get_media_prefix %}user1.jpg" alt="Joe A.">
+
+                    <p>Joe A.</p>
+                </div>
+                <div class="team-member">
+                    <img src="{% get_media_prefix %}user2.jpg" alt="Dylan C.">
+                    <p>Dylan C.</p>
+                </div>
+                <div class="team-member">
+                    <img src="{% get_media_prefix %}user3.jpg" alt="Ethan C.">
+                    <p>Ethan C.</p>
+                </div>
+                <div class="team-member">
+                    <img src="{% get_media_prefix %}user4.jpg" alt="Louis W.">
+                    <p>Louis W.</p>
+                </div>
+                <div class="team-member">
+                    <img src="{% get_media_prefix %}user5.jpg" alt="Jacob S.">
+                    <p>Jacob S.</p>
+                </div>
+                <div class="team-member">
+                    <img src="{% get_media_prefix %}user6.jpg" alt="Katie L.">
+                    <p>Katie L.</p>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <br>
+
+        <div class="feedback-font">
+            <center><h3>Feedbacks</h3></center>
             <ul>
                 {% for feedback in feedbacks %}
-                    <li>
+                <li class="feedback-item">
                         <p><b>Name:</b> {{ feedback.name }}</p>
                         <p><b>Email:</b> {{ feedback.email }}</p>
                         <p><b>Feedback:</b> {{ feedback.feedback }}</p>
-                        <p><i>Submitted on {{ feedback.created_at }}</i></p>
+                        <p clas="lifont"><i>Submitted on {{ feedback.created_at }}</i></p>
                     </li>
                 {% empty %}
                     <li>No feedback available.</li>
                 {% endfor %}
             </ul>
-        
-            <h3>Submit Feedback</h3>
+            <br>
+            <hr>
+        </div>
+        <div class="feedback-form">
+            <center><h3>Submit Feedback</h3></center>
             <form method="post">
                 {% csrf_token %}
-                {{ form.as_p }}
-                <button type="submit">Submit Feedback</button>
+                <label for="id_name">Your Name:</label>
+                <input type="text" name="name" id="id_name" required>
+                
+                <label for="id_email">Your Email:</label>
+                <input type="email" name="email" id="id_email" required>
+                
+                <label for="id_feedback">Your Feedback:</label>
+                <textarea name="feedback" id="id_feedback" required></textarea>
+                
+                <button class="submit-button" type="submit">Submit Feedback</button>
             </form>
         </div>
         
         
         
-    </div>
+    
 </div>
 
 <script>

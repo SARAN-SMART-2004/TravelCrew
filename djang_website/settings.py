@@ -173,7 +173,7 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER  # Use the same email as the default sender
 
 
 # Password reset timeout (in seconds)
-PASSWORD_RESET_TIMEOUT = 14400  # 4 hours
+PASSWORD_RESET_TIMEOUT = 864000  # 10 days
 
 # TinyMCE settings (example configuration)
 TINYMCE_DEFAULT_CONFIG = {
