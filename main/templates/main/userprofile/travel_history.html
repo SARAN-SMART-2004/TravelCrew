@@ -1,0 +1,115 @@
+{% extends 'main/design/header.html' %}
+
+{% block content %}
+<style>
+    .container {
+        max-width: 800px;
+        margin: auto;
+        padding: 20px;
+        background-color: #f8f9fa; /* Light background */
+        border-radius: 10px; /* Rounded corners */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    }
+
+    .travel-history-header {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .list-group-item {
+        background-color: #ffffff;
+        margin-bottom: 20px;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s;
+    }
+
+    .list-group-item:hover {
+        transform: translateY(-5px);
+    }
+
+    .travel-plan-title {
+        font-size: 1.25em;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    .travel-plan-date {
+        color: #6c757d;
+        margin-bottom: 20px;
+    }
+
+    .organizer-info {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .organizer-info img {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        margin-right: 10px;
+    }
+
+    .members-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .member-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 50px;
+    }
+
+    .member-item img {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+    }
+
+    .member-item p {
+        margin-top: 5px;
+        font-size: 0.875em;
+        text-align: center;
+    }
+</style>
+
+<div class="container">
+    <div class="travel-history-header">
+        <h1>{{ user.username }}'s Travel History</h1>
+    </div>
+
+    <div class="list-group">
+        {% for travel_plan in travel_history %}
+            <div class="list-group-item">
+                <div class="travel-plan-title">
+                    {{ travel_plan.source_place }} to {{ travel_plan.destination_place }}
+                </div>
+                <div class="travel-plan-date">
+                    Date: {{ travel_plan.date }}
+                </div>
+                <div class="organizer-info">
+                    <img src="{{ travel_plan.organizer.image.url }}" alt="{{ travel_plan.organizer.username }}'s image">
+                    <span><strong>Organizer: {{ travel_plan.organizer.username }}</strong></span>
+                </div>
+                <div>
+                    <h3 class="h6">Members:</h3>
+                    <div class="members-list">
+                        {% for member in travel_plan.members.all %}
+                            <div class="member-item">
+                                <img src="{{ member.image.url }}" alt="{{ member.username }}'s image">
+                                <p>{{ member.username }}</p>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        {% endfor %} 
+    </div>
+</div>
+{% endblock %}

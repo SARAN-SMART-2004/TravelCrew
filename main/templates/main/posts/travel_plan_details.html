@@ -64,6 +64,22 @@
     span{
         font-size:30px;
     }
+    .proimage img{
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+    }
+    .proimage li{
+        list-style:none;
+        display:flex;
+        flex-direction: row;
+        padding:20px;
+    }
+    .item1 img{
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+    }
 </style>
 
 <div class="report-container">
@@ -74,7 +90,7 @@
 
         <div class="items">
             <div class="item1">
-                <h3><span>Organizer:</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ travel_plan.organizer }}</h3>
+                <h3><span >Organizer:</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ travel_plan.organizer }}</h3><img src="{{ travel_plan.organizer.image.url }}" alt="{{ travel_plan.organizer }}'s image">
                 <h3><span>Source Place:</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ travel_plan.source_place }}</h3>
                 <h3><span>Waiting Place:</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ travel_plan.waiting_place }}</h3>
                 <h3><span>Destination Place:</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ travel_plan.destination_place }}</h3>
@@ -83,9 +99,10 @@
                 <h3><span>Waiting Time:</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ travel_plan.waiting_time }}</h3>
 
                 <h3>Members who accepted:</h3>
-                <ul>
+                <ul class="proimage">
                     {% for member in travel_plan.members.all %}
-                        <li>{{ member.username }}</li>
+                    <li> <img src="{{  member.image.url }}" alt="{{ member.username }}'s image">{{ member.username }}
+                        </li>
                     {% endfor %}
                 </ul>
 
@@ -115,7 +132,8 @@
                 <ul>
                     {% for request in travel_plan.joinrequest_set.all %}
                         {% if not request.is_accepted %}
-                            <li>
+                            <li class="proimage">
+                                <img src="{{  request.user.image.url }}" alt="{{  request.user.username }}'s image">
                                 {{ request.user.username }}
                                 <form method="post" style="display:inline;">
                                     {% csrf_token %}
@@ -126,7 +144,7 @@
                         {% endif %}
                     {% endfor %}
                 </ul>
-            {% endif %}
+            {% endif %} 
         </div>
     </div>
 </div>

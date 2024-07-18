@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, SetPasswordForm, PasswordResetForm
 from django.contrib.auth import get_user_model
 from captcha.fields import CaptchaField
-from .models import Feedback
+from .models import Feedback,Note
 
 
 class UserRegistrationForm(UserCreationForm):
@@ -56,6 +56,19 @@ class UserUpdateForm(forms.ModelForm):
             'first_name', 'last_name', 'email', 'image', 'description', 'phone_number','gender',
             'age', 'designation', 'address', 'city_name', 'district_name', 'postcode', 'instagram', 'twitter', 'facebook', 'linkedin'
         ]
+        
+    def __init__(self, *args, **kwargs):
+        super(UserUpdateForm, self).__init__(*args, **kwargs)
+        
+        self.fields['gender'].widget.attrs.update({'placeholder': 'Enter your gender'})
+        self.fields['email'].widget.attrs.update({'placeholder': 'Enter your email'})
+        self.fields['description'].widget.attrs.update({'placeholder': 'Enter a brief description'})
+        self.fields['phone_number'].widget.attrs.update({'placeholder': 'Enter your phone number'})
+        self.fields['age'].widget.attrs.update({'placeholder': 'Enter your age'})
+        self.fields['address'].widget.attrs.update({'placeholder': 'Enter your address'})
+        self.fields['city_name'].widget.attrs.update({'placeholder': 'Enter your city'})
+        self.fields['district_name'].widget.attrs.update({'placeholder': 'Enter your district'})
+        self.fields['postcode'].widget.attrs.update({'placeholder': 'Enter your postcode'})
     def save(self, commit=True):
         user = super(UserUpdateForm, self).save(commit=False)
         user.social_media_links = {
@@ -90,3 +103,8 @@ class FeedbackForm(forms.ModelForm):
     class Meta:
         model = Feedback
         fields = ['name', 'email', 'feedback']
+
+class NoteForm(forms.ModelForm):
+    class Meta:
+        model = Note
+        fields = ['title', 'content']

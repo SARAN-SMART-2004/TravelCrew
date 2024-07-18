@@ -10,6 +10,8 @@ from django.core.mail import EmailMessage
 from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
 from django.db.models.query_utils import Q
+from .models import Note
+from .forms import NoteForm
 from twilio.rest import Client
 from django.conf import settings
 from django.utils import timezone
@@ -24,7 +26,19 @@ from .models import OTP, CustomUser
 
 
 
-
+def get_user_context(request):
+    context = {}
+    if request.user.is_authenticated:
+        current_user = request.user
+        context.update({
+            'current_user': current_user,
+            'username': current_user.username,
+            'email': current_user.email,
+            'description': current_user.description,
+            'phone_number': current_user.phone_number,
+            'image': current_user.image,
+        })
+    return context
 
 def activate(request, uidb64, token):
     User = get_user_model()
@@ -267,5 +281,46 @@ def verify_otp(request):
         form = OTPForm()
     
     return render(request, 'verify_otp.html', {'form': form})
+
+
+@login_required
+def list_notes(request):
+    context = get_user_context(request)
+    notes = Note.objects.filter(user=request.user)
+    context.update({
+        'notes': notes, # Pass unique users to the context
+    })
+    return render(request, 'notes/list_notes.html', context)
+
+@login_required
+def add_note(request):
+    context = get_user_context(request)
+    if request.method == 'POST':
+        form = NoteForm(request.POST)
+        if form.is_valid():
+            note = form.save(commit=False)
+            note.user = request.user
+            note.save()
+            messages.success(request, 'Note added successfully!')
+            return redirect('list_notes')
+    else:
+        form = NoteForm()
+    context.update({
+        'form': form, # Pass unique users to the context
+    })
+    return render(request, 'notes/add_note.html', context)
+
+@login_required
+def delete_note(request, note_id):
+    context = get_user_context(request)
+    note = get_object_or_404(Note, id=note_id, user=request.user)
+    if request.method == 'POST':
+        note.delete()
+        messages.success(request, 'Note deleted successfully!')
+        return redirect('list_notes')
+    context.update({
+        'note': note, # Pass unique users to the context
+    })
+    return render(request, 'notes/confirm_delete.html', context)
 
 

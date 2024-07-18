@@ -217,12 +217,17 @@
         border-radius: 50%;
         width: 40px;
         height: 40px;
+        margin-left: 10px;
         margin-bottom: 5px;
     }
     .tasks, .teams, .team-members {
         display: flex;
-        justify-content: space-between;
+        
         margin-top: 10px;
+    }
+    .ps{
+        margin-left: 10px;
+
     }
 </style>
 
@@ -290,37 +295,23 @@
         </div>
         <br>
         <hr>
-
+       
         <div class="profile-section-image">
-           <center> <h3>Travels most with...</h3></center>
+            <center><h3>Travels Most With...</h3></center>
             <div class="team-members">
-                <div class="team-member">
-                    <img src="{% get_media_prefix %}user1.jpg" alt="Joe A.">
-
-                    <p>Joe A.</p>
-                </div>
-                <div class="team-member">
-                    <img src="{% get_media_prefix %}user2.jpg" alt="Dylan C.">
-                    <p>Dylan C.</p>
-                </div>
-                <div class="team-member">
-                    <img src="{% get_media_prefix %}user3.jpg" alt="Ethan C.">
-                    <p>Ethan C.</p>
-                </div>
-                <div class="team-member">
-                    <img src="{% get_media_prefix %}user4.jpg" alt="Louis W.">
-                    <p>Louis W.</p>
-                </div>
-                <div class="team-member">
-                    <img src="{% get_media_prefix %}user5.jpg" alt="Jacob S.">
-                    <p>Jacob S.</p>
-                </div>
-                <div class="team-member">
-                    <img src="{% get_media_prefix %}user6.jpg" alt="Katie L.">
-                    <p>Katie L.</p>
-                </div>
+                {% for unique_user in unique_users %}
+                    <div class="team-member">
+                        <img src="{{ unique_user.image.url }}" alt="{{ unique_user.username }}">
+                        <p class="ps">{{ unique_user.username }}</p>
+                    </div>
+                {% empty %}
+                    <p>No travel partners found.</p>
+                {% endfor %}
             </div>
         </div>
+        <a href="{% url 'user_travel_history' user.username %}" class="btn btn-primary">View Travel History
+        </a>
+        
         <hr>
         <br>
 

@@ -54,7 +54,14 @@ def search(request):
 
 def people(request):
     context = get_user_context(request)
-    context['users'] = CustomUser.objects.all()
+    
+    search_query = request.GET.get('search', '')
+    if search_query:
+        context['users'] = CustomUser.objects.filter(username__icontains=search_query)
+    else:
+        context['users'] = CustomUser.objects.all()
+    
+    context['search_query'] = search_query  # To preserve the search term in the form
     return render(request, 'main/userprofile/people.html', context)
 
 
@@ -65,6 +72,14 @@ def user_profile(request, pk):
     user = get_object_or_404(get_user_model(), id=pk)
     feedbacks = user.feedbacks.all()  # Get feedback related to the user
     ongoing_trips, upcoming_trips, completed_trips,completed_trip_count= get_user_travel_history(user)
+    # Collect unique users from the user's travel history
+    user_travel_plans = TravelPlan.objects.filter(members=user)
+    organized_travel_plans = TravelPlan.objects.filter(organizer=user)
+    combined_travel_plans = user_travel_plans | organized_travel_plans
+    unique_users = set()
+    for travel_plan in combined_travel_plans.distinct():
+        unique_users.add(travel_plan.organizer)  # Add organizer
+        unique_users.update(travel_plan.members.all())  # Add all members
     if request.method == 'POST':
         form = FeedbackForm(request.POST)
         if form.is_valid():
@@ -81,6 +96,7 @@ def user_profile(request, pk):
         'feedbacks': feedbacks,
         'form': form,
         'completed_trip_count': completed_trip_count,
+        'unique_users': unique_users,  # Pass unique users to the context
     })
     
     return render(request, 'main/userprofile/user_profile.html', context)
@@ -105,6 +121,7 @@ def submit_travel_plan(request):
         date = request.POST.get('date')
         leaving_time = request.POST.get('leaving_time')
         waiting_time = request.POST.get('waiting_time')
+        waiting_place=request.POST.get('waiting_place')
         message = request.POST.get('message')
 
         TravelPlan.objects.create(
@@ -113,6 +130,7 @@ def submit_travel_plan(request):
             date=date,
             leaving_time=leaving_time,
             waiting_time=waiting_time,
+            waiting_place=waiting_place,
             message=message,
             organizer=request.user,
             created_at=timezone.now()
@@ -583,4 +601,28 @@ def filter_travel_plans(request):
     return render(request, 'main/includes/search.html')
 
 
+
+from .models import TravelPlan
+from users.models import CustomUser
+
+def user_travel_history(request, username):
+    user = get_object_or_404(CustomUser, username=username)
+
+    # Query for travel plans where the user is a member
+    user_travel_plans = TravelPlan.objects.filter(members=user)
+
+    # Query for travel plans organized by the user
+    organized_travel_plans = TravelPlan.objects.filter(organizer=user)
+
+    # Combine the querysets
+    combined_travel_plans = user_travel_plans | organized_travel_plans
+
+    # Prepare a context for the template
+    travel_history = combined_travel_plans.distinct()  # Use distinct if needed
+    unique_users = set()
+    for travel_plan in travel_history:
+        unique_users.add(travel_plan.organizer)  # Add organizer
+        unique_users.update(travel_plan.members.all())  # Add all members
+
+    return render(request, 'main/userprofile/travel_history.html', {'travel_history': travel_history, 'user': user,'unique_users': unique_users,})
 

@@ -3,73 +3,56 @@
 {% load static %} 
 {% block content %}
 <style>
-    .nav {
-        z-index: 10000;
-    }
     .report-container {
         width: 100%;
         max-width: 800px;
-        margin: 0 auto;
+        margin: 20px auto;
         padding: 20px;
-        position: relative;
-        z-index: 1000;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        background: #ffffff;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
     }
-    .form-control {
-        width: 100%;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        font-size: 16px;
-    }
-    .rounded-circle {
+
+    .profile-image {
         width: 100px;
         height: 100px;
         border-radius: 50%;
         border: 2px solid #ccc;
+        cursor: pointer;
     }
+
     .account-heading {
+        font-size: 24px;
+        font-weight: bold;
         margin-bottom: 5px;
     }
+
     .text-muted {
         font-size: 14px;
     }
+
     .text-secondary {
         font-size: 16px;
         margin-bottom: 10px;
     }
+
     .verified-badge {
         color: green;
     }
+
     .not-verified-badge {
         color: red;
     }
-    .align {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
+
     .content-section {
         margin-top: 20px;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        padding: 20px;
-        background: #ffffff;
     }
-    .right {
-        margin-top: 20px;
-        text-align: center;
+
+    .form-group {
+        margin-bottom: 1rem;
     }
-    .border-bottom {
-        font-size: 24px;
-        font-weight: bold;
-        border-bottom: 2px solid #ccc;
-        padding-bottom: 10px;
-    }
-    label {
-        font-weight: bold;
-        margin-bottom: 5px;
-        display: block;
-    }
+
     .btn-update {
         background-color: #6a0dad;
         color: white;
@@ -80,37 +63,42 @@
         cursor: pointer;
         transition: background-color 0.3s ease, color 0.3s ease;
     }
+
     .btn-update:hover {
         background-color: #5a0cac;
         border-color: #5a0cac;
     }
+
     .back-button {
         position: absolute;
         top: 10px;
         right: 10px;
     }
+
     .social-icon {
         width: 24px;
         height: 24px;
         margin-right: 8px;
         vertical-align: middle;
     }
+    .border-bottom b{
+        font-size:30px;
+    }
 </style>
 
 <div class="report-container">
+    <a href="{% url 'homepage' %}" class="btn btn-outline-secondary back-button">Back</a>
+    <center><legend class="border-bottom mb-4"><b>Profile Information</b></legend></center>
     <div class="content-section">
-        <a href="{% url 'homepage' %}" class="btn btn-outline-secondary back-button">Back</a>
-        <center><legend class="border-bottom mb-4">Profile Information:</legend></center>
         <div class="align">
             <div class="media">
                 {% if user.username == form.instance.username %}
                 <input id="id_image" type="file" name="image" hidden />
                 <label for="id_image">
-                    <img class="rounded-circle account-img profile-image" style="cursor: pointer;"
-                        src="{{ form.instance.image.url }}" alt="Profile Image" title="Upload new image">
+                    <img class="rounded-circle account-img profile-image" src="{{ form.instance.image.url }}" alt="Profile Image" title="Upload new image">
                 </label>
                 {% else %}
-                <img class="rounded-circle" src="{{ form.instance.image.url }}" alt="Profile Image">
+                <img class="rounded-circle account-img profile-image" src="{{ form.instance.image.url }}" alt="Profile Image">
                 {% endif %}
             </div>
             <div class="media-body ml-3">
@@ -118,7 +106,7 @@
                     <small class="text-muted">({{ form.instance.status }})</small>
                 </h2>
                 <p class="text-secondary">{{ form.instance.first_name }} {{ form.instance.last_name }}</p>
-                <p class="text-secondary"><b>Mail Id:</b>{{ form.instance.email }}</p>
+                <p class="text-secondary"><b>Email:</b> {{ form.instance.email }}</p>
                 {{ form.designation|as_crispy_field }}
                 <p class="text-secondary">{{ form.instance.description }}</p>
                 <p class="text-secondary">

@@ -1,0 +1,77 @@
+{% extends "main/design/header.html" %}
+{% block content %}
+<style>
+    .report-container.some {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #f8f9fa;
+        border-radius: 10px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .report-container.some h2 {
+        font-family: 'Georgia', serif;
+        color: #343a40;
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+
+    .report-container.some p {
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+
+    .report-container.some .btn-danger {
+        display: inline-block;
+        font-weight: 400;
+        color: #fff;
+        text-align: center;
+        vertical-align: middle;
+        cursor: pointer;
+        background-color: #dc3545;
+        border: 1px solid #dc3545;
+        padding: 0.375rem 0.75rem;
+        font-size: 1rem;
+        border-radius: 0.25rem;
+        transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
+        text-decoration: none;
+    }
+
+    .report-container.some .btn-danger:hover {
+        background-color: #c82333;
+        border-color: #bd2130;
+    }
+
+    .report-container.some .btn-secondary {
+        display: inline-block;
+        font-weight: 400;
+        color: #fff;
+        text-align: center;
+        vertical-align: middle;
+        cursor: pointer;
+        background-color: #6c757d;
+        border: 1px solid #6c757d;
+        padding: 0.375rem 0.75rem;
+        font-size: 1rem;
+        border-radius: 0.25rem;
+        transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
+        text-decoration: none;
+        margin-left: 1rem;
+    }
+
+    .report-container.some .btn-secondary:hover {
+        background-color: #5a6268;
+        border-color: #545b62;
+    }
+</style>
+<div class="report-container some">
+    <h2>Delete Note</h2>
+    <p>Are you sure you want to delete the note "{{ note.title }}"?</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Delete</button>
+        <a href="{% url 'list_notes' %}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock %}

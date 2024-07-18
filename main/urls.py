@@ -26,6 +26,7 @@ urlpatterns = [
     path('my-upcoming-history/', views.user_upcoming_history, name='user_upcoming_history'),
     path('my-ongoing-history/', views.user_ongoing_history, name='user_ongoing_history'),
     path('filter/', views.filter_travel_plans, name='filter_travel_plans'),
+    path('people-histroy/<str:username>/', views.user_travel_history, name='user_travel_history'),
       
     
 ] 
