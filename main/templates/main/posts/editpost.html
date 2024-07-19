@@ -122,9 +122,10 @@
         <div class="report-topic-heading">
             <h3 class="t-op">Edit</h3>
             <h3 class="t-op">From Place</h3>
-            <h3 class="t-op">To Place</h3>
+            <h3 class="t-op">Leaving Time</h3>       
             <h3 class="t-op">Date</h3>
-            <h3 class="t-op">Leaving Time</h3>
+            <h3 class="t-op">To Place</h3>
+
         </div>
 
         <div class="items">
@@ -144,9 +145,10 @@
                 {% endif %}
                    
                     <h3 class="t-op-nextlvl">{{ plan.source_place }}</h3>
-                    <h3 class="t-op-nextlvl">{{ plan.destination_place }}</h3>
-                    <h3 class="t-op-nextlvl">{{ plan.date }}</h3>
                     <h3 class="t-op-nextlvl">{{ plan.leaving_time }}</h3>
+                    <h3 class="t-op-nextlvl">{{ plan.date }}</h3>
+                    <h3 class="t-op-nextlvl">{{ plan.destination_place }}</h3>
+
                     
                 </div>
                 {% endfor %}

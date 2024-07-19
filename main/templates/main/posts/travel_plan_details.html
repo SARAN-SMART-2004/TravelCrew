@@ -1,38 +1,71 @@
 {% extends "main/design/header.html" %}
+{% load static %}
+
 {% block content %}
 <style>
     .report-container {
-        max-width: 800px;
+        max-width: 100%;
         margin: auto;
         padding: 20px;
         background-color: #f9f9f9;
-        border-radius: 30px;
+        border-radius: 20px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        overflow: hidden; /* Ensure no scroll bars */
     }
-    report-topic-heading, .item1 {
-        width: 800px;
-        display: flex;
-        justify-content: center;
-        flex-wrap: nowrap;
-        align-items: baseline;
-        flex-direction: column;
-    }
-    report-body {
-        max-width: 800px;
-        overflow-x: none; 
+
+    .report-body {
         padding: 20px;
     }
-    .items h3 {
+
+    .grid-container {
+        display: grid;
+        gap: 20px;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    }
+
+    .item {
+        padding: 15px;
+        background-color: #ffffff;
+        border-radius: 10px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .item h3 {
         color: #333;
         margin: 10px 0;
-    
+        display: flex;
+        align-items: center;
     }
-    h1{
-        text-align:center;
+
+    .item img {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        margin-right: 10px;
     }
-    ul {
-        padding-left: 20px;
+
+    .proimage {
+        display: flex;
+        flex-wrap: wrap;
+        padding: 0;
+        list-style: none;
+        margin: 0;
     }
+
+    .proimage li {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+        margin-right: 10px;
+    }
+
+    .proimage li img {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        margin-right: 10px;
+    }
+
     .join-button, .profile-button, .accept-button, .decline-button {
         padding: 10px 15px;
         border: none;
@@ -41,71 +74,104 @@
         font-weight: bold;
         margin-right: 10px;
     }
+
     .join-button {
         background-color: #007bff; /* Bootstrap primary color */
         color: white;
     }
+
     .profile-button {
         background-color: #6c757d; /* Bootstrap secondary color */
         color: white;
     }
+
     .accept-button {
         background-color: #28a745; /* Bootstrap success color */
         color: white;
     }
+
     .decline-button {
         background-color: #dc3545; /* Bootstrap danger color */
         color: white;
     }
+
     .text-danger {
         color: #dc3545; /* Bootstrap danger color */
         font-weight: bold;
     }
-    span{
-        font-size:30px;
+
+    span {
+        font-size: 20px;
+        font-weight: bold;
     }
-    .proimage img{
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
+
+    @media (max-width: 768px) {
+        .grid-container {
+            grid-template-columns: 1fr;
+        }
     }
-    .proimage li{
-        list-style:none;
-        display:flex;
-        flex-direction: row;
-        padding:20px;
-    }
-    .item1 img{
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
+    .report-topic-heading{
+        width: auto;
     }
 </style>
 
 <div class="report-container">
     <div class="report-body">
         <div class="report-topic-heading">
-            <center><h1>Travel Plan Details</h1></center>
+            <h1>Travel Plan Details</h1>
         </div>
 
-        <div class="items">
-            <div class="item1">
-                <h3><span >Organizer:</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ travel_plan.organizer }}</h3><img src="{{ travel_plan.organizer.image.url }}" alt="{{ travel_plan.organizer }}'s image">
-                <h3><span>Source Place:</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ travel_plan.source_place }}</h3>
-                <h3><span>Waiting Place:</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ travel_plan.waiting_place }}</h3>
-                <h3><span>Destination Place:</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ travel_plan.destination_place }}</h3>
-                <h3><span>Date: </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ travel_plan.date }}</h3>
-                <h3><span>Leaving Time:</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ travel_plan.leaving_time }}</h3>
-                <h3><span>Waiting Time:</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ travel_plan.waiting_time }}</h3>
+        <div class="grid-container">
+            <div class="item">
+                <h3><span>Organizer:</span> {{ travel_plan.organizer }}</h3>
+                {% if travel_plan.organizer.image %}
+                    <img src="{{ travel_plan.organizer.image.url }}" alt="{{ travel_plan.organizer }}'s image">
+                {% else %}
+                    <img src="{% static 'images/images.png' %}" alt="Default Image">
+                {% endif %}
+            </div>
 
+            <div class="item">
+                <h3><span>Source Place:</span> {{ travel_plan.source_place }}</h3>
+            </div>
+
+            <div class="item">
+                <h3><span>Waiting Place:</span> {{ travel_plan.waiting_place }}</h3>
+            </div>
+
+            <div class="item">
+                <h3><span>Destination Place:</span> {{ travel_plan.destination_place }}</h3>
+            </div>
+
+            <div class="item">
+                <h3><span>Date:</span> {{ travel_plan.date }}</h3>
+            </div>
+
+            <div class="item">
+                <h3><span>Leaving Time:</span> {{ travel_plan.leaving_time }}</h3>
+            </div>
+
+            <div class="item">
+                <h3><span>Waiting Time:</span> {{ travel_plan.waiting_time }}</h3>
+            </div>
+
+            <div class="item">
                 <h3>Members who accepted:</h3>
                 <ul class="proimage">
                     {% for member in travel_plan.members.all %}
-                    <li> <img src="{{  member.image.url }}" alt="{{ member.username }}'s image">{{ member.username }}
+                        <li>
+                            {% if member.image %}
+                                <img src="{{ member.image.url }}" alt="{{ member.username }}'s image">
+                            {% else %}
+                                <img src="{% static 'images/images.png' %}" alt="Default Image">
+                            {% endif %}
+                            {{ member.username }}
                         </li>
                     {% endfor %}
                 </ul>
+            </div>
 
+            <div class="item">
                 {% if request.user != travel_plan.organizer and not is_member and not join_request %}
                     {% if is_upcoming_trip %}
                         <form method="post">
@@ -128,23 +194,30 @@
             </div>
 
             {% if request.user == travel_plan.organizer %}
-                <h3>Join Requests:</h3>
-                <ul>
-                    {% for request in travel_plan.joinrequest_set.all %}
-                        {% if not request.is_accepted %}
-                            <li class="proimage">
-                                <img src="{{  request.user.image.url }}" alt="{{  request.user.username }}'s image">
-                                {{ request.user.username }}
-                                <form method="post" style="display:inline;">
-                                    {% csrf_token %}
-                                    <a class="profile-button" href="{% url 'user_profile' request.user.id %}">View Profile</a>
-                                    <button type="submit" name="accept" value="{{ request.id }}" class="accept-button">Accept</button>
-                                </form>
-                            </li>
-                        {% endif %}
-                    {% endfor %}
-                </ul>
-            {% endif %} 
+                <div class="item">
+                    <h3>Join Requests:</h3>
+                    <ul>
+                        {% for request in travel_plan.joinrequest_set.all %}
+                            {% if not request.is_accepted %}
+                                <li>
+                                    {% if request.user.image %}
+                                        <img src="{{ request.user.image.url }}" alt="{{ request.user.username }}'s image">
+                                    {% else %}
+                                        <img src="{% static 'images/images.png' %}" alt="Default Image">
+                                    {% endif %}
+                                    {{ request.user.username }}
+                                    <form method="post" style="display:inline;">
+                                        {% csrf_token %}
+                                        <a class="profile-button" href="{% url 'user_profile' request.user.id %}">Profile</a>
+                                        
+                                        <button type="submit" name="accept" value="{{ request.id }}" class="accept-button">Accept</button>
+                                    </form>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
         </div>
     </div>
 </div>

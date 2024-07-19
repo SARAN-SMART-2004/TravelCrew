@@ -93,10 +93,8 @@
         <div class="align">
             <div class="media">
                 {% if user.username == form.instance.username %}
-                <input id="id_image" type="file" name="image" hidden />
-                <label for="id_image">
-                    <img class="rounded-circle account-img profile-image" src="{{ form.instance.image.url }}" alt="Profile Image" title="Upload new image">
-                </label>
+                <img class="rounded-circle account-img profile-image" src="{{ form.instance.image.url }}" alt="Profile Image">
+                {{ form.image|as_crispy_field }}
                 {% else %}
                 <img class="rounded-circle account-img profile-image" src="{{ form.instance.image.url }}" alt="Profile Image">
                 {% endif %}
@@ -107,7 +105,7 @@
                 </h2>
                 <p class="text-secondary">{{ form.instance.first_name }} {{ form.instance.last_name }}</p>
                 <p class="text-secondary"><b>Email:</b> {{ form.instance.email }}</p>
-                {{ form.designation|as_crispy_field }}
+                
                 <p class="text-secondary">{{ form.instance.description }}</p>
                 <p class="text-secondary">
                     {{ form.instance.phone_number }}
@@ -126,7 +124,6 @@
             <fieldset class="form-group mt-4">
                 <legend class="border-bottom mb-4">Edit Profile Information</legend>
                 <div class="form-row">
-                    {{ form.image|as_crispy_field }}
                     <div class="form-group col-md-6">
                         {{ form.first_name|as_crispy_field }}
                     </div>
@@ -136,10 +133,10 @@
                 </div>
                 {{ form.gender|as_crispy_field }}
                 {{ form.email|as_crispy_field }}
+                {{ form.designation|as_crispy_field }}
                 {{ form.description|as_crispy_field }}
                 {{ form.phone_number|as_crispy_field }}
                 {{ form.age|as_crispy_field }}
-                
                 {{ form.address|as_crispy_field }}
                 {{ form.city_name|as_crispy_field }}
                 {{ form.district_name|as_crispy_field }}

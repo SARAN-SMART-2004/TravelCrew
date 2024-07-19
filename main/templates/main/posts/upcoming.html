@@ -11,7 +11,6 @@
         align-items: center;
     }
     
-    
     .report-body {
         margin-top: 20px;
     }
@@ -52,11 +51,29 @@
         height:35px; 
         width:200px;
     }
+    .pagination {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+    }
+    .pagination .step-links a {
+        margin: 0 5px;
+        padding: 5px 10px;
+        background-color: #5500cb;
+        color: white;
+        text-decoration: none;
+        border-radius: 4px;
+    }
+    .pagination .step-links span.current {
+        margin: 0 5px;
+        padding: 5px 10px;
+        background-color: #eee;
+        border-radius: 4px;
+    }
 </style>
 <div class="report-container">
     <div class="report-header">
         <h1 class="recent-Articles">Upcoming Trips</h1>
-        
         <button class="view">View All</button>
     </div>
 
@@ -71,8 +88,8 @@
         </div>
 
         <div class="items">
-            {% if past_travel_plans %}
-            {% for trip in past_travel_plans %}
+            {% if upcoming_trips %}
+            {% for trip in upcoming_trips %}
             <div class="item1">
                 <h3 class="t-op-nextlvl">{{ trip.organizer }}</h3>
                 <h3 class="t-op-nextlvl">{{ trip.source_place }}</h3>
@@ -83,10 +100,31 @@
             </div>
             {% endfor %}
             {% else %}
-                <p>You have not yet traveled any plans.</p>
+                <p>No upcoming trips found.</p>
             {% endif %}
         </div>
+
+        <!-- Pagination controls -->
+        <div class="pagination">
+            <span class="step-links">
+                {% if upcoming_trips.has_previous %}
+                    <a href="?page=1">&laquo; first</a>
+                    <a href="?page={{ upcoming_trips.previous_page_number }}">previous</a>
+                {% endif %}
+
+                <span class="current">
+                    Page {{ upcoming_trips.number }} of {{ upcoming_trips.paginator.num_pages }}.
+                </span>
+
+                {% if upcoming_trips.has_next %}
+                    <a href="?page={{ upcoming_trips.next_page_number }}">next</a>
+                    <a href="?page={{ upcoming_trips.paginator.num_pages }}">last &raquo;</a>
+                {% endif %}
+            </span>
+        </div>
     </div>
+</div>
+
 {% else %}
     <p>You are not allowed to view this page.</p>
 {% endif %}

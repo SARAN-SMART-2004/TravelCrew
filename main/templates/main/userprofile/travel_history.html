@@ -1,5 +1,5 @@
 {% extends 'main/design/header.html' %}
-
+{%load static%}
 {% block content %}
 <style>
     .container {
@@ -94,7 +94,12 @@
                     Date: {{ travel_plan.date }}
                 </div>
                 <div class="organizer-info">
+
+                    {% if travel_plan.organizer.image %}
                     <img src="{{ travel_plan.organizer.image.url }}" alt="{{ travel_plan.organizer.username }}'s image">
+                    {% else %}
+                        <img src="{% static 'images/images.png' %}" alt="Default Image">
+                    {% endif %} 
                     <span><strong>Organizer: {{ travel_plan.organizer.username }}</strong></span>
                 </div>
                 <div>
@@ -102,7 +107,11 @@
                     <div class="members-list">
                         {% for member in travel_plan.members.all %}
                             <div class="member-item">
+                                {% if member.image %}
                                 <img src="{{ member.image.url }}" alt="{{ member.username }}'s image">
+                                {% else %}
+                                <img src="{% static 'images/images.png' %}" alt="Default Image">
+                                {% endif %}
                                 <p>{{ member.username }}</p>
                             </div>
                         {% endfor %}

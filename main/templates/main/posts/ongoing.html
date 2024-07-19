@@ -10,7 +10,6 @@
         justify-content: space-between;
         align-items: center;
     }
-    
    
     .report-body {
         margin-top: 20px;
@@ -48,15 +47,14 @@
     .view-button:hover {
         background-color: #6c3483;
     }
-    .sb{
-        height:35px; 
-        width:200px;
+    .sb {
+        height: 35px;
+        width: 200px;
     }
 </style>
 <div class="report-container">
     <div class="report-header">
         <h1 class="recent-Articles">Ongoing Trips</h1>
-        
         <button class="view">View All</button>
     </div>
 
@@ -71,24 +69,43 @@
         </div>
 
         <div class="items">
-            {% if past_travel_plans %}
-            {% for trip in past_travel_plans %}
+            {% if ongoing_travel_plans %}
+            {% for trip in ongoing_travel_plans %}
             <div class="item1">
                 <h3 class="t-op-nextlvl">{{ trip.organizer }}</h3>
                 <h3 class="t-op-nextlvl">{{ trip.source_place }}</h3>
                 <h3 class="t-op-nextlvl">{{ trip.destination_place }}</h3>
                 <h3 class="t-op-nextlvl">{{ trip.date }}</h3>
                 <h3 class="t-op-nextlvl">{{ trip.leaving_time }}</h3>
-               
                 <a href="{% url 'travel_plan_details' trip.pk %}" class="view-button">View</a>
             </div>
             {% endfor %}
             {% else %}
-                <p>You have not yet traveled any plans.</p>
+            <p>You have not yet traveled any plans.</p>
             {% endif %}
         </div>
+
+        <!-- Pagination controls -->
+        <div class="pagination">
+            <span class="step-links">
+                {% if ongoing_travel_plans.has_previous %}
+                    <a href="?page=1">&laquo; first</a>
+                    <a href="?page={{ ongoing_travel_plans.previous_page_number }}">previous</a>
+                {% endif %}
+
+                <span class="current">
+                    Page {{ ongoing_travel_plans.number }} of {{ ongoing_travel_plans.paginator.num_pages }}.
+                </span>
+
+                {% if ongoing_travel_plans.has_next %}
+                    <a href="?page={{ ongoing_travel_plans.next_page_number }}">next</a>
+                    <a href="?page={{ ongoing_travel_plans.paginator.num_pages }}">last &raquo;</a>
+                {% endif %}
+            </span>
+        </div>
     </div>
+</div>
 {% else %}
-    <p>You are not allowed to view this page.</p>
+<p>You are not allowed to view this page.</p>
 {% endif %}
 {% endblock content %}

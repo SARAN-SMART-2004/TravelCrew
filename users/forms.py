@@ -4,6 +4,8 @@ from django.contrib.auth import get_user_model
 from captcha.fields import CaptchaField
 from .models import Feedback,Note
 
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Layout, Submit, Field
 
 class UserRegistrationForm(UserCreationForm):
     email = forms.EmailField(help_text='A valid email address, please.', required=True)
@@ -56,6 +58,32 @@ class UserUpdateForm(forms.ModelForm):
             'first_name', 'last_name', 'email', 'image', 'description', 'phone_number','gender',
             'age', 'designation', 'address', 'city_name', 'district_name', 'postcode', 'instagram', 'twitter', 'facebook', 'linkedin'
         ]
+    def __init__(self, *args, **kwargs):
+        super(UserUpdateForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_method = 'post'
+        self.helper.attrs = {'class': 'form-horizontal'}
+        self.helper.label_class = 'col-md-3 col-form-label'
+        self.helper.field_class = 'col-md-9'
+        self.helper.layout = Layout(
+            Field('first_name', css_class='form-control'),
+            Field('last_name', css_class='form-control'),
+            Field('email', css_class='form-control'),
+            Field('image', css_class='form-control'),
+            Field('description', css_class='form-control'),
+            Field('phone_number', css_class='form-control'),
+            Field('age', css_class='form-control'),
+            Field('designation', css_class='form-control'),
+            Field('address', css_class='form-control'),
+            Field('city_name', css_class='form-control'),
+            Field('district_name', css_class='form-control'),
+            Field('postcode', css_class='form-control'),
+            Field('instagram', css_class='form-control'),
+            Field('twitter', css_class='form-control'),
+            Field('facebook', css_class='form-control'),
+            Field('linkedin', css_class='form-control'),
+            Submit('submit', 'Update', css_class='btn btn-update'),
+        )
         
     def __init__(self, *args, **kwargs):
         super(UserUpdateForm, self).__init__(*args, **kwargs)

@@ -136,6 +136,7 @@ def custom_login(request):
 
 @login_required
 def profile(request, username):
+    context = get_user_context(request)
     user = get_user_model().objects.filter(username=username).first()
     if user is None:
         return redirect("homepage")
@@ -158,9 +159,9 @@ def profile(request, username):
 
     form.fields['description'].widget.attrs = {'rows': 1}
     username = request.user.username
-    
+    context.update({'form': form, 'username': username})
 
-    return render(request, 'users/profile.html', {'form': form, 'username': username})
+    return render(request, 'users/profile.html',context )
 
 @login_required
 def password_change(request):

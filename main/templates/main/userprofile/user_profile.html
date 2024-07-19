@@ -234,7 +234,12 @@
 <div class="scroll-container">
     <div class="profile-container">
         <div class="profile-header">
+            {% if user.image %}
             <img src="{{ user.image.url }}" class="profile-img" alt="{{ user.username }}">
+        {% else %}
+            <img src="{% static 'images/images.png' %}"class="profile-img" alt="Default Image">
+        {% endif %}
+            
             <div>
                 <h2>{{ user.username }}</h2>
             </div>
@@ -301,7 +306,11 @@
             <div class="team-members">
                 {% for unique_user in unique_users %}
                     <div class="team-member">
+                        {% if unique_user.image %}
                         <img src="{{ unique_user.image.url }}" alt="{{ unique_user.username }}">
+                    {% else %}
+                        <img src="{% static 'images/images.png' %}" alt="Default Image">
+                    {% endif %}   
                         <p class="ps">{{ unique_user.username }}</p>
                     </div>
                 {% empty %}

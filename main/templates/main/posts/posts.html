@@ -3,9 +3,7 @@
 {% if user.is_authenticated %}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <style>
-    
     .report-container {
-        
         max-width: 1100px;
         padding: 20px;
         background-color: #fff;
@@ -26,7 +24,7 @@
         margin: 0;
     }
     .view-button, .view {
-        width:100px;
+        width: 100px;
         background-color: #5500cb;
         color: white;
         padding: 5px 10px;
@@ -40,7 +38,7 @@
         background-color: #6c3483;
     }
     .sb {
-        height: 35px; 
+        height: 35px;
         width: 200px;
         margin-right: 10px;
         border: 1px solid #ccc;
@@ -66,7 +64,9 @@
     .items {
         margin-top: 10px;
     }
-    .viewp{width:60px;}
+    .viewp {
+        width: 60px;
+    }
     .item1 {
         display: grid;
         grid-template-columns: repeat(7, 1fr);
@@ -114,6 +114,26 @@
             font-size: 0.8em;
         }
     }
+    .pagination {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+    }
+    .pagination a, .pagination span {
+        margin: 0 5px;
+        padding: 8px 16px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        text-decoration: none;
+        color: #5500cb;
+    }
+    .pagination a:hover {
+        background-color: #f0f0f0;
+    }
+    .pagination .current {
+        background-color: #5500cb;
+        color: white;
+    }
 </style>
 
 <div class="report-container">
@@ -132,9 +152,9 @@
         <div class="report-topic-heading">
             <h3 class="t-op">Organizer</h3>
             <h3 class="t-op">Source Place</h3>
-            <h3 class="t-op">Destination Place</h3>
-            <h3 class="t-op">Date</h3>
             <h3 class="t-op">Leaving Time</h3>
+            <h3 class="t-op">Date</h3>
+            <h3 class="t-op">Destination Place</h3>
             <h3 class="t-op">Status</h3>
             <h3 class="t-op"></h3>
         </div>
@@ -145,9 +165,9 @@
             <div class="item1">
                 <h3 class="t-op-nextlvl">{{ plan.organizer }}</h3>
                 <h3 class="t-op-nextlvl">{{ plan.source_place }}</h3>
-                <h3 class="t-op-nextlvl">{{ plan.destination_place }}</h3>
-                <h3 class="t-op-nextlvl">{{ plan.date }}</h3>
                 <h3 class="t-op-nextlvl">{{ plan.leaving_time }}</h3>
+                <h3 class="t-op-nextlvl">{{ plan.date }}</h3>
+                <h3 class="t-op-nextlvl">{{ plan.destination_place }}</h3>
                 <h3 class="t-op-nextlvl {% if plan.status == 'Completed' %}completed{% elif plan.status == 'Ongoing' %}ongoing{% elif plan.status == 'Upcoming' %}upcoming{% endif %}">{{ plan.status }}</h3>
                 <a href="{% url 'travel_plan_details' plan.pk %}" class="view-button viewp">View</a>
             </div>
@@ -156,6 +176,21 @@
                 <p>There are no posts created yet!</p>
             {% endif %}
         </div>
+    </div>
+    <div class="pagination">
+        {% if travel_plans.has_previous %}
+            <a href="?page={{ travel_plans.previous_page_number }}">&laquo; Previous</a>
+        {% endif %}
+        {% for num in travel_plans.paginator.page_range %}
+            {% if travel_plans.number == num %}
+                <span class="current">{{ num }}</span>
+            {% elif num > travel_plans.number|add:'-3' and num < travel_plans.number|add:'3' %}
+                <a href="?page={{ num }}">{{ num }}</a>
+            {% endif %}
+        {% endfor %}
+        {% if travel_plans.has_next %}
+            <a href="?page={{ travel_plans.next_page_number }}">Next &raquo;</a>
+        {% endif %}
     </div>
 </div>
 {% else %}

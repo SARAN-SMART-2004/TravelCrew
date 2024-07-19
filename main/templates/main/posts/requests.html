@@ -1,22 +1,27 @@
 {% extends "main/design/header.html" %}
 {% block content %}
 <style>
-    .container {
+    .report-container {
         margin: 20px auto;
         padding: 20px;
         max-width: 800px;
-        background-color: #fff;
+        background-color: #f9f9f9;
         border: 1px solid #ccc;
         border-radius: 8px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     }
+
     .request-item {
         margin-bottom: 10px;
+        padding: 10px 0;
+        border-bottom: 1px solid #ccc;
     }
+
     li {
         list-style: none;
     }
-    .profile-button, .request-button, .view {
+
+    .button {
         background-color: #5500cb;
         color: white;
         padding: 8px 12px;
@@ -26,19 +31,37 @@
         font-size: 14px;
         text-decoration: none;
         margin-right: 10px;
+        transition: background-color 0.3s;
     }
-    .request-button {
-        background-color: #cc0000;
+
+    .button:hover {
+        background-color:   #5500cb;
     }
-    .report-container {
-        margin-bottom: 20px;
+
+    .view-button {
+        background-color: #5500cb;
+        color: white;
+        padding: 8px 12px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
+        text-decoration: none;
+        margin-right: 10px;
+        transition: background-color 0.3s;
     }
+
+    .view-button:hover {
+        background-color: #b30000;
+    }
+
     .report-header {
         display: flex;
         justify-content: space-between;
         align-items: center;
         margin-bottom: 20px;
     }
+
     .recent-Articles {
         font-size: 24px;
         font-weight: bold;
@@ -47,38 +70,45 @@
 
     /* Responsive adjustments */
     @media (max-width: 768px) {
-        .container {
+        .report-container {
             margin: 10px;
             padding: 15px;
         }
+
         .request-item {
             font-size: 0.9em;
         }
-        .profile-button, .request-button, .view {
+
+        .button, .view-button {
             padding: 5px;
             font-size: 0.8em;
         }
+
         .recent-Articles {
             font-size: 1.2em;
         }
+
         .report-header {
             flex-direction: column;
             align-items: flex-start;
         }
-        .view {
+
+        .view-button {
             margin-top: 10px;
         }
     }
 
     @media (max-width: 480px) {
-        .container {
+        .report-container {
             margin: 5px;
             padding: 10px;
         }
-        .profile-button, .request-button, .view {
+
+        .button, .view-button {
             padding: 3px;
             font-size: 0.7em;
         }
+
         .recent-Articles {
             font-size: 1em;
         }
@@ -87,6 +117,7 @@
     .hidden-requests {
         display: none;
     }
+
     .visible {
         display: block;
         animation: fadeIn 0.5s;
@@ -101,29 +132,26 @@
 <div class="report-container">
     <div class="report-header">
         <h1 class="recent-Articles">Send Requests Status</h1>
-        <button class="view" onclick="toggleRequests('sent')">View All</button>
+        <button class="view-button" onclick="toggleRequests('sent')">View All</button>
     </div>
-    <div class="container">
-        <ul>
-            {% for request in sent_requests %}
-                <li class="request-item">
-                    Request to join the trip from {{ request.travel_plan.source_place }} to {{ request.travel_plan.destination_place }} 
-                    at {{request.travel_plan.date}}
-                    (Status: {% if request.is_accepted %}Accepted{% else %}Pending{% endif %})
-                    <button type="button" class="profile-button" onclick="redirectToPlan({{ request.travel_plan.id }})">View</button>
-                    <br><hr>
-                </li>
-                {% if forloop.counter == 5 %}
-                    <ul class="hidden-requests" id="sent-requests">
-                {% endif %}
-            {% empty %}
-                <li>No sent requests.</li>
-            {% endfor %}
-            {% if sent_requests.count > 5 %}
-                </ul>
+    <ul>
+        {% for request in sent_requests %}
+            <li class="request-item">
+                Request to join the trip from {{ request.travel_plan.source_place }} to {{ request.travel_plan.destination_place }} 
+                at {{request.travel_plan.date}}
+                (Status: {% if request.is_accepted %}Accepted{% else %}Pending{% endif %})
+                <button type="button" class="button" onclick="redirectToPlan({{ request.travel_plan.id }})">View</button>
+            </li>
+            {% if forloop.counter == 5 %}
+                <ul class="hidden-requests" id="sent-requests">
             {% endif %}
-        </ul>
-    </div>
+        {% empty %}
+            <li>No sent requests.</li>
+        {% endfor %}
+        {% if sent_requests.count > 5 %}
+            </ul>
+        {% endif %}
+    </ul>
 </div>
 
 <br>
@@ -131,31 +159,28 @@
 <div class="report-container">
     <div class="report-header">
         <h1 class="recent-Articles">Received Requests Status</h1>
-        <button class="view" onclick="toggleRequests('received')">View All</button>
+        <button class="view-button" onclick="toggleRequests('received')">View All</button>
     </div>
-    <div class="container">
-        <ul>
-            {% for request in received_requests %}
-                <li class="request-item">
-                    {{ request.user.username }} wants to join the trip from {{ request.travel_plan.source_place }} to {{ request.travel_plan.destination_place }}
-                    <form method="post" style="display:inline;">
-                        {% csrf_token %}
-                        <a class="profile-button" href="{% url 'user_profile' request.user.id %}">View Profile</a>
-                        <button type="button" class="request-button" onclick="redirectToPlan({{ request.travel_plan.id }})">Accept</button>
-                    </form>
-                    <br><hr>
-                </li>
-                {% if forloop.counter == 5 %}
-                    <ul class="hidden-requests" id="received-requests">
-                {% endif %}
-            {% empty %}
-                <li>No received requests.</li>
-            {% endfor %}
-            {% if received_requests.count > 5 %}
-                </ul>
+    <ul>
+        {% for request in received_requests %}
+            <li class="request-item">
+                {{ request.user.username }} wants to join the trip from {{ request.travel_plan.source_place }} to {{ request.travel_plan.destination_place }}
+                <form method="post" style="display:inline;">
+                    {% csrf_token %}
+                    <a class="button" href="{% url 'user_profile' request.user.id %}">View Profile</a>
+                    <button type="button" class="button" onclick="redirectToPlan({{ request.travel_plan.id }})">Accept</button>
+                </form>
+            </li>
+            {% if forloop.counter == 5 %}
+                <ul class="hidden-requests" id="received-requests">
             {% endif %}
-        </ul>
-    </div>
+        {% empty %}
+            <li>No received requests.</li>
+        {% endfor %}
+        {% if received_requests.count > 5 %}
+            </ul>
+        {% endif %}
+    </ul>
 </div>
 
 <script>

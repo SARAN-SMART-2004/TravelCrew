@@ -16,7 +16,8 @@ SECRET_KEY = config('SECRET_KEY')
 DEBUG = True
 
 # List of hosts/domain names that this Django site can serve.
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '192.168.153.6','192.168.43.6']
+
 
 # Application definition
 INSTALLED_APPS = [

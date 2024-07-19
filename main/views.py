@@ -1,4 +1,4 @@
-
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from users.models import CustomUser
 from django.contrib import messages
 from django.shortcuts import render, redirect
@@ -40,6 +40,8 @@ def get_user_context(request):
 def homepage(request):
     context = get_user_context(request)
     return render(request, 'main/design/header.html', context)
+
+
 
 
 
@@ -173,63 +175,96 @@ def edit_travel_plan(request, pk):
 def past_trips(request):
     context = get_user_context(request)
     current_date = timezone.now().date()
-    past_travel_plans = TravelPlan.objects.filter(date__lt=current_date)
-    past_travel_plans = past_travel_plans.order_by('-id')
+    past_travel_plans = TravelPlan.objects.filter(date__lt=current_date).order_by('-id')
+
+    # Paginate past travel plans
+    paginator = Paginator(past_travel_plans, 15)  # Show 15 past trips per page
+    page = request.GET.get('page')
+    
+    try:
+        past_travel_plans = paginator.page(page)
+    except PageNotAnInteger:
+        past_travel_plans = paginator.page(1)
+    except EmptyPage:
+        past_travel_plans = paginator.page(paginator.num_pages)
+
     context.update({'past_travel_plans': past_travel_plans})
-    return render(request, 'main/posts/past.html',context)
-
-
+    return render(request, 'main/posts/past.html', context)
 
 @login_required
 def upcoming_trips(request):
     context = get_user_context(request)
     current_date = timezone.now().date()
-    past_travel_plans = TravelPlan.objects.filter(date__gt=current_date)
-    context.update({'past_travel_plans': past_travel_plans})
-    return render(request, 'main/posts/upcoming.html', context)
+    upcoming_travel_plans = TravelPlan.objects.filter(date__gt=current_date).order_by('date')
 
+    # Paginate upcoming travel plans
+    paginator = Paginator(upcoming_travel_plans, 15)  # Show 15 upcoming trips per page
+    page = request.GET.get('page')
+    
+    try:
+        upcoming_travel_plans = paginator.page(page)
+    except PageNotAnInteger:
+        upcoming_travel_plans = paginator.page(1)
+    except EmptyPage:
+        upcoming_travel_plans = paginator.page(paginator.num_pages)
+
+    context.update({'upcoming_travel_plans': upcoming_travel_plans})
+    return render(request, 'main/posts/upcoming.html', context)
+@login_required
 def ongoing_trips(request):
     context = get_user_context(request)
     current_date = timezone.now().date()
-    past_travel_plans = TravelPlan.objects.filter(date=current_date)
-    context.update({'past_travel_plans': past_travel_plans})
+    ongoing_travel_plans = TravelPlan.objects.filter(date=current_date).order_by('date')
+
+    # Paginate ongoing travel plans
+    paginator = Paginator(ongoing_travel_plans, 15)  # Show 15 ongoing trips per page
+    page = request.GET.get('page')
+    
+    try:
+        ongoing_travel_plans = paginator.page(page)
+    except PageNotAnInteger:
+        ongoing_travel_plans = paginator.page(1)
+    except EmptyPage:
+        ongoing_travel_plans = paginator.page(paginator.num_pages)
+
+    context.update({'ongoing_travel_plans': ongoing_travel_plans})
     return render(request, 'main/posts/ongoing.html', context)
 
 
 def get_user_travel_history(user):
-    # Fetching travel plans organized by the user
-    organized_travel_plans = TravelPlan.objects.filter(organizer=user)
-    
-    # Fetching travel plans where the user is a member
-    member_travel_plans = TravelPlan.objects.filter(members=user)
-
-    # Combining both querysets
-    user_travel_plans = organized_travel_plans | member_travel_plans
-    
-    ongoing_trips = []
-    upcoming_trips = []
-    completed_trips = []
-
     current_date = timezone.now().date()
-    for plan in user_travel_plans:
-        if plan.date < current_date:
-            completed_trips.append(plan)
-        elif plan.date == current_date:
-            ongoing_trips.append(plan)
-        else:
-            upcoming_trips.append(plan)
-     # Count of all trips
+    
+    # Fetching travel plans organized by the user or where the user is a member
+    user_travel_plans = TravelPlan.objects.filter(
+        Q(organizer=user) | Q(members=user)
+    ).distinct()
+    
+    # Filtering trips based on dates
+    ongoing_trips = user_travel_plans.filter(date=current_date)
+    upcoming_trips = user_travel_plans.filter(date__gt=current_date)
+    completed_trips = user_travel_plans.filter(date__lt=current_date)
 
-    completed_trip_count=len(completed_trips)
+    completed_trip_count = len(completed_trips)
 
-    return ongoing_trips, upcoming_trips, completed_trips,completed_trip_count
+    return ongoing_trips, upcoming_trips, completed_trips, completed_trip_count
 
 @login_required
 def user_past_history(request):
     context = get_user_context(request)
     current_user = request.user
     
-    ongoing_trips, upcoming_trips, completed_trips, completed_trip_count= get_user_travel_history(current_user)
+    ongoing_trips, upcoming_trips, completed_trips, completed_trip_count = get_user_travel_history(current_user)
+
+    # Paginate completed trips
+    paginator = Paginator(completed_trips, 10)  # Show 15 completed trips per page
+    page = request.GET.get('page')
+    
+    try:
+        completed_trips = paginator.page(page)
+    except PageNotAnInteger:
+        completed_trips = paginator.page(1)
+    except EmptyPage:
+        completed_trips = paginator.page(paginator.num_pages)
 
     context.update({
         'ongoing_trips': ongoing_trips,
@@ -239,13 +274,22 @@ def user_past_history(request):
     })
     return render(request, 'main/userposts/userpast.html', context)
 
-
 @login_required
 def user_upcoming_history(request):
-    context = get_user_context(request)
     current_user = request.user
+    context = get_user_context(request)
+    ongoing_trips, upcoming_trips, completed_trips, completed_trip_count = get_user_travel_history(current_user)
+
+    # Paginate upcoming trips
+    paginator = Paginator(upcoming_trips, 15)  # Show 15 upcoming trips per page
+    page = request.GET.get('page')
     
-    ongoing_trips, upcoming_trips, completed_trips,completed_trip_count = get_user_travel_history(current_user)
+    try:
+        upcoming_trips = paginator.page(page)
+    except PageNotAnInteger:
+        upcoming_trips = paginator.page(1)
+    except EmptyPage:
+        upcoming_trips = paginator.page(paginator.num_pages)
 
     context.update({
         'ongoing_trips': ongoing_trips,
@@ -253,6 +297,7 @@ def user_upcoming_history(request):
         'completed_trips': completed_trips,
         'completed_trip_count': completed_trip_count,
     })
+    
     return render(request, 'main/userposts/userupcoming.html', context)
 
 
@@ -370,6 +415,18 @@ def all_travel_plans(request):
             plan.status = 'Ongoing'
         else:
             plan.status = 'Upcoming'
+    # Set up pagination
+    paginator = Paginator(travel_plans, 15)  # Show 15 travel plans per page
+    page = request.GET.get('page')
+    
+    try:
+        travel_plans = paginator.page(page)
+    except PageNotAnInteger:
+        travel_plans = paginator.page(1)
+    except EmptyPage:
+        travel_plans = paginator.page(paginator.num_pages)
+
+    context.update({'travel_plans': travel_plans, 'search_query': search_query})
 
     context.update({'travel_plans': travel_plans, 'search_query': search_query})
     return render(request, 'main/posts/posts.html', context)
