@@ -1,0 +1,354 @@
+{% extends "main/design/header.html" %}
+{% load static %}
+{% block content %}
+<style>
+    header {
+        width: 100%;
+        padding: 20px;
+        text-align: center;
+        color: white;
+    }
+
+    h1 {
+        margin: 0;
+        font-size: 2.5em;
+    }
+
+    .card-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .card {
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        transition: transform 0.2s;
+    }
+
+    .card img {
+        width: 100%;
+        height: 200px;
+    }
+
+    .card-content {
+        padding: 20px;
+    }
+
+    .card h2 {
+        margin: 0 0 10px;
+        font-size: 1.5em;
+        color: #4CAF50;
+    }
+
+    .card p {
+        margin: 0;
+        color: #666;
+    }
+
+    .card:hover {
+        transform: scale(1.05);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 600px) {
+        .card-container {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+<main>
+    <div class="card-container">
+        <div class="card">
+            <img src="{% static 'health/image1.jpeg' %}" alt="Health Tip 1">
+            <div class="card-content">
+                <h2>Health Tip 1</h2>
+                <p>Stay hydrated by drinking at least 8 glasses of water a day.</p>
+            </div>
+        </div>
+        <div class="card">
+            <img src="{% static 'health/image2.jpeg' %}" alt="Health Tip 2">
+            <div class="card-content">
+                <h2>Health Tip 2</h2>
+                <p>Get at least 7-8 hours of sleep each night to help your body recover and function properly.</p>
+            </div>
+        </div>
+        <div class="card">
+            <img src="{% static 'health/image3.jpeg' %}" alt="Health Tip 3">
+            <div class="card-content">
+                <h2>Health Tip 3</h2>
+                <p>Eat a balanced diet rich in fruits, vegetables, whole grains, and lean proteins.</p>
+            </div>
+        </div>
+        <div class="card">
+            <img src="{% static 'health/image4.jpeg' %}" alt="Health Tip 4">
+            <div class="card-content">
+                <h2>Health Tip 4</h2>
+                <p>Incorporate regular physical activity into your routine, aiming for at least 30 minutes a day.</p>
+            </div>
+        </div>
+        <div class="card">
+            <img src="{% static 'health/image5.jpeg' %}" alt="Health Tip 5">
+            <div class="card-content">
+                <h2>Health Tip 5</h2>
+                <p>Practice mindfulness and meditation to reduce stress and improve mental clarity.</p>
+            </div>
+        </div>
+        <div class="card">
+            <img src="{% static 'health/image6.jpeg' %}" alt="Health Tip 6">
+            <div class="card-content">
+                <h2>Health Tip 6</h2>
+                <p>Maintain good posture to prevent back and neck pain.</p>
+            </div>
+        </div>
+        <div class="card">
+            <img src="{% static 'health/image7.jpeg' %}" alt="Health Tip 7">
+            <div class="card-content">
+                <h2>Health Tip 7</h2>
+                <p>Wash your hands regularly to prevent the spread of germs.</p>
+            </div>
+        </div>
+        <div class="card">
+            <img src="{% static 'health/image8.jpeg' %}" alt="Health Tip 8">
+            <div class="card-content">
+                <h2>Health Tip 8</h2>
+                <p>Take breaks from screens to reduce eye strain and prevent digital eye fatigue.</p>
+            </div>
+        </div>
+        <div class="card">
+            <img src="{% static 'health/image9.jpeg' %}" alt="Health Tip 9">
+            <div class="card-content">
+                <h2>Health Tip 9</h2>
+                <p>Limit your intake of sugary drinks and snacks to maintain a healthy weight and teeth.</p>
+            </div>
+        </div>
+        <div class="card">
+            <img src="{% static 'health/image10.jpeg' %}" alt="Health Tip 10">
+            <div class="card-content">
+                <h2>Health Tip 10</h2>
+                <p>Incorporate strength training exercises into your routine to build muscle and boost metabolism.</p>
+            </div>
+        </div>
+        <div class="card">
+            <img src="{% static 'health/image11.jpeg' %}" alt="Health Tip 11">
+            <div class="card-content">
+                <h2>Health Tip 11</h2>
+                <p>Practice deep breathing exercises to help reduce anxiety and improve focus.</p>
+            </div>
+        </div>
+        <div class="card">
+            <img src="{% static 'health/image12.jpeg' %}" alt="Health Tip 12">
+            <div class="card-content">
+                <h2>Health Tip 12</h2>
+                <p>Get regular check-ups and screenings to catch any potential health issues early.</p>
+            </div>
+        </div>
+        <div class="card">
+            <img src="{% static 'health/image13.jpeg' %}" alt="Health Tip 13">
+            <div class="card-content">
+                <h2>Health Tip 13</h2>
+                <p>Stay socially connected to boost your mental health and reduce feelings of loneliness.</p>
+            </div>
+        </div>
+        <div class="card">
+            <img src="{% static 'health/image14.jpeg' %}" alt="Health Tip 14">
+            <div class="card-content">
+                <h2>Health Tip 14</h2>
+                <p>Use sunscreen daily to protect your skin from harmful UV rays.</p>
+            </div>
+        </div>
+        <div class="card">
+            <img src="{% static 'health/image15.jpeg' %}" alt="Health Tip 15">
+            <div class="card-content">
+                <h2>Health Tip 15</h2>
+                <p>Stay active throughout the day by taking short breaks to walk or stretch.</p>
+            </div>
+        </div>
+        <div class="card">
+            <img src="{% static 'health/image16.jpeg' %}" alt="Health Tip 16">
+            <div class="card-content">
+                <h2>Health Tip 16</h2>
+                <p>Incorporate more fiber into your diet to improve digestion and maintain a healthy weight.</p>
+            </div>
+        </div>
+        <div class="card">
+            <img src="{% static 'health/image17.jpeg' %}" alt="Health Tip 17">
+            <div class="card-content">
+                <h2>Health Tip 17</h2>
+                <p>Practice gratitude daily to improve your mental well-being and overall outlook on life.</p>
+            </div>
+        </div>
+        <div class="card">
+            <img src="{% static 'health/image18.jpeg' %}" alt="Health Tip 18">
+            <div class="card-content">
+                <h2>Health Tip 18</h2>
+                <p>Limit your intake of processed foods and focus on whole, natural foods instead.</p>
+            </div>
+        </div>
+        <div class="card">
+            <img src="{% static 'health/image19.jpeg' %}" alt="Health Tip 19">
+            <div class="card-content">
+                <h2>Health Tip 19</h2>
+                <p>Incorporate more healthy fats, such as avocados and nuts, into your diet.</p>
+            </div>
+        </div>
+        <div class="card">
+            <img src="{% static 'health/image20.jpeg' %}" alt="Health Tip 20">
+            <div class="card-content">
+                <h2>Health Tip 20</h2>
+                <p>Practice good dental hygiene by brushing and flossing your teeth twice a day.</p>
+            </div>
+        </div>
+        <div class="card">
+            <img src="{% static 'health/image21.jpeg' %}" alt="Health Tip 21">
+            <div class="card-content">
+                <h2>Health Tip 21</h2>
+                <p>Take the stairs instead of the elevator to add more physical activity to your day.</p>
+            </div>
+        </div>
+        <div class="card">
+            <img src="{% static 'health/image22.jpeg' %}" alt="Health Tip 22">
+            <div class="card-content">
+                <h2>Health Tip 22</h2>
+                <p>Set realistic fitness goals and track your progress to stay motivated.</p>
+            </div>
+        </div>
+        <div class="card">
+            <img src="{% static 'health/image23.jpeg' %}" alt="Health Tip 23">
+            <div class="card-content">
+                <h2>Health Tip 23</h2>
+                <p>Incorporate more plant-based meals into your diet for a healthy variety of nutrients.</p>
+            </div>
+        </div>
+        <div class="card">
+            <img src="{% static 'health/image24.jpeg' %}" alt="Health Tip 24">
+            <div class="card-content">
+                <h2>Health Tip 24</h2>
+                <p>Make time for hobbies and activities you enjoy to improve your mental health.</p>
+            </div>
+        </div>
+        <div class="card">
+            <img src="{% static 'health/image25.jpeg' %}" alt="Health Tip 25">
+            <div class="card-content">
+                <h2>Health Tip 25</h2>
+                <p>Eat smaller, more frequent meals to maintain your energy levels throughout the day.</p>
+            </div>
+        </div>
+        <div class="card">
+            <img src="{% static 'health/image26.jpeg' %}" alt="Health Tip 26">
+            <div class="card-content">
+                <h2>Health Tip 26</h2>
+                <p>Practice portion control to avoid overeating and maintain a healthy weight.</p>
+            </div>
+        </div>
+        <div class="card">
+            <img src="{% static 'health/image27.jpeg' %}" alt="Health Tip 27">
+            <div class="card-content">
+                <h2>Health Tip 27</h2>
+                <p>Keep a food diary to track your eating habits and identify areas for improvement.</p>
+            </div>
+        </div>
+        <div class="card">
+            <img src="{% static 'health/image28.jpeg' %}" alt="Health Tip 28">
+            <div class="card-content">
+                <h2>Health Tip 28</h2>
+                <p>Take time to relax and unwind each day to reduce stress and improve your overall health.</p>
+            </div>
+        </div>
+        <div class="card">
+            <img src="{% static 'health/image29.jpeg' %}" alt="Health Tip 29">
+            <div class="card-content">
+                <h2>Health Tip 29</h2>
+                <p>Stay informed about health and wellness topics to make informed decisions about your health.</p>
+            </div>
+        </div>
+        <div class="card">
+            <img src="{% static 'health/image30.jpeg' %}" alt="Health Tip 30">
+            <div class="card-content">
+                <h2>Health Tip 30</h2>
+                <p>Limit your alcohol intake to reduce the risk of health issues and maintain a healthy lifestyle.</p>
+            </div>
+        </div>
+        <div class="card">
+            <img src="{% static 'health/image31.jpeg' %}" alt="Health Tip 31">
+            <div class="card-content">
+                <h2>Health Tip 31</h2>
+                <p>Practice safe sex to protect yourself from sexually transmitted infections and unintended pregnancies.</p>
+            </div>
+        </div>
+        <div class="card">
+            <img src="{% static 'health/image32.jpeg' %}" alt="Health Tip 32">
+            <div class="card-content">
+                <h2>Health Tip 32</h2>
+                <p>Engage in regular physical activity to improve your cardiovascular health and reduce the risk of chronic diseases.</p>
+            </div>
+        </div>
+        <div class="card">
+            <img src="{% static 'health/image33.jpeg' %}" alt="Health Tip 33">
+            <div class="card-content">
+                <h2>Health Tip 33</h2>
+                <p>Use relaxation techniques, such as yoga or tai chi, to improve your physical and mental well-being.</p>
+            </div>
+        </div>
+        <div class="card">
+            <img src="{% static 'health/image34.jpeg' %}" alt="Health Tip 34">
+            <div class="card-content">
+                <h2>Health Tip 34</h2>
+                <p>Stay positive and focus on the good aspects of your life to improve your mental health.</p>
+            </div>
+        </div>
+        <div class="card">
+            <img src="{% static 'health/image35.jpeg' %}" alt="Health Tip 35">
+            <div class="card-content">
+                <h2>Health Tip 35</h2>
+                <p>Take time to connect with nature and spend time outdoors to improve your mood and well-being.</p>
+            </div>
+        </div>
+        <div class="card">
+            <img src="{% static 'health/image36.jpeg' %}" alt="Health Tip 36">
+            <div class="card-content">
+                <h2>Health Tip 36</h2>
+                <p>Practice good hygiene by showering regularly and keeping your living space clean.</p>
+            </div>
+        </div>
+        <div class="card">
+            <img src="{% static 'health/image37.jpeg' %}" alt="Health Tip 37">
+            <div class="card-content">
+                <h2>Health Tip 37</h2>
+                <p>Take care of your mental health by seeking professional help if you need it.</p>
+            </div>
+        </div>
+        <div class="card">
+            <img src="{% static 'health/image38.jpeg' %}" alt="Health Tip 38">
+            <div class="card-content">
+                <h2>Health Tip 38</h2>
+                <p>Stay active by incorporating movement into your daily routine, such as taking the stairs or walking to work.</p>
+            </div>
+        </div>
+        <div class="card">
+            <img src="{% static 'health/image39.jpeg' %}" alt="Health Tip 39">
+            <div class="card-content">
+                <h2>Health Tip 39</h2>
+                <p>Practice good posture to prevent back and neck pain and improve your overall health.</p>
+            </div>
+        </div>
+        <div class="card">
+            <img src="{% static 'health/image40.jpeg' %}" alt="Health Tip 40">
+            <div class="card-content">
+                <h2>Health Tip 40</h2>
+                <p>Take time to relax and unwind each day to reduce stress and improve your overall health.</p>
+            </div>
+        </div>
+        
+        
+        
+        
+      
+</main>
+{% endblock %}

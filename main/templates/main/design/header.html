@@ -271,11 +271,7 @@
 
       <!-- User profile section -->
       <div class="message">
-        <a href="{% url 'chatbot'%}" class="tooltip-container">
-          <i class="fa-solid fa-comment" style="color: #410099;"></i>
-          <span class="tooltip-text">Chat Bot</span>
-        </a>
-
+       
         {% if current_user.is_authenticated %}
         <a href="{% url 'list_notes' %}" class="tooltip-container">
           <i class="fa-solid fa-note-sticky fa-beat" style="color: #410099"></i>
@@ -402,6 +398,54 @@
                 <h3>Logout</h3>
               </div>
             </a>
+
+
+
+
+
+            <li class="dropdown">
+              <i
+                class="fa-solid fa-square-poll-vertical"
+                style="color: #3f0097"><span class ="me">Events</span><i class="fa-solid fa-caret-down saran" style="color: #410099;"></i>
+            </i>
+              
+              <ul class="dropdown-content">
+                <li>
+                  <a href="{% url 'event_create' %}">Create Events</a>
+                </li>
+                <li>
+                  <a href="{% url 'event_list' %}">Events Lists</a>
+                </li>
+              </ul>
+            </li>
+
+
+
+            <a href="{% url 'local_guides_list' %}">
+              <div class="nav-option logout">
+                <i class="fa-solid fa-person-chalkboard" style="color: #410099;"></i>
+                <h3>Local Guides</h3>
+              </div>
+            </a>
+
+
+
+            {% if user.is_authenticated and user.is_staff %}
+
+            <a href="{% url 'local_guides_create' %}">
+              <div class="nav-option logout">
+                <i class="fa-solid fa-person-chalkboard" style="color: #410099;"></i>
+                <h3>Local Guide creations</h3>
+              </div>
+            </a>
+            {% endif %}
+
+
+
+
+
+
+
             <div class="nav-option logout">
               {% if current_user and current_user.username %}
               <a href="{% url 'profile' current_user.username %}">

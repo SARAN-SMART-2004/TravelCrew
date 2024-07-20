@@ -80,3 +80,18 @@ class Note(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class LocalGuides(models.Model):
+    name = models.CharField(max_length=100)
+    age = models.IntegerField()
+    phonenumber = models.CharField(max_length=15)
+    email = models.EmailField(blank=True, null=True)
+    address = models.TextField(blank=True, null=True)
+    guideplace = models.CharField(max_length=100)
+    experience = models.IntegerField()  # Number of years of experience
+    amountcharge = models.DecimalField(max_digits=10, decimal_places=2)  # Assuming the amount is in decimal format
+    image = models.ImageField(upload_to='local_guides/', blank=True, null=True)  # Image field
+
+    def __str__(self):
+        return self.name

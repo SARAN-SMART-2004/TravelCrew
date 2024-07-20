@@ -31,6 +31,8 @@ INSTALLED_APPS = [
     # Your custom apps
     'main',
     'users',
+    'events',
+    
 
     # Third-party apps
     'tinymce',

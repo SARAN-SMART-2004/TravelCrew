@@ -19,10 +19,10 @@ from datetime import timedelta
 from django.contrib.auth import get_user_model
 from django.shortcuts import render, get_object_or_404
 
-from .forms import UserRegistrationForm, UserLoginForm, UserUpdateForm, SetPasswordForm, PasswordResetForm, OTPForm
+from .forms import UserRegistrationForm, UserLoginForm, UserUpdateForm, SetPasswordForm, PasswordResetForm, OTPForm,LocalGuidesForm
 from .decorators import user_not_authenticated
 from .tokens import account_activation_token
-from .models import OTP, CustomUser
+from .models import OTP, CustomUser,LocalGuides
 
 
 
@@ -325,3 +325,24 @@ def delete_note(request, note_id):
     return render(request, 'notes/confirm_delete.html', context)
 
 
+def local_guides_create(request):
+    context = get_user_context(request)
+    if request.method == 'POST':
+        form = LocalGuidesForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "New local guide data added successfully.")
+            return redirect('homepage')  # Redirect to a success page or another view
+    else:
+        form = LocalGuidesForm()
+    context.update({
+        'form': form, # Pass unique users to the context
+    })
+    return render(request, 'users/local_guides_form.html', context)
+def local_guides_list(request):
+    context = get_user_context(request)
+    guides = LocalGuides.objects.all()
+    context.update({
+        'guides': guides, # Pass unique users to the context
+    })
+    return render(request, 'users/local_guides_list.html', context)

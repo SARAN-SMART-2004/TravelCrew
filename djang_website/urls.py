@@ -24,6 +24,7 @@ urlpatterns = [
     path('admin/', admin.site.urls, name="admin"),
     path('tinymce/', include('tinymce.urls')),
     path('captcha/', include('captcha.urls')),
+    path("", include('events.urls')),
     path("", include("allauth.urls")), #most important
 
 ]

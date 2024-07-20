@@ -1,0 +1,54 @@
+{% extends "main/design/header.html" %}
+{% load static %} 
+{% block content %}
+<style>
+        
+        .container {
+            width: 50%;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        .container h1 {
+            color: #3f0097;
+        }
+        .container form {
+            display: flex;
+            flex-direction: column;
+        }
+        .container label {
+            color: black;
+            margin-top: 10px;
+        }
+        .container input, .container textarea {
+            margin-top: 5px;
+            padding: 10px;
+            border-radius: 5px;
+            
+            width: 100%;
+        }
+        .container button {
+            background-color: #010058af;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            margin-top: 20px;
+            cursor: pointer;
+        }
+        .container button:hover {
+            background-color: #3f0097;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+       <center> <h1>Create Event</h1></center>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+    {% endblock content %}

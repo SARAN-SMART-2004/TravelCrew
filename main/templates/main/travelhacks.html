@@ -1,0 +1,397 @@
+{% extends "main/design/header.html" %}
+{% load static %} 
+{% block content %}
+<style>
+        
+        
+        header {
+            
+            width: 100%;
+            padding: 20px;
+            text-align: center;
+            color: white;
+        }
+        
+        h1 {
+            margin: 0;
+            font-size: 2.5em;
+        }
+        
+        
+        
+        .card-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            width: 100%;
+            max-width: 1200px;
+        }
+        
+        .card {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: transform 0.2s;
+        }
+        
+        .card img {
+            width: 150px;
+            height: 100px;
+        }
+        
+        .card-content {
+            padding: 20px;
+        }
+        
+        .card h2 {
+            margin: 0 0 10px;
+            font-size: 1.5em;
+            color: #4CAF50;
+        }
+        
+        .card p {
+            margin: 0;
+            color: #666;
+        }
+        
+        .card:hover {
+            transform: scale(1.05);
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 600px) {
+            .card-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+    </style>
+    <main>
+        <div class="card-container">
+            <div class="card">
+                <center><img src="{% static 'hacks/image1.jpeg' %}" alt="Travel Hack 1"></center>
+                <div class="card-content">
+                    <h2>Travel Hack 1</h2>
+                    <p>Roll your clothes instead of folding them to save space in your luggage.</p>
+                </div>
+            </div>
+            <div class="card">
+                <img src="{% static 'hacks/image2.jpeg' %}" alt="Travel Hack 2">
+                <div class="card-content">
+                    <h2>Travel Hack 2</h2>
+                    <p>Use a pill container to store small jewelry items and keep them organized.</p>
+                </div>
+            </div>
+            <div class="card">
+                <img src="{% static 'hacks/image3.jpeg' %}" alt="Travel Hack 3">
+                <div class="card-content">
+                    <h2>Travel Hack 3</h2>
+                    <p>Always carry a power bank to keep your devices charged during your travels.</p>
+                </div>
+            </div>
+            <div class="card">
+                <img src="{% static 'hacks/image4.jpeg' %}" alt="Travel Hack 4">
+                <div class="card-content">
+                    <h2>Travel Hack 4</h2>
+                    <p>Bring an empty water bottle through security and fill it up at a water fountain.</p>
+                </div>
+            </div>
+            <div class="card">
+                <img src="{% static 'hacks/image5.jpeg' %}" alt="Travel Hack 5">
+                <div class="card-content">
+                    <h2>Travel Hack 5</h2>
+                    <p>Use dryer sheets to keep your luggage smelling fresh.</p>
+                </div>
+            </div>
+            <div class="card">
+                <img src="{% static 'hacks/image6.jpeg' %}" alt="Travel Hack 6">
+                <div class="card-content">
+                    <h2>Travel Hack 6</h2>
+                    <p>Scan and email yourself copies of important documents like your passport.</p>
+                </div>
+            </div>
+            <div class="card">
+                <img src="{% static 'hacks/image7.jpeg' %}" alt="Travel Hack 7">
+                <div class="card-content">
+                    <h2>Travel Hack 7</h2>
+                    <p>Use a binder clip to protect the head of your razor while traveling.</p>
+                </div>
+            </div>
+            <div class="card">
+                <img src="{% static 'hacks/image8.jpeg' %}" alt="Travel Hack 8">
+                <div class="card-content">
+                    <h2>Travel Hack 8</h2>
+                    <p>Pack a small first aid kit with band-aids, pain relievers, and other essentials.</p>
+                </div>
+            </div>
+            <div class="card">
+                <img src="{% static 'hacks/image9.jpeg' %}" alt="Travel Hack 9">
+                <div class="card-content">
+                    <h2>Travel Hack 9</h2>
+                    <p>Wear your heaviest clothing items on the plane to save space in your luggage.</p>
+                </div>
+            </div>
+            <div class="card">
+                <img src="{% static 'hacks/image10.jpeg' %}" alt="Travel Hack 10">
+                <div class="card-content">
+                    <h2>Travel Hack 10</h2>
+                    <p>Use a straw to prevent necklaces from tangling during travel.</p>
+                </div>
+            </div>
+            <div class="card">
+                <img src="{% static 'hacks/image11.jpeg' %}" alt="Travel Hack 11">
+                <div class="card-content">
+                    <h2>Travel Hack 11</h2>
+                    <p>Download maps for offline use in case you don't have internet access.</p>
+                </div>
+            </div>
+            <div class="card">
+                <img src="{% static 'hacks/image12.jpeg' %}" alt="Travel Hack 12">
+                <div class="card-content">
+                    <h2>Travel Hack 12</h2>
+                    <p>Carry a small laundry bag to keep dirty clothes separate from clean ones.</p>
+                </div>
+            </div>
+            <div class="card">
+                <img src="{% static 'hacks/image13.jpeg' %}" alt="Travel Hack 13">
+                <div class="card-content">
+                    <h2>Travel Hack 13</h2>
+                    <p>Use a sunglasses case to store and protect your phone charger and earbuds.</p>
+                </div>
+            </div>
+            <div class="card">
+                <img src="{% static 'hacks/image14.jpeg' %}" alt="Travel Hack 14">
+                <div class="card-content">
+                    <h2>Travel Hack 14</h2>
+                    <p>Bring a scarf or sarong that can be used as a blanket, towel, or cover-up.</p>
+                </div>
+            </div>
+            <div class="card">
+                <img src="{% static 'hacks/image15.jpeg' %}" alt="Travel Hack 15">
+                <div class="card-content">
+                    <h2>Travel Hack 15</h2>
+                    <p>Book flights on Tuesdays or Wednesdays for the best prices.</p>
+                </div>
+            </div>
+            <div class="card">
+                <img src="{% static 'hacks/image16.jpeg' %}" alt="Travel Hack 16">
+                <div class="card-content">
+                    <h2>Travel Hack 16</h2>
+                    <p>Use a shower cap to cover the soles of your shoes to keep your clothes clean.</p>
+                </div>
+            </div>
+            <div class="card">
+                <img src="{% static 'hacks/image17.jpeg' %}" alt="Travel Hack 17">
+                <div class="card-content">
+                    <h2>Travel Hack 17</h2>
+                    <p>Bring a portable door lock for added security in hotel rooms.</p>
+                </div>
+            </div>
+            <div class="card">
+                <img src="{% static 'hacks/image18.jpeg' %}" alt="Travel Hack 18">
+                <div class="card-content">
+                    <h2>Travel Hack 18</h2>
+                    <p>Pack a reusable shopping bag for carrying souvenirs or groceries.</p>
+                </div>
+            </div>
+            <div class="card">
+                <img src="{% static 'hacks/image19.jpeg' %}" alt="Travel Hack 19">
+                <div class="card-content">
+                    <h2>Travel Hack 19</h2>
+                    <p>Use a vacuum storage bag to compress bulky clothing items.</p>
+                </div>
+            </div>
+            <div class="card">
+                <img src="{% static 'hacks/image20.jpeg' %}" alt="Travel Hack 20">
+                <div class="card-content">
+                    <h2>Travel Hack 20</h2>
+                    <p>Carry a travel-sized bottle of hand sanitizer to stay germ-free.</p>
+                </div>
+            </div>
+            <div class="card">
+                <img src="{% static 'hacks/image21.jpeg' %}" alt="Travel Hack 21">
+                <div class="card-content">
+                    <h2>Travel Hack 21</h2>
+                    <p>Use a toilet paper roll to keep cords and cables organized.</p>
+                </div>
+            </div>
+            <div class="card">
+                <img src="{% static 'hacks/image22.jpeg' %}" alt="Travel Hack 22">
+                <div class="card-content">
+                    <h2>Travel Hack 22</h2>
+                    <p>Bring a foldable rain jacket for unexpected weather changes.</p>
+                </div>
+            </div>
+            <div class="card">
+                <img src="{% static 'hacks/image23.jpeg' %}" alt="Travel Hack 23">
+                <div class="card-content">
+                    <h2>Travel Hack 23</h2>
+                    <p>Pack a small flashlight or headlamp for emergencies or power outages.</p>
+                </div>
+            </div>
+            <div class="card">
+                <img src="{% static 'hacks/image24.jpeg' %}" alt="Travel Hack 24">
+                <div class="card-content">
+                    <h2>Travel Hack 24</h2>
+                    <p>Use a binder clip to keep your money and credit cards together.</p>
+                </div>
+            </div>
+            <div class="card">
+                <img src="{% static 'hacks/image25.jpeg' %}" alt="Travel Hack 25">
+                <div class="card-content">
+                    <h2>Travel Hack 25</h2>
+                    <p>Store bar soap in a washcloth to keep it dry and clean during travel.</p>
+                </div>
+            </div>
+            <div class="card">
+                <img src="{% static 'hacks/image26.jpeg' %}" alt="Travel Hack 26">
+                <div class="card-content">
+                    <h2>Travel Hack 26</h2>
+                    <p>Use a small container for jewelry to avoid tangles and damage.</p>
+                </div>
+            </div>
+            <div class="card">
+                <img src="{% static 'hacks/image27.jpeg' %}" alt="Travel Hack 27">
+                <div class="card-content">
+                    <h2>Travel Hack 27</h2>
+                    <p>Keep a list of emergency contacts and medical information handy.</p>
+                </div>
+            </div>
+            <div class="card">
+                <img src="{% static 'hacks/image28.jpeg' %}" alt="Travel Hack 28">
+                <div class="card-content">
+                    <h2>Travel Hack 28</h2>
+                    <p>Pack a small multi-tool or Swiss Army knife for various uses.</p>
+                </div>
+            </div>
+            <div class="card">
+                <img src="{% static 'hacks/image29.jpeg' %}" alt="Travel Hack 29">
+                <div class="card-content">
+                    <h2>Travel Hack 29</h2>
+                    <p>Carry a small travel-sized laundry detergent for washing clothes on the go.</p>
+                </div>
+            </div>
+            <div class="card">
+                <img src="{% static 'hacks/image30.jpeg' %}" alt="Travel Hack 30">
+                <div class="card-content">
+                    <h2>Travel Hack 30</h2>
+                    <p>Use an old pill container to organize small items like bobby pins and earplugs.</p>
+                </div>
+            </div>
+            <div class="card">
+                <img src="{% static 'hacks/image31.jpeg' %}" alt="Travel Hack 31">
+                <div class="card-content">
+                    <h2>Travel Hack 31</h2>
+                    <p>Pack a small travel fan to stay cool during hot weather.</p>
+                </div>
+            </div>
+            <div class="card">
+                <img src="{% static 'hacks/image32.jpeg' %}" alt="Travel Hack 32">
+                <div class="card-content">
+                    <h2>Travel Hack 32</h2>
+                    <p>Carry a compact umbrella for unexpected rain showers.</p>
+                </div>
+            </div>
+            <div class="card">
+                <img src="{% static 'hacks/image33.jpeg' %}" alt="Travel Hack 33">
+                <div class="card-content">
+                    <h2>Travel Hack 33</h2>
+                    <p>Use a travel-sized lint roller to keep clothes looking fresh and clean.</p>
+                </div>
+            </div>
+            <div class="card">
+                <img src="{% static 'hacks/image34.jpeg' %}" alt="Travel Hack 34">
+                <div class="card-content">
+                    <h2>Travel Hack 34</h2>
+                    <p>Pack a small foldable cooler for storing snacks and drinks.</p>
+                </div>
+            </div>
+            <div class="card">
+                <img src="{% static 'hacks/image35.jpeg' %}" alt="Travel Hack 35">
+                <div class="card-content">
+                    <h2>Travel Hack 35</h2>
+                    <p>Use a travel pillow to get some rest on long flights or bus rides.</p>
+                </div>
+            </div>
+            <div class="card">
+                <img src="{% static 'hacks/image36.jpeg' %}" alt="Travel Hack 36">
+                <div class="card-content">
+                    <h2>Travel Hack 36</h2>
+                    <p>Carry a small notebook or journal for recording your travel experiences.</p>
+                </div>
+            </div>
+            <div class="card">
+                <img src="{% static 'hacks/image37.jpeg' %}" alt="Travel Hack 37">
+                <div class="card-content">
+                    <h2>Travel Hack 37</h2>
+                    <p>Bring a reusable coffee cup to enjoy your favorite drinks on the go.</p>
+                </div>
+            </div>
+            <div class="card">
+                <img src="{% static 'hacks/image38.jpeg' %}" alt="Travel Hack 38">
+                <div class="card-content">
+                    <h2>Travel Hack 38</h2>
+                    <p>Carry a small travel-sized sewing kit for quick fixes.</p>
+                </div>
+            </div>
+            <div class="card">
+                <img src="{% static 'hacks/image39.jpeg' %}" alt="Travel Hack 39">
+                <div class="card-content">
+                    <h2>Travel Hack 39</h2>
+                    <p>Use a travel-sized air freshener to keep your luggage smelling nice.</p>
+                </div>
+            </div>
+            <div class="card">
+                <img src="{% static 'hacks/image40.jpeg' %}" alt="Travel Hack 40">
+                <div class="card-content">
+                    <h2>Travel Hack 40</h2>
+                    <p>Bring a small travel-sized bleach pen for removing stains.</p>
+                </div>
+            </div>
+            <div class="card">
+                <img src="{% static 'hacks/image41.jpeg' %}" alt="Travel Hack 41">
+                <div class="card-content">
+                    <h2>Travel Hack 41</h2>
+                    <p>Pack a small roll of duct tape for emergency repairs.</p>
+                </div>
+            </div>
+            <div class="card">
+                <img src="{% static 'hacks/image42.jpeg' %}" alt="Travel Hack 42">
+                <div class="card-content">
+                    <h2>Travel Hack 42</h2>
+                    <p>Bring a portable phone stand for hands-free video watching.</p>
+                </div>
+            </div>
+            <div class="card">
+                <img src="{% static 'hacks/image43.jpeg' %}" alt="Travel Hack 43">
+                <div class="card-content">
+                    <h2>Travel Hack 43</h2>
+                    <p>Use a travel-sized lint roller to keep your clothes free of pet hair.</p>
+                </div>
+            </div>
+            <div class="card">
+                <img src="{% static 'hacks/image44.jpeg' %}" alt="Travel Hack 44">
+                <div class="card-content">
+                    <h2>Travel Hack 44</h2>
+                    <p>Carry a small, collapsible shopping bag for unexpected purchases.</p>
+                </div>
+            </div>
+            <div class="card">
+                <img src="{% static 'hacks/image45.jpeg' %}" alt="Travel Hack 45">
+                <div class="card-content">
+                    <h2>Travel Hack 45</h2>
+                    <p>Bring a small, refillable travel-sized bottle for your favorite toiletries.</p>
+                </div>
+            </div>
+           
+            <div class="card">
+                <img src="{% static 'hacks/image50.jpeg' %}" alt="Travel Hack 50">
+                <div class="card-content">
+                    <h2>Travel Hack 46</h2>
+                    <p>Use a travel-sized container to hold your favorite snacks.</p>
+                </div>
+            </div>
+        </div>
+            </main>
+    {% endblock content %}

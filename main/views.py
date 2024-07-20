@@ -35,12 +35,14 @@ def get_user_context(request):
             'phone_number': current_user.phone_number,
             'image': current_user.image,
         })
-    return context
+    return context 
 
 def homepage(request):
     context = get_user_context(request)
     return render(request, 'main/design/header.html', context)
-
+def chatbot(request):
+    context = get_user_context(request)
+    return render(request, 'main/chatbot.html', context)
 
 
 
@@ -48,6 +50,13 @@ def homepage(request):
 def dashboard(request):
     context = get_user_context(request)
     return render(request, 'main/design/boxindex.html', context)
+
+def travelhacks(request):
+    context = get_user_context(request)
+    return render(request, 'main/travelhacks.html', context)
+def health(request):
+    context = get_user_context(request)
+    return render(request, 'main/health.html', context)
 
 def search(request):
     context = get_user_context(request)

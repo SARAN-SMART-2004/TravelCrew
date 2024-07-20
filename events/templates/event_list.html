@@ -1,0 +1,107 @@
+{% extends "main/design/header.html" %}
+{% load static %} 
+{% block content %}
+<style>
+        .container {
+            width: 90%;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .header h1 {
+            color: #f1c40f;
+            font-size: 2.5em;
+        }
+        .event-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .event-card {
+            background-color: #2e2e2e;
+            flex: 1 1 calc(33.333% - 20px);
+            display: flex;
+            flex-direction: column;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            transition: transform 0.2s;
+        }
+        .event-card:hover {
+            transform: translateY(-10px);
+        }
+        .event-card img {
+            width: 100%;
+            height: auto;
+        }
+        .event-card-content {
+            padding: 20px;
+        }
+        .event-card h2 {
+            color: #f1c40f;
+            margin: 0 0 10px;
+        }
+        .event-card p {
+            margin: 5px 0;
+            color: #ccc;
+        }
+        .event-card a {
+            color: #3498db;
+            text-decoration: none;
+            word-break: break-all;
+        }
+        .event-card a:hover {
+            text-decoration: underline;
+        }
+        .event-card button {
+            background-color: #3498db;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            align-self: flex-start;
+            margin-top: 10px;
+        }
+        .event-card button:hover {
+            background-color: #2980b9;
+        }
+        @media (max-width: 768px) {
+            .event-card {
+                flex: 1 1 calc(50% - 20px);
+            }
+        }
+        @media (max-width: 480px) {
+            .event-card {
+                flex: 1 1 100%;
+            }
+        }
+    </style>
+
+    <div class="container">
+        <div class="header">
+            <h1>Event List</h1>
+        </div>
+        <div class="event-grid">
+            {% for event in events %}
+            <div class="event-card">
+                <img src="{{ event.event_image.url }}" alt="{{ event.event_name }}">
+                <div class="event-card-content">
+                    <h2>{{ event.event_name }}</h2>
+                    <p>From: {{ event.event_date_from }} To: {{ event.event_date_to }}</p>
+                    <p>Place: {{ event.event_place }}</p>
+                    <p>Time: {{ event.event_time_from }} - {{ event.event_time_to }}</p>
+                    {% if event.event_website_link %}
+                    <p>Website: <a href="{{ event.event_website_link }}" target="_blank">{{ event.event_website_link }}</a></p>
+                    {% endif %}
+                    <p>{{ event.about_event }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock content %}

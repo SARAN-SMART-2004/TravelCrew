@@ -1,0 +1,112 @@
+{% extends "main/design/header.html" %}
+{% block content %}
+
+<style>
+    .report-container {
+        margin: 0px;
+        box-shadow: none;
+        background-color: #cad7fda4;
+    }
+    
+    .form-container {
+        box-shadow: 3px 3px 10px rgb(188, 188, 188);
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        max-width: 500px;
+        margin: auto;
+    }
+
+    .form-container h2 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .chatbot-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    .chatbot-frame {
+        width: 100%;
+        max-width: 350px;
+        height: 430px;
+        border: none;
+        border-radius: 8px;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    .form-group label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    .form-group input,
+    .form-group textarea {
+        width: 100%;
+        padding: 10px;
+        border-radius: 4px;
+        border: 1px solid #ccc;
+    }
+
+    .form-group input[type="date"],
+    .form-group input[type="time"] {
+        padding: 5px;
+    }
+
+    .form-group textarea {
+        resize: vertical;
+        height: 100px;
+    }
+
+    .form-group button {
+        background-color: #8e44ad;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    .form-group button:hover {
+        background-color: #732d91;
+    }
+
+    @media (max-width: 600px) {
+        .chatbot-frame {
+            width: 100%;
+            height: 500px;
+        }
+
+        .form-container {
+            padding: 15px;
+        }
+    }
+     span {
+        color: white;
+        text-transform: uppercase;
+        float: right;
+        vertical-align: middle;
+        line-height: 20px;
+        margin-top: 5px;
+        margin-right: 10px;
+        font-size: 10px;
+        margin-left: -10px;}
+        .img{
+            display:none;
+        }
+</style>
+
+<div class="form-container chatbot-container">
+    <h2>Chatbot</h2>
+    <iframe class="chatbot-frame" allow="microphone;" src="https://console.dialogflow.com/api-client/demo/embedded/676062d3-68b3-4bcb-a568-4585e18cb935"></iframe>
+</div>
+
+{% endblock content %}

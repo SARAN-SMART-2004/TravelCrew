@@ -18,6 +18,9 @@ urlpatterns = [
     path('notes/', views.list_notes, name='list_notes'),
     path('notes/add/', views.add_note, name='add_note'),
     path('notes/delete/<int:note_id>/',  views.delete_note, name='delete_note'),
+    path('local-guides/create/', views.local_guides_create, name='local_guides_create'),
+    path('local-guides/', views.local_guides_list, name='local_guides_list'),
+    
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

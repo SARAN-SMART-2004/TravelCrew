@@ -3,7 +3,7 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, SetP
 from django.contrib.auth import get_user_model
 from captcha.fields import CaptchaField
 from .models import Feedback,Note
-
+from .models import LocalGuides
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, Field
 
@@ -136,3 +136,20 @@ class NoteForm(forms.ModelForm):
     class Meta:
         model = Note
         fields = ['title', 'content']
+
+
+class LocalGuidesForm(forms.ModelForm):
+    class Meta:
+        model = LocalGuides
+        fields = ['name', 'age', 'phonenumber', 'email', 'address', 'guideplace', 'experience', 'amountcharge','image']
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control'}),
+            'age': forms.NumberInput(attrs={'class': 'form-control'}),
+            'phonenumber': forms.TextInput(attrs={'class': 'form-control'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control'}),
+            'address': forms.Textarea(attrs={'class': 'form-control'}),
+            'guideplace': forms.TextInput(attrs={'class': 'form-control'}),
+            'experience': forms.NumberInput(attrs={'class': 'form-control'}),
+            'amountcharge': forms.NumberInput(attrs={'class': 'form-control'}),
+            'image': forms.FileInput(attrs={'class': 'form-control'}),
+        }
