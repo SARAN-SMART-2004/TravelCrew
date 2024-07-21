@@ -26,7 +26,8 @@ urlpatterns = [
     path('captcha/', include('captcha.urls')),
     path("", include('events.urls')),
     path("", include("allauth.urls")), #most important
-
+    path('',include('chatapp.urls')),
+  
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

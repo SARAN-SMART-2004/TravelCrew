@@ -21,6 +21,7 @@ ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '192.168.153.6','192.168.43.6']
 
 # Application definition
 INSTALLED_APPS = [
+    'daphne',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -32,7 +33,7 @@ INSTALLED_APPS = [
     'main',
     'users',
     'events',
-    
+    'chatapp',
 
     # Third-party apps
     'tinymce',
@@ -40,14 +41,27 @@ INSTALLED_APPS = [
     'crispy_forms',
     'captcha',
     'crispy_bootstrap4',
+    
+    
 
     # Django Allauth apps
     'django.contrib.sites',  # Ensure 'sites' app is included
     'allauth',
     'allauth.account',
+    'channels',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
 ]
+
+ASGI_APPLICATION = 'djang_website.asgi.application'
+
+WSGI_APPLICATION = 'djang_website.wsgi.application'
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels.layers.InMemoryChannelLayer',
+    },
+}
 
 # Enable social login on GET request (not recommended for production)
 SOCIALACCOUNT_LOGIN_ON_GET = True
@@ -90,7 +104,8 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'djang_website.wsgi.application'
+
+
 
 # Database configuration (SQLite as default)
 DATABASES = {

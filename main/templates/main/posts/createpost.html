@@ -82,6 +82,16 @@
             <input type="time" id="waiting-time" name="waiting_time" required>
         </div>
         <div class="form-group">
+            <label for="group-chat">Group chat name(for chat)</label>
+            <input type="text" id="destination-place" name="group_name" placeholder="Chat group name" required>
+        </div>
+        <div class="form-group">
+            <label for="group-slug">Group slug (for chat)</label>
+            <input type="text" id="group-slug" name="group_slug" placeholder="Slug for the group" required>
+            <small id="slug-help" class="form-text text-muted">Slug should be between 5 and 15 characters long, contain no spaces, and no numbers.</small>
+        </div>
+
+        <div class="form-group">
             <label for="message">Message</label>
             <textarea id="message" name="message" placeholder="By travel through .......... any additional message  "></textarea>
         </div>
@@ -94,4 +104,22 @@
 {% else %}
     <p>You are not allowed to submit a travel plan.</p>
 {% endif %}
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var slugInput = document.getElementById("group-slug");
+
+        slugInput.addEventListener("input", function() {
+            var slugValue = slugInput.value.trim();
+            var isValid = (slugValue.length >= 5 && slugValue.length <= 15) &&
+                          (slugValue.indexOf(' ') === -1) &&
+                          (/^[a-zA-Z]+$/.test(slugValue));
+
+            if (!isValid) {
+                slugInput.setCustomValidity("Slug should be between 5 and 15 characters long, contain no spaces, and no numbers.");
+            } else {
+                slugInput.setCustomValidity("");
+            }
+        });
+    });
+</script>
 {% endblock content %}

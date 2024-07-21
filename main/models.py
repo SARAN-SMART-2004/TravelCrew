@@ -16,6 +16,7 @@ class TravelPlan(models.Model):
     message = models.TextField(blank=True) 
     created_at = models.DateTimeField(auto_now_add=True)
     members = models.ManyToManyField(User, related_name='accepted_travel_plans')
+    slug = models.CharField(max_length=20, null=True)
     
 
     def __str__(self):

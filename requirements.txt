@@ -11,3 +11,4 @@ cryptography
 twilio
 django-simple-captcha
 python-decouple
+channels

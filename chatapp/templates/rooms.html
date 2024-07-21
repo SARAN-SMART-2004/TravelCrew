@@ -1,0 +1,108 @@
+{% extends "main/design/header.html" %}
+{% load static %} 
+{% block content %}
+{% if user.is_authenticated %}
+<style>
+    /* Container for the report */
+.report-container {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Header styling */
+.report-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.report-header h5 {
+    font-size: 24px;
+    color: #333;
+    margin: 0;
+}
+
+/* List of rooms */
+.rooms-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+/* Each room card */
+.room-card {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    width: calc(33.333% - 40px);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    text-align: center;
+    box-sizing: border-box;
+}
+
+.room-card h3 {
+    margin-top: 0;
+    font-size: 20px;
+    color: #333;
+}
+
+.room-card p {
+    color: #555;
+    margin: 10px 0;
+}
+
+.btn-go-to-room {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #007bff;
+    border-radius: 4px;
+    text-decoration: none;
+}
+
+.btn-go-to-room:hover {
+    background-color: #0056b3;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .room-card {
+        width: calc(50% - 40px);
+    }
+}
+
+@media (max-width: 480px) {
+    .room-card {
+        width: 100%;
+    }
+}
+
+</style>
+
+<div class="report-container">
+    <div class="report-header">
+        <h5>AvailablePublic Room</h5>
+    </div>
+    <div class="rooms-list">
+        {% if rooms %}
+            {% for room in rooms %}
+            <div class="room-card">
+                <h3>{{ room.name }}</h3>
+                <p>This is a public group for this project.</p>
+                <a href="/{{ room.slug }}" class="btn-go-to-room">Go to Room</a>
+            </div>
+            {% endfor %}
+        {% else %}
+            <p>No Rooms Available!</p>
+        {% endif %}
+    </div>
+{% else %}
+    <p>Please log in to view available rooms.</p>
+{% endif %}
+
+</div>
+
+{% endblock %}

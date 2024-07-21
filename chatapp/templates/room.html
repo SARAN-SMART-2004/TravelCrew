@@ -1,0 +1,280 @@
+{% extends "main/design/header.html" %}
+{% load static %}
+{% block content %}
+<style>
+/* Chat Container */
+.chat-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background: #e5ddd5;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  height: 80vh;
+}
+
+/* Chat Header */
+.chat-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: #075e54;
+  color: white;
+  border-radius: 8px 8px 0 0;
+}
+
+.chat-header h5 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.chat-header .btn-outline-secondary {
+  border-radius: 4px;
+  border-color: #ddd;
+  color: #333;
+}
+
+/* Chat Box */
+.chat-box {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px;
+  background-color: #efeae2;
+  border-radius: 0 0 8px 8px;
+}
+
+/* Chat Messages */
+.chat-message {
+  display: flex;
+  margin-bottom: 10px;
+  padding: 5px 10px;
+  border-radius: 8px;
+  align-items: center;
+  max-width: 70%;
+}
+
+.chat-message.text-right {
+  margin-left: auto;
+  background: #dcf8c6;
+}
+
+.chat-message.text-left {
+  margin-right: auto;
+  background: #ffffff;
+}
+
+.chat-message img {
+  max-width: 100%;
+  border-radius: 8px;
+  margin-top: 5px;
+}
+
+.chat-message .username {
+  font-weight: bold;
+  color: #075e54;
+  margin-right: 5px;
+}
+
+/* No Messages */
+.no-messages {
+  text-align: center;
+  color: #777;
+  font-style: italic;
+}
+
+/* Chat Form */
+.chat-form {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  background-color: #f0f0f0;
+  border-radius: 8px;
+}
+
+.chat-form .form-control,
+.chat-form .form-control-file {
+  flex: 1;
+  border-radius: 20px;
+  padding: 10px;
+  margin-right: 10px;
+  border: 1px solid #ddd;
+}
+
+.chat-form .btn-primary {
+  border-radius: 10px;
+  background-color: #25d366;
+  padding: 10px;
+  border: none;
+}
+
+.chat-form .btn-location {
+  
+  border: none;
+  border-radius: 20px;
+  margin-right: 10px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .chat-container {
+    padding: 10px;
+  }
+}
+
+@media (max-width: 576px) {
+  .chat-box {
+    height: 300px;
+  }
+}
+</style>
+
+{% if user.is_authenticated %}
+<div class="chat-container">
+  <div class="chat-header">
+    <h5>{{ room_name }}</h5>
+    <a href="/accounts/logout/" class="btn btn-outline-secondary">Log Out</a>
+  </div>
+
+  <div class="chat-box" id="chatbox">
+    {% if messages %}
+      {% for message in messages %}
+        <div class="chat-message {% if message.user == request.user %}text-right{% else %}text-left{% endif %}">
+          <span class="username">{{ message.user.username }}</span>
+          {% if message.content %}
+            {{ message.content }}
+          {% endif %}
+          {% if message.image %}
+            <img src="{{ message.image.url }}" alt="Image">
+          {% endif %}
+          {% if message.location %}
+            <p>Location: Latitude {{ message.location.lat }}, Longitude {{ message.location.lng }}</p>
+          {% endif %}
+        </div>
+      {% endfor %}
+    {% else %}
+      <div class="no-messages">No Messages in this Room.</div>
+    {% endif %}
+  </div>
+
+  <form class="chat-form" id="chat-form">
+    <input class="form-control" placeholder="Enter text here" id="my_input" type="text">
+    <input class="form-control-file" id="chat-image-input" type="file">
+    <button class="btn btn-location" id="send-location" type="button"><i class="fa-solid fa-location-dot" style="color: #410099;"></i></button>
+    <button class="btn btn-primary" id="submit_button" type="button">Send</button>
+  </form>
+</div>
+
+{{ slug|json_script:"room_slug" }}
+
+<script>
+const chatbox = document.querySelector("#chatbox");
+
+function scrollToBottom() {
+  chatbox.scrollTop = chatbox.scrollHeight;
+}
+
+scrollToBottom();
+
+const roomName = JSON.parse(document.getElementById('room_slug').textContent);
+const chatSocket = new WebSocket("ws://" + window.location.host + "/ws/" + roomName + "/");
+
+chatSocket.onopen = function (e) {
+  console.log("Connection established");
+};
+
+chatSocket.onclose = function (e) {
+  console.log("Connection closed");
+};
+
+document.querySelector("#my_input").focus();
+document.querySelector("#my_input").onkeyup = function (e) {
+  if (e.keyCode === 13) {
+    e.preventDefault();
+    document.querySelector("#submit_button").click();
+  }
+};
+
+document.querySelector("#submit_button").onclick = function (e) {
+  const messageInput = document.querySelector("#my_input").value.trim();
+  const imageInput = document.querySelector("#chat-image-input").files[0];
+
+  if (messageInput.length === 0 && !imageInput) {
+    alert("Please enter a message or select an image!");
+  } else {
+    const reader = new FileReader();
+    reader.onloadend = function() {
+      chatSocket.send(JSON.stringify({
+        message: messageInput,
+        username: "{{ request.user.username }}",
+        room_name: "{{ room_name }}",
+        image: reader.result
+      }));
+      document.querySelector("#my_input").value = "";
+      document.querySelector("#chat-image-input").value = "";
+    };
+    if (imageInput) {
+      reader.readAsDataURL(imageInput);
+    } else {
+      chatSocket.send(JSON.stringify({
+        message: messageInput,
+        username: "{{ request.user.username }}",
+        room_name: "{{ room_name }}"
+      }));
+      document.querySelector("#my_input").value = "";
+    }
+  }
+};
+
+document.querySelector("#send-location").onclick = function () {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(function (position) {
+      chatSocket.send(JSON.stringify({
+        location: {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        },
+        username: "{{ request.user.username }}",
+        room_name: "{{ room_name }}"
+      }));
+    });
+  } else {
+    alert("Geolocation is not supported by this browser.");
+  }
+};
+
+chatSocket.onmessage = function (e) {
+  const data = JSON.parse(e.data);
+  const div = document.createElement("div");
+  div.className = "chat-message " + (data.username === "{{ request.user.username }}" ? "text-right" : "text-left");
+
+  let messageContent = `<span class='username'>${data.username}</span> `;
+  if (data.message) {
+    messageContent += `${data.message}`;
+  }
+  if (data.image) {
+    messageContent += `<img src="${data.image}" alt="Image">`;
+  }
+  if (data.location) {
+    messageContent += `<p>Location: Latitude ${data.location.lat}, Longitude ${data.location.lng}</p>`;
+  }
+
+  div.innerHTML = messageContent;
+
+  document.querySelector("#chatbox").appendChild(div);
+  scrollToBottom();
+};
+</script>
+
+{% else %}
+<div class="container">
+  <div class="alert alert-info d-flex justify-content-between" role="alert">
+    <h5>You are not logged in</h5>
+    <a href="{% url 'login' %}" class="btn btn-outline-secondary">Log In</a>
+  </div>
+</div>  
+{% endif %}
+
+{% endblock %}

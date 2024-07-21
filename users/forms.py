@@ -40,6 +40,7 @@ class UserLoginForm(AuthenticationForm):
 
 
 class UserUpdateForm(forms.ModelForm):
+    image=forms.FileField()
     email = forms.EmailField()
     phone_number = forms.CharField(max_length=15, required=False, help_text='Enter your phone number')
     age = forms.IntegerField(required=False, help_text='Enter your age')

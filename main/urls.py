@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path,include
 from . import views
 from django.conf import settings
 from django.conf.urls.static import static
@@ -29,7 +29,8 @@ urlpatterns = [
     path('people-histroy/<str:username>/', views.user_travel_history, name='user_travel_history'),
     path('chatbot/',views.chatbot,name='chatbot'),   
     path('travelhacks/',views.travelhacks,name='travelhacks'),  
-    path('health/',views.health,name='health'),    
+    path('health/',views.health,name='health'),
+    path('',include('chatapp.urls')),
 ] 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

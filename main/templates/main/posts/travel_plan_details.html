@@ -16,6 +16,30 @@
     .report-body {
         padding: 20px;
     }
+    /* Style for the link */
+.chat-link {
+    text-decoration: none; /* Remove underline */
+    color: #007bff; /* Classic blue color for links */
+    font-weight: bold; /* Bold text for emphasis */
+    font-size: 16px; /* Standard font size */
+    display: inline-block; /* Ensures padding and margin apply correctly */
+    padding: 10px 15px; /* Padding around the text */
+    border-radius: 3px; /* Slightly rounded corners */
+    transition: color 0.3s, background-color 0.3s; /* Smooth transition */
+}
+
+/* Hover effect for the link */
+.chat-link:hover {
+    color: #0056b3; /* Darker blue color on hover */
+    background-color: #e9ecef; /* Light grey background on hover */
+    text-decoration: underline; /* Underline text on hover */
+}
+
+/* Focus effect for accessibility */
+.chat-link:focus {
+    outline: 2px solid #0056b3; /* Blue outline for focus state */
+    outline-offset: 2px; /* Offset for better visibility */
+}
 
     .grid-container {
         display: grid;
@@ -192,6 +216,13 @@
                     {% endif %}
                 {% endif %}
             </div>
+            {% if request.user == travel_plan.organizer or is_member %}
+    <div class="item">
+        <a href="{% url 'room' travel_plan.slug %}" class="chat-link">Chat</a>
+    </div>
+{% endif %}
+
+            
 
             {% if request.user == travel_plan.organizer %}
                 <div class="item">

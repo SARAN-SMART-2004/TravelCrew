@@ -8,6 +8,8 @@ from django.db.models import Q
 from users.models import Feedback
 from users.forms import FeedbackForm
 from django.utils import timezone
+from chatapp import models
+from chatapp.models import Room,Message
 from django.template.loader import render_to_string
 from datetime import date
 from django.conf import settings
@@ -134,7 +136,9 @@ def submit_travel_plan(request):
         waiting_time = request.POST.get('waiting_time')
         waiting_place=request.POST.get('waiting_place')
         message = request.POST.get('message')
-
+        group_name = request.POST.get('group_name')
+        group_slug=request.POST.get('group_slug')
+        Room.objects.create(name=group_name,slug=group_slug)
         TravelPlan.objects.create(
             source_place=source_place,
             destination_place=destination_place,
@@ -144,11 +148,18 @@ def submit_travel_plan(request):
             waiting_place=waiting_place,
             message=message,
             organizer=request.user,
+            slug=group_slug,
             created_at=timezone.now()
         )
+        context.update({
+        'group_slug': group_slug
+        })
         messages.success(request, f"You have successfully created the post !!!")
         return redirect('homepage')  # Redirect to a success page or another page of your choice
-
+    # Fetch the latest created travel plans (optional: adjust the query as needed)
+    
+    
+    
     return render(request, 'main/posts/createpost.html',context)
 
 
