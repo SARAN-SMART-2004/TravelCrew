@@ -13,10 +13,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 # List of hosts/domain names that this Django site can serve.
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '192.168.153.6','192.168.43.6']
+ALLOWED_HOSTS = ['travelcrew.pythonanywhere.com']
 
 
 # Application definition
