@@ -2,540 +2,589 @@
 {%load static%}
 <html lang="en">
 
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Travel Partner</title>
-    <link href="{% static 'style.css' %}" rel="stylesheet" type="text/css" />
-    <link href="{% static 'responsive.css' %}" rel="stylesheet" type="text/css" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-      integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    />
-    <style>
-      * {
-        text-decoration: none;
-      }
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Travel Partner</title>
+  <link href="{% static 'style.css' %}" rel="stylesheet" type="text/css" />
+  <link href="{% static 'responsive.css' %}" rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <style>
+    * {
+      text-decoration: none;
+    }
 
-      .box-container a {
-        color: white;
-      }
+    .box-container a {
+      color: white;
+    }
 
-      .custom-link {
-        color: white;
-        text-decoration: none;
-      }
+    .custom-link {
+      color: #3f0097;
+      text-decoration: none;
+      display: block;
+      padding: 10px 15px;
+      border-radius: 5px;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
 
-      .pimg {
-        width: 50px;
-        border-radius: 50px;
-      }
+    .custom-link:hover {
+      background-color: #dcd6f7;
+      color: #410099;
+    }
 
-      .report-container {
-        margin: 0px;
-      }
+    .custom-link.active {
+      background-color: #410099;
+      color: white;
+      border-radius: 5px;
+    }
 
-      i {
-        font-size: 30px;
-      }
+    .custom-link.active i {
+      color: white !important;
+    }
 
-      .profile-link {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        text-decoration: none;
-      }
+    .custom-link.active h3 {
+      color: white;
+    }
 
-      .pimg {
-        width: 40px;
-        border-radius: 50px;
-        height: 40px;
-      }
+    /* Apply same styles to nav-option divs inside custom-link anchors */
+    .custom-link>.nav-option {
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
 
-      .username {
-        text-align: center;
-        margin-top: 8px;
-      }
+    .custom-link.active>.nav-option {
+      background-color: #410099;
+      color: white;
+      border-radius: 5px;
+    }
 
-      .sb {
-        height: 35px;
-        width: 200px;
-        margin-right: 10px;
-      }
+    .custom-link.active>.nav-option i {
+      color: white !important;
+    }
 
-      .view-button {
-        display: inline-block;
-        padding: 10px 20px;
-        background-color: #5500cb;
-        color: white;
-        text-decoration: none;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-      }
+    .custom-link.active>.nav-option h3 {
+      color: white;
+    }
 
-      /* Dropdown Styles */
-      .nav-dropdown {
-        position: relative;
-        display: inline-block;
-      }
+    .pimg {
+      width: 50px;
+      border-radius: 50px;
+    }
 
-      .nav-dropdown-content {
-        display: none;
-        position: absolute;
-        background-color: #3f0097;
-        min-width: 200px;
-        box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-        z-index: 1;
-        border-radius: 4px;
-        transition: max-height 0.3s ease;
-        max-height: 0;
-        overflow: hidden;
-      }
+    .report-container {
+      margin: 0px;
+    }
 
-      .nav-dropdown:hover .nav-dropdown-content {
-        display: block;
-        max-height: 300px;
-      }
+    i {
+      font-size: 30px;
+    }
 
-      .nav-dropdown-content a {
-        color: white;
-        padding: 12px 16px;
-        text-decoration: none;
-        display: block;
-        transition: background-color 0.3s ease;
-      }
+    .profile-link {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-decoration: none;
+    }
 
-      .nav-dropdown-content a:hover {
-        background-color: #6c3483;
-      }
+    .pimg {
+      width: 40px;
+      border-radius: 50px;
+      height: 40px;
+    }
 
-      /* Adjust logout button style */
-      .logout {
-        margin-top: 10px;
-      }
+    .username {
+      text-align: center;
+      margin-top: 8px;
+    }
 
-      .nav-option {
-        margin-bottom: 10px;
-      }
+    .sb {
+      height: 35px;
+      width: 200px;
+      margin-right: 10px;
+    }
 
-      .name {
-        font-weight: 20px;
-        font-color: black;
-      }
+    .view-button {
+      display: inline-block;
+      padding: 10px 20px;
+      background-color: #5500cb;
+      color: white;
+      text-decoration: none;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
 
-      .tooltip-container {
-        position: relative;
-        display: inline-block;
-      }
+    /* Dropdown Styles */
+    .nav-dropdown {
+      position: relative;
+      display: inline-block;
+    }
 
-      .tooltip-container .tooltip-text {
-        visibility: hidden;
-        width: 140px;
-        background-color: #410099;
-        color: #fff;
-        text-align: center;
-        border-radius: 5px;
-        padding: 5px;
-        position: absolute;
-        z-index: 1;
-        top: 125%; /* Position below the icon */
-        left: 50%;
-        transform: translateX(-50%); /* Center the tooltip */
-        opacity: 0;
-        transition: opacity 0.3s;
-      }
+    .nav-dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #3f0097;
+      min-width: 200px;
+      box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+      z-index: 1;
+      border-radius: 4px;
+      transition: max-height 0.3s ease;
+      max-height: 0;
+      overflow: hidden;
+    }
 
-      .tooltip-container .tooltip-text::after {
-        content: "";
-        position: absolute;
-        bottom: 100%; /* Top of the tooltip */
-        left: 50%;
-        transform: translateX(-50%);
-        border-width: 5px;
-        border-style: solid;
-        border-color: transparent transparent #410099 transparent;
-      }
+    .nav-dropdown:hover .nav-dropdown-content {
+      display: block;
+      max-height: 300px;
+    }
 
-      .tooltip-container:hover .tooltip-text {
-        visibility: visible;
-        opacity: 1;
-      }
+    .nav-dropdown-content a {
+      color: white;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+      transition: background-color 0.3s ease;
+    }
 
-      .nav li {
-        list-style: none;
-        padding: 10px;
-        cursor: pointer;
-      }
+    .nav-dropdown-content a:hover {
+      background-color: #6c3483;
+    }
 
-      .dropdown h3 {
-        color: #3f0097;
-      }
+    /* Adjust logout button style */
+    .logout {
+      margin-top: 10px;
+    }
 
-      .dropdown-content {
-        display: none;
-        flex-direction: column;
-      }
+    .nav-option {
+      margin-bottom: 10px;
+    }
 
-      .dropdown-content li {
-        border-top: none;
-      }
+    .name {
+      font-weight: 20px;
+      font-color: black;
+    }
 
-      .dropdown:hover .dropdown-content {
-        display: flex;
-      }
+    .tooltip-container {
+      position: relative;
+      display: inline-block;
+    }
 
-      .me {
-        font-family: "Poppins", sans-serif;
-        font-size: 18px;
-        font-weight: 700;
-        padding-right: 10px;
-        padding-left: 5px;
-      }
+    .tooltip-container .tooltip-text {
+      visibility: hidden;
+      width: 140px;
+      background-color: #410099;
+      color: #fff;
+      text-align: center;
+      border-radius: 5px;
+      padding: 5px;
+      position: absolute;
+      z-index: 1;
+      top: 125%;
+      /* Position below the icon */
+      left: 50%;
+      transform: translateX(-50%);
+      /* Center the tooltip */
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
 
-      .nav li {
-        list-style: none;
-        padding-bottom: 10px;
-        padding-right: 0px;
-        cursor: pointer;
-        margin-left: 0px;
-        padding-left: 0px;
-        transition: 2s;
-      }
+    .tooltip-container .tooltip-text::after {
+      content: "";
+      position: absolute;
+      bottom: 100%;
+      /* Top of the tooltip */
+      left: 50%;
+      transform: translateX(-50%);
+      border-width: 5px;
+      border-style: solid;
+      border-color: transparent transparent #410099 transparent;
+    }
 
-      .fa-poll:before,
-      .fa-square-poll-vertical:before {
-        content: "\f681";
-        padding-right: 20px;
-        margin-left: 0px;
-      }
+    .tooltip-container:hover .tooltip-text {
+      visibility: visible;
+      opacity: 1;
+    }
 
-      .saran {
-        padding-right: 70px;
-      }
+    .nav li {
+      list-style: none;
+      padding: 10px;
+      cursor: pointer;
+    }
 
-      /* Chatbot styles */
-      .chatbot-frame {
-        display: none;
-        position: fixed;
-        bottom: 0;
-        right: 20px;
-        width: 300px;
-        height: 400px;
-        border: none;
-        border-radius: 10px 10px 0 0;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-        z-index: 9999;
-        transition: transform 0.3s ease-in-out;
+    .dropdown h3 {
+      color: #3f0097;
+    }
+
+    .dropdown-content {
+      display: none;
+      flex-direction: column;
+    }
+
+    .dropdown-content li {
+      border-top: none;
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: flex;
+    }
+
+    .me {
+      font-family: "Poppins", sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      padding-right: 10px;
+      padding-left: 5px;
+    }
+
+    .nav li {
+      list-style: none;
+      padding-bottom: 10px;
+      padding-right: 0px;
+      cursor: pointer;
+      margin-left: 0px;
+      padding-left: 0px;
+      transition: 2s;
+    }
+
+    .fa-poll:before,
+    .fa-square-poll-vertical:before {
+      content: "\f681";
+      padding-right: 20px;
+      margin-left: 0px;
+    }
+
+    .saran {
+      padding-right: 70px;
+    }
+
+    /* Chatbot styles */
+    .chatbot-frame {
+      display: none;
+      position: fixed;
+      bottom: 0;
+      right: 20px;
+      width: 300px;
+      height: 400px;
+      border: none;
+      border-radius: 10px 10px 0 0;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+      z-index: 9999;
+      transition: transform 0.3s ease-in-out;
     }
 
     .chat-icon {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        background-color: #410099;
-        color: white;
-        width: 60px;
-        height: 60px;
-        border-radius: 50%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        cursor: pointer;
-        z-index: 10000;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #410099;
+      color: white;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      z-index: 10000;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
     }
 
     .chat-icon i {
-        font-size: 24px;
+      font-size: 24px;
     }
-    </style>
-  </head>
+  </style>
+</head>
 
-  <body>
-    <!-- for header part -->
-    <header>
-      <div class="logosec">
-        <div class="logo">Travel Crew</div>
-        <i
-          class="fa-solid fa-bars icn menuicn"
-          id="menuicn"
-          style="color: #410099"
-        ></i>
-      </div>
-
-      <!-- User profile section -->
-      <div class="message">
-       
-        {% if current_user.is_authenticated %}
-        <a href="{% url 'list_notes' %}" class="tooltip-container">
-          <i class="fa-solid fa-note-sticky fa-beat" style="color: #410099"></i>
-          <span class="tooltip-text">Make Notes</span>
-        </a>
-
-        <a href="{% url 'search_travel_plans' %}" class="tooltip-container">
-          <i
-            class="fa-solid fa-magnifying-glass fa-bounce"
-            style="color: #410099"
-          ></i>
-          <span class="tooltip-text">Search travel plans</span>
-        </a>
-
-        <a href="{% url 'messages' %}" class="tooltip-container">
-          <i class="fa-solid fa-bell fa-shake" style="color: #410099"></i>
-          <span class="tooltip-text">Notifications</span>
-        </a>
-        {% if current_user.image %}
-        <a href="{% url 'profile' current_user.username %}" class="profile-link">
-          <img class="pimg" src="{{ current_user.image.url }}" alt="{{ current_user.username }}" />
-          <b class="username"> {{ current_user.username }}</b>
-        </a>
-        {% else %}
-
-        <div class="dp">
-          <a href="{% url 'profile' current_user.username %}">
-            <img
-              src="https://media.geeksforgeeks.org/wp-content/uploads/20221210180014/profile-removebg-preview.png"
-              class="dpicn"
-              alt="dp"
-            />
-          </a>
-        </div>
-        {% endif %} {% endif %}
-      </div>
-    </header>
-    <div class="main-container">
-      <div class="navcontainer">
-        <nav class="nav">
-          <div class="nav-upper-options">
-            {% if user.is_authenticated %} {% if user.is_superuser %}
-            <a href="{% url 'admin:index' %}">
-              <div class="option2 nav-option">
-                <i class="fa-solid fa-user-tie" style="color: #3f0097"></i>
-                <h3>Admin</h3>
-              </div>
-            </a>
-            {% endif %}
-            <a href="{% url 'dashboard' %}" class="custom-link">
-              <div class="nav-option option1">
-                <i class="fa-solid fa-chart-pie" style="color: white"></i>
-                <h3>Dashboard</h3>
-              </div>
-            </a>
-            <a href="{% url 'all_travel_plans' %}">
-              <div class="option2 nav-option">
-                <i
-                  class="fa-solid fa-earth-americas"
-                  style="color: #3f0097"
-                ></i>
-                <h3>Post</h3>
-              </div>
-            </a>
-            <a href="{% url 'edit_all_travel_plans' %}">
-              <div class="nav-option option3">
-                <i class="fa-solid fa-file-pen" style="color: #3f0097"></i>
-                <h3>Edit Post</h3>
-              </div>
-            </a>
-            <a href="{% url 'submit_travel_plan' %}">
-              <div class="nav-option option4">
-                <i class="fa-solid fa-pen-to-square" style="color: #3f0097"></i>
-                <h3>Create Post</h3>
-              </div>
-            </a>
-            <a href="{% url 'requests' %}">
-              <div class="nav-option option5">
-                <i class="fa-solid fa-bullhorn" style="color: #410099"></i>
-                <h3>Requests</h3>
-              </div>
-            </a>
-            <a href="{% url 'people' %}">
-              <div class="nav-option option5">
-                <i class="fa-solid fa-user-group" style="color: #3f0097"></i>
-                <h3>People</h3>
-              </div>
-            </a>
-            <li class="dropdown">
-              <i
-                class="fa-solid fa-square-poll-vertical"
-                style="color: #3f0097"><span class ="me">My Trips</span><i class="fa-solid fa-caret-down saran" style="color: #410099;"></i>
-            </i>
-              
-              <ul class="dropdown-content">
-                <li>
-                  <a href="{% url 'user_upcoming_history' %}">Upcoming Trips</a>
-                </li>
-                <li>
-                  <a href="{% url 'user_ongoing_history' %}">Ongoing Trips</a>
-                </li>
-                <li>
-                  <a href="{% url 'user_past_history' %}">Completed Trips</a>
-                </li>
-              </ul>
-            </li>
-            
-            <a href="{% url 'homepage' %}">
-              <div class="nav-option logout">
-                <i class="fa-solid fa-gear" style="color: #410099;"></i>
-                <h3>Settings</h3>
-              </div>
-            </a>
-            
-            
-            
-            
-            <a href="{% url 'logout' %}">
-              <div class="nav-option logout">
-                <i
-                  class="fa-solid fa-right-from-bracket"
-                  style="color: #3f0097"
-                ></i>
-                <h3>Logout</h3>
-              </div>
-            </a>
-
-
-
-
-
-            <li class="dropdown">
-              <i
-                class="fa-solid fa-square-poll-vertical"
-                style="color: #3f0097"><span class ="me">Events</span><i class="fa-solid fa-caret-down saran" style="color: #410099;"></i>
-            </i>
-              
-              <ul class="dropdown-content">
-                <li>
-                  <a href="{% url 'event_create' %}">Create Events</a>
-                </li>
-                <li>
-                  <a href="{% url 'event_list' %}">Events Lists</a>
-                </li>
-              </ul>
-            </li>
-
-
-
-            <a href="{% url 'local_guides_list' %}">
-              <div class="nav-option logout">
-                <i class="fa-solid fa-person-chalkboard" style="color: #410099;"></i>
-                <h3>Local Guides</h3>
-              </div>
-            </a>
-
-
-
-            {% if user.is_authenticated and user.is_staff %}
-
-            <a href="{% url 'local_guides_create' %}">
-              <div class="nav-option logout">
-                <i class="fa-solid fa-person-chalkboard" style="color: #410099;"></i>
-                <h3>Local Guide creations</h3>
-              </div>
-            </a>
-            {% endif %}
-
-
-
-
-
-
-
-            <div class="nav-option logout">
-              {% if current_user and current_user.username %}
-              <a href="{% url 'profile' current_user.username %}">
-                {% if current_user.image %}
-                <img
-                  class="pimg"
-                  src="{{ current_user.image.url }}"
-                  alt="{{ current_user.username }}"
-                />
-                {% else %}
-                <img
-                  src="https://media.geeksforgeeks.org/wp-content/uploads/20221210180014/profile-removebg-preview.png"
-                  class="nav-img"
-                  alt="profile"
-                />
-                {% endif %}
-                <h3 class="name">{{ current_user.username }}</h3>
-              </a>
-              {% else %}
-              <p>{{username}}</p>
-              {% endif %}
-            </div>
-            {% else %}
-            <div class="nav-option logout">
-              <img
-                src="https://media.geeksforgeeks.org/wp-content/uploads/20221210183321/7.png"
-                class="nav-img"
-                alt="logout"
-              />
-              <a href="{% url 'login' %}">
-                <h3>Login</h3>
-              </a>
-            </div>
-            <div class="nav-option logout">
-              <img
-                src="https://media.geeksforgeeks.org/wp-content/uploads/20221210183321/7.png"
-                class="nav-img"
-                alt="logout"
-              />
-              <a href="{% url 'register' %}">
-                <h3>Sign Up</h3>
-              </a>
-            </div>
-            {% endif %}
-          </div>
-        </nav>
-      </div>
-      <div class="main">
-        {% include 'main/includes/messaging.html' %} {% block content %} {%endblock %}
-      </div>
+<body>
+  <!-- for header part -->
+  <header>
+    <div class="logosec">
+      <div class="logo">Travel Crew</div>
+      <i class="fa-solid fa-bars icn menuicn" id="menuicn" style="color: #410099"></i>
     </div>
 
-        <!-- Chatbot iframe -->
-        <iframe
-        class="chatbot-frame"
-        src="https://console.dialogflow.com/api-client/demo/embedded/676062d3-68b3-4bcb-a568-4585e18cb935"
-        id="chatbot-frame"
-        title="Chatbot"
-        ></iframe>
-        <div class="chat-icon" id="chat-icon">
-        <i class="fa-solid fa-comment"></i>
+    <!-- User profile section -->
+    <div class="message">
+
+      {% if current_user.is_authenticated %}
+      <a href="{% url 'list_notes' %}" class="tooltip-container">
+        <i class="fa-solid fa-note-sticky fa-beat" style="color: #410099"></i>
+        <span class="tooltip-text">Make Notes</span>
+      </a>
+
+      <a href="{% url 'search_travel_plans' %}" class="tooltip-container">
+        <i class="fa-solid fa-magnifying-glass fa-bounce" style="color: #410099"></i>
+        <span class="tooltip-text">Search travel plans</span>
+      </a>
+
+      <a href="{% url 'messages' %}" class="tooltip-container">
+        <i class="fa-solid fa-bell fa-shake" style="color: #410099"></i>
+        <span class="tooltip-text">Notifications</span>
+      </a>
+      {% if current_user.image %}
+      <a href="{% url 'profile' current_user.username %}" class="profile-link">
+        <img class="pimg" src="{{ current_user.image.url }}" alt="{{ current_user.username }}" />
+        <b class="username"> {{ current_user.username }}</b>
+      </a>
+      {% else %}
+
+      <div class="dp">
+        <a href="{% url 'profile' current_user.username %}">
+          <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210180014/profile-removebg-preview.png"
+            class="dpicn" alt="dp" />
+        </a>
+      </div>
+      {% endif %} {% endif %}
+    </div>
+  </header>
+  <div class="main-container">
+    <div class="navcontainer">
+      <nav class="nav">
+        <div class="nav-upper-options">
+          {% if user.is_authenticated %} {% if user.is_superuser %}
+          <a href="{% url 'admin:index' %}">
+            <div class="option2 nav-option">
+              <i class="fa-solid fa-user-tie" style="color: #3f0097"></i>
+              <h3>Admin</h3>
+            </div>
+          </a>
+          {% endif %}
+          <a href="{% url 'dashboard' %}"
+            class="custom-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">
+            <div class="nav-option option1">
+              <i class="fa-solid fa-chart-pie"></i>
+              <h3>Dashboard</h3>
+            </div>
+          </a>
+          <a href="{% url 'all_travel_plans' %}"
+            class="custom-link {% if request.resolver_match.url_name == 'all_travel_plans' %}active{% endif %}">
+            <div class="option2 nav-option">
+              <i class="fa-solid fa-earth-americas"></i>
+              <h3>Post</h3>
+            </div>
+          </a>
+          <a href="{% url 'edit_all_travel_plans' %}"
+            class="custom-link {% if request.resolver_match.url_name == 'edit_all_travel_plans' %}active{% endif %}">
+            <div class="nav-option option3">
+              <i class="fa-solid fa-file-pen"></i>
+              <h3>Edit Post</h3>
+            </div>
+          </a>
+          <a href="{% url 'submit_travel_plan' %}"
+            class="custom-link {% if request.resolver_match.url_name == 'submit_travel_plan' %}active{% endif %}">
+            <div class="nav-option option4">
+              <i class="fa-solid fa-pen-to-square"></i>
+              <h3>Create Post</h3>
+            </div>
+          </a>
+          <a href="{% url 'requests' %}"
+            class="custom-link {% if request.resolver_match.url_name == 'requests' %}active{% endif %}">
+            <div class="nav-option option5">
+              <i class="fa-solid fa-bullhorn"></i>
+              <h3>Requests</h3>
+            </div>
+          </a>
+          <a href="{% url 'people' %}"
+            class="custom-link {% if request.resolver_match.url_name == 'people' %}active{% endif %}">
+            <div class="nav-option option5">
+              <i class="fa-solid fa-user-group"></i>
+              <h3>People</h3>
+            </div>
+          </a>
+          <li
+            class="dropdown {% if request.resolver_match.url_name in 'user_upcoming_history user_ongoing_history user_past_history' %}active{% endif %}">
+            <i class="fa-solid fa-square-poll-vertical" style="color: #3f0097"><span class="me">My Trips</span><i
+                class="fa-solid fa-caret-down saran" style="color: #410099;"></i>
+            </i>
+
+            <ul class="dropdown-content">
+              <li>
+                <a href="{% url 'user_upcoming_history' %}"
+                  class="{% if request.resolver_match.url_name == 'user_upcoming_history' %}active{% endif %}">Upcoming
+                  Trips</a>
+              </li>
+              <li>
+                <a href="{% url 'user_ongoing_history' %}"
+                  class="{% if request.resolver_match.url_name == 'user_ongoing_history' %}active{% endif %}">Ongoing
+                  Trips</a>
+              </li>
+              <li>
+                <a href="{% url 'user_past_history' %}"
+                  class="{% if request.resolver_match.url_name == 'user_past_history' %}active{% endif %}">Completed
+                  Trips</a>
+              </li>
+            </ul>
+          </li>
+
+          <a href="{% url 'homepage' %}"
+            class="custom-link {% if request.resolver_match.url_name == 'homepage' %}active{% endif %}">
+            <div class="nav-option logout">
+              <i class="fa-solid fa-gear" style="color: #410099;"></i>
+              <h3>Settings</h3>
+            </div>
+          </a>
+
+          <a href="{% url 'logout' %}"
+            class="custom-link {% if request.resolver_match.url_name == 'logout' %}active{% endif %}">
+            <div class="nav-option logout">
+              <i class="fa-solid fa-right-from-bracket" style="color: #3f0097"></i>
+              <h3>Logout</h3>
+            </div>
+          </a>
+
+
+
+
+
+          <li class="dropdown {% if request.resolver_match.url_name in 'event_create event_list' %}active{% endif %}">
+            <i class="fa-solid fa-square-poll-vertical" style="color: #3f0097"><span class="me">Events</span><i
+                class="fa-solid fa-caret-down saran" style="color: #410099;"></i>
+            </i>
+
+            <ul class="dropdown-content">
+              <li>
+                <a href="{% url 'event_create' %}"
+                  class="{% if request.resolver_match.url_name == 'event_create' %}active{% endif %}">Create Events</a>
+              </li>
+              <li>
+                <a href="{% url 'event_list' %}"
+                  class="{% if request.resolver_match.url_name == 'event_list' %}active{% endif %}">Events Lists</a>
+              </li>
+            </ul>
+          </li>
+
+
+
+
+
+          <li class="dropdown {% if request.resolver_match.url_name in 'travel_list travel_create travel_detail travel_edit completed_travel_list' %}active{% endif %}">
+            <i class="fa-solid fa-square-poll-vertical" style="color: #3f0097"><span class="me">Travels</span><i
+                class="fa-solid fa-caret-down saran" style="color: #410099;"></i>
+            </i>
+
+            <ul class="dropdown-content">
+              <li>
+                <a href="{% url 'travel_list' %}"
+                  class="{% if request.resolver_match.url_name == 'travel_list' %}active{% endif %}">My Travels</a>
+              </li>
+              <li>
+                <a href="{% url 'travel_create' %}"
+                  class="{% if request.resolver_match.url_name == 'travel_create' %}active{% endif %}">Create Travel</a>
+              </li>
+              <li>
+                <a href="{% url 'completed_travel_list' %}"
+                  class="{% if request.resolver_match.url_name == 'completed_travel_list' %}active{% endif %}">Completed Travels</a>
+              </li>
+            </ul>
+          </li>
+
+
+
+          <a href="{% url 'local_guides_list' %}"
+            class="custom-link {% if request.resolver_match.url_name == 'local_guides_list' %}active{% endif %}">
+            <div class="nav-option logout">
+              <i class="fa-solid fa-person-chalkboard" style="color: #410099;"></i>
+              <h3>Local Guides</h3>
+            </div>
+          </a>
+
+
+
+          {% if user.is_authenticated and user.is_staff %}
+
+          <a href="{% url 'local_guides_create' %}"
+            class="custom-link {% if request.resolver_match.url_name == 'local_guides_create' %}active{% endif %}">
+            <div class="nav-option logout">
+              <i class="fa-solid fa-person-chalkboard" style="color: #410099;"></i>
+              <h3>Local Guide creations</h3>
+            </div>
+          </a>
+          {% endif %}
+
+
+
+
+
+
+
+          <div class="nav-option logout">
+            {% if current_user and current_user.username %}
+            <a href="{% url 'profile' current_user.username %}">
+              {% if current_user.image %}
+              <img class="pimg" src="{{ current_user.image.url }}" alt="{{ current_user.username }}" />
+              {% else %}
+              <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210180014/profile-removebg-preview.png"
+                class="nav-img" alt="profile" />
+              {% endif %}
+              <h3 class="name">{{ current_user.username }}</h3>
+            </a>
+            {% else %}
+            <p>{{username}}</p>
+            {% endif %}
+          </div>
+          {% else %}
+          <div class="nav-option logout">
+            <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210183321/7.png" class="nav-img"
+              alt="logout" />
+            <a href="{% url 'login' %}">
+              <h3>Login</h3>
+            </a>
+          </div>
+          <div class="nav-option logout">
+            <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210183321/7.png" class="nav-img"
+              alt="logout" />
+            <a href="{% url 'register' %}">
+              <h3>Sign Up</h3>
+            </a>
+          </div>
+          {% endif %}
         </div>
+      </nav>
+    </div>
+    <div class="main">
+      {% include 'main/includes/messaging.html' %} {% block content %} {%endblock %}
+    </div>
+  </div>
+
+  <!-- Chatbot iframe -->
+  <iframe class="chatbot-frame"
+    src="https://console.dialogflow.com/api-client/demo/embedded/676062d3-68b3-4bcb-a568-4585e18cb935"
+    id="chatbot-frame" title="Chatbot"></iframe>
+  <div class="chat-icon" id="chat-icon">
+    <i class="fa-solid fa-comment"></i>
+  </div>
 
 
 
-    <script type="text/javascript" src="{% static 'index.js' %}"></script>
-    <script>
-      document
-        .querySelector(".dropdown")
-        .addEventListener("click", function () {
-          let dropdownContent = document.querySelector(".dropdown-content");
-          if (
-            dropdownContent.style.display === "none" ||
-            dropdownContent.style.display === ""
-          ) {
-            dropdownContent.style.display = "flex";
-          } else {
-            dropdownContent.style.display = "none";
-          }
-        });
-        document.getElementById('chat-icon').addEventListener('click', function () {
-          const chatbotFrame = document.getElementById('chatbot-frame');
-          if (chatbotFrame.style.display === 'none' || chatbotFrame.style.display === '') {
-              chatbotFrame.style.display = 'block';
-              chatbotFrame.style.transform = 'translateY(0)';
-          } else {
-              chatbotFrame.style.display = 'none';
-              chatbotFrame.style.transform = 'translateY(100%)';
-          }
+  <script type="text/javascript" src="{% static 'index.js' %}"></script>
+  <script>
+    document
+      .querySelector(".dropdown")
+      .addEventListener("click", function () {
+        let dropdownContent = document.querySelector(".dropdown-content");
+        if (
+          dropdownContent.style.display === "none" ||
+          dropdownContent.style.display === ""
+        ) {
+          dropdownContent.style.display = "flex";
+        } else {
+          dropdownContent.style.display = "none";
+        }
       });
-    </script>
-  </body> 
+    document.getElementById('chat-icon').addEventListener('click', function () {
+      const chatbotFrame = document.getElementById('chatbot-frame');
+      if (chatbotFrame.style.display === 'none' || chatbotFrame.style.display === '') {
+        chatbotFrame.style.display = 'block';
+        chatbotFrame.style.transform = 'translateY(0)';
+      } else {
+        chatbotFrame.style.display = 'none';
+        chatbotFrame.style.transform = 'translateY(100%)';
+      }
+    });
+  </script>
+</body>
+
 </html>

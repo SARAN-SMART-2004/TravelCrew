@@ -1,0 +1,233 @@
+{% extends "main/design/header.html" %}
+{% load static %}
+
+{% block content %}
+<style>
+    .travel-detail-container {
+        max-width: 900px;
+        margin: 40px auto;
+        background: white;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    h2 {
+        color: #410099;
+        font-weight: 700;
+        margin-bottom: 25px;
+        text-align: center;
+    }
+    p {
+        font-size: 16px;
+        color: #333;
+        margin: 10px 0;
+    }
+    strong {
+        color: #410099;
+    }
+    .travel-images {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+        margin: 20px 0;
+        justify-content: center;
+    }
+    .travel-images img {
+        max-width: 200px;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .btn-primary, .btn-secondary {
+        display: inline-block;
+        padding: 10px 20px;
+        border-radius: 8px;
+        font-weight: 600;
+        text-decoration: none;
+        margin-right: 10px;
+        transition: background-color 0.3s ease;
+    }
+    .btn-primary {
+        background-color: #410099;
+        color: white;
+    }
+    .btn-primary:hover {
+        background-color: #6a0dad;
+    }
+    .btn-secondary {
+        background-color: #dcd6f7;
+        color: #410099;
+    }
+    .btn-secondary:hover {
+        background-color: #b39ddb;
+    }
+    /* Responsive adjustments */
+    @media (max-width: 600px) {
+        .travel-detail-container {
+            padding: 20px 15px;
+            margin: 20px 10px;
+        }
+        .travel-images {
+            flex-direction: column;
+            align-items: center;
+        }
+        .travel-images img {
+            max-width: 100%;
+            height: auto;
+        }
+        .btn-primary, .btn-secondary {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+    }
+</style>
+<div class="travel-detail-container">
+    <h2>{{ travel.place_name }} - {{ travel.city }}, {{ travel.state }}</h2>
+    <p><strong>Country:</strong> {{ travel.country }}</p>
+    <p><strong>District:</strong> {{ travel.district }}</p>
+    <p><strong>Additional Notes:</strong> {{ travel.additional_notes }}</p>
+    <p><strong>Budget:</strong> {{ travel.budget }}</p>
+    <p><strong>Travel Route:</strong> {{ travel.travel_route }}</p>
+    <p><strong>Travel Completed:</strong> {{ travel.travel_completed|yesno:"Yes,No" }}</p>
+
+    <h3>Images</h3>
+    <div class="travel-images">
+        {% for image in images %}
+            <img src="{{ image.image.url }}" alt="Image for {{ travel.place_name }}" />
+        {% empty %}
+            <p>No images available.</p>
+        {% endfor %}
+    </div>
+
+    <a href="{% url 'travel_edit' travel.pk %}" class="btn-primary">Edit Travel</a>
+    <form method="POST" action="{% url 'mark_travel_completed' travel.pk %}" style="display:inline;">
+        {% csrf_token %}
+        {% if not travel.travel_completed %}
+        <button type="submit" class="btn-primary" style="background-color: #28a745; margin-left: 10px;">Mark as Completed</button>
+        {% endif %}
+    </form>
+    {% if travel.travel_completed %}
+    <a href="{% url 'upload_memories' travel.pk %}" class="btn-primary" style="margin-left: 10px;">Upload Memories</a>
+    {% if travel.memory_images.count >= 1 %}
+    <a href="{% url 'show_memories' travel.pk %}" class="btn-primary" style="margin-left: 10px;">Show Memories</a>
+    {% endif %}
+    {% endif %}
+    <a href="{% url 'travel_list' %}" class="btn-secondary" style="margin-left: 10px;">Back to List</a>
+</div>
+
+<div id="memories-modal" class="modal" style="display:none;">
+    <div class="modal-content">
+      <span id="close-memories" class="close">&times;</span>
+      <div class="memories-gallery">
+        {% comment %} Modal removed since navigation to separate page is preferred {% endcomment %}
+      </div>
+    </div>
+</div>
+
+<style>
+    .modal {
+      position: fixed;
+      z-index: 10000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.8);
+      animation: fadeIn 0.5s ease-in-out;
+    }
+    .modal-content {
+      background-color: #fefefe;
+      margin: 5% auto;
+      padding: 20px;
+      border-radius: 12px;
+      max-width: 90%;
+      max-height: 80%;
+      overflow-y: auto;
+      animation: slideIn 0.5s ease-in-out;
+    }
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .close:hover,
+    .close:focus {
+      color: black;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .memories-gallery {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      justify-content: center;
+    }
+    .memories-gallery img {
+      max-width: 200px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease;
+      cursor: pointer;
+    }
+    .memories-gallery img:hover {
+      transform: scale(1.05);
+    }
+    @keyframes fadeIn {
+      from {opacity: 0;}
+      to {opacity: 1;}
+    }
+    @keyframes slideIn {
+      from {transform: translateY(-50px); opacity: 0;}
+      to {transform: translateY(0); opacity: 1;}
+    }
+</style>
+
+<script type="text/javascript" src="{% static 'index.js' %}"></script>
+<script>
+    document
+      .querySelector(".dropdown")
+      .addEventListener("click", function () {
+        let dropdownContent = document.querySelector(".dropdown-content");
+        if (
+          dropdownContent.style.display === "none" ||
+          dropdownContent.style.display === ""
+        ) {
+          dropdownContent.style.display = "flex";
+        } else {
+          dropdownContent.style.display = "none";
+        }
+      });
+    document.getElementById('chat-icon').addEventListener('click', function () {
+      const chatbotFrame = document.getElementById('chatbot-frame');
+      if (chatbotFrame.style.display === 'none' || chatbotFrame.style.display === '') {
+        chatbotFrame.style.display = 'block';
+        chatbotFrame.style.transform = 'translateY(0)';
+      } else {
+        chatbotFrame.style.display = 'none';
+        chatbotFrame.style.transform = 'translateY(100%)';
+      }
+    });
+
+    // Memories modal logic
+    const showMemoriesBtn = document.getElementById('show-memories-btn');
+    const memoriesModal = document.getElementById('memories-modal');
+    const closeMemoriesBtn = document.getElementById('close-memories');
+
+    showMemoriesBtn.addEventListener('click', () => {
+      memoriesModal.style.display = 'block';
+    });
+
+    closeMemoriesBtn.addEventListener('click', () => {
+      memoriesModal.style.display = 'none';
+    });
+
+    window.addEventListener('click', (event) => {
+      if (event.target === memoriesModal) {
+        memoriesModal.style.display = 'none';
+      }
+    });
+</script>
+{% endblock %}

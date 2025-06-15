@@ -9,7 +9,8 @@
     .scroll-container {
         display: flex;
         overflow-x: auto;
-        width: 100%;
+        width: calc(100% - 250px); /* Adjust width to account for nav bar width */
+        margin-left: 250px; /* Offset content to the right of nav bar */
     }
     .scroll-container h3{
         color:#3f0097;

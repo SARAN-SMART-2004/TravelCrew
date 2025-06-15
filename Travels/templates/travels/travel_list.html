@@ -1,0 +1,87 @@
+{% extends "main/design/header.html" %}
+{% block content %}
+<style>
+    .travel-list-container {
+        max-width: 900px;
+        margin: 40px auto;
+        background: white;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    h2 {
+        color: #410099;
+        font-weight: 700;
+        margin-bottom: 25px;
+        text-align: center;
+    }
+    .btn-primary {
+        background-color: #410099;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: background-color 0.3s ease;
+        display: inline-block;
+        margin-bottom: 20px;
+    }
+    .btn-primary:hover {
+        background-color: #6a0dad;
+    }
+    ul.travel-list {
+        list-style: none;
+        padding: 0;
+    }
+    ul.travel-list li {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 15px;
+        border-bottom: 1px solid #ddd;
+        transition: background-color 0.3s ease;
+    }
+    ul.travel-list li:hover {
+        background-color: #f0e6ff;
+    }
+    ul.travel-list li a {
+        color: #3f0097;
+        text-decoration: none;
+        font-weight: 600;
+    }
+    ul.travel-list li a.btn-secondary {
+        background-color: #dcd6f7;
+        padding: 6px 12px;
+        border-radius: 6px;
+        color: #410099;
+        font-weight: 600;
+        transition: background-color 0.3s ease;
+    }
+    ul.travel-list li a.btn-secondary:hover {
+        background-color: #b39ddb;
+    }
+</style>
+<div class="travel-list-container">
+    <h2>My Travels</h2>
+    <form method="get" action="{% url 'travel_list' %}">
+        <input type="text" name="city" placeholder="City" value="{{ city|default:'' }}" />
+        <input type="text" name="state" placeholder="State" value="{{ state|default:'' }}" />
+        <input type="text" name="district" placeholder="District" value="{{ district|default:'' }}" />
+        <input type="text" name="country" placeholder="Country" value="{{ country|default:'' }}" />
+        <button type="submit" class="btn-primary">Filter</button>
+        <a href="{% url 'travel_list' %}" class="btn-secondary">Clear</a>
+    </form>
+    <a href="{% url 'travel_create' %}" class="btn-primary">Create New Travel</a>
+    <ul class="travel-list">
+        {% for travel in travels %}
+        <li>
+            <a href="{% url 'travel_detail' travel.pk %}">{{ travel.place_name }} - {{ travel.city }}, {{ travel.state }}</a>
+            <a href="{% url 'travel_edit' travel.pk %}" class="btn-secondary">Edit</a>
+        </li>
+        {% empty %}
+        <li>No travels found.</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

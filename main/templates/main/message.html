@@ -6,41 +6,47 @@
 
 <h3>Join Requests</h3>
 {% if organizer_messages %}
+    <div class="message-list">
     {% for message in organizer_messages %}
-        <p>
-            From: {{ message.sender.username }}<br>
-            Message: {{ message.content }}<br>
-            Received At: {{ message.timestamp|date:"F j, Y, g:i a" }}<br>
-        </p>
+        <div class="message-item">
+            <strong>From:</strong> {{ message.sender.username }}<br>
+            <strong>Message:</strong> {{ message.content }}<br>
+            <span class="timestamp">Received At: {{ message.timestamp|date:"F j, Y, g:i a" }}</span>
+        </div>
     {% endfor %}
+    </div>
 {% else %}
-    <p>No join requests.</p>
+    <p class="no-messages">No join requests.</p>
 {% endif %}
 
 <h3>Acceptance Notifications</h3>
 {% if member_messages %}
+    <div class="message-list">
     {% for message in member_messages %}
-        <p>
-            From: {{ message.sender.username }}<br>
-            Message: {{ message.content }}<br>
-            Received At: {{ message.timestamp|date:"F j, Y, g:i a" }}<br>
-        </p>
+        <div class="message-item">
+            <strong>From:</strong> {{ message.sender.username }}<br>
+            <strong>Message:</strong> {{ message.content }}<br>
+            <span class="timestamp">Received At: {{ message.timestamp|date:"F j, Y, g:i a" }}</span>
+        </div>
     {% endfor %}
+    </div>
 {% else %}
-    <p>No acceptance notifications.</p>
+    <p class="no-messages">No acceptance notifications.</p>
 {% endif %}
 
 <h3>Cancellation Notifications</h3>
 {% if cancellation_messages %}
+    <div class="message-list">
     {% for message in cancellation_messages %}
-        <p>
-            From: {{ message.sender.username }}<br>
-            Message: {{ message.content }}<br>
-            Received At: {{ message.timestamp|date:"F j, Y, g:i a" }}<br>
-        </p>
+        <div class="message-item">
+            <strong>From:</strong> {{ message.sender.username }}<br>
+            <strong>Message:</strong> {{ message.content }}<br>
+            <span class="timestamp">Received At: {{ message.timestamp|date:"F j, Y, g:i a" }}</span>
+        </div>
     {% endfor %}
+    </div>
 {% else %}
-    <p>No cancellation notifications.</p>
+    <p class="no-messages">No cancellation notifications.</p>
 {% endif %}
 
 
@@ -68,6 +74,10 @@
     .message-item {
         padding: 10px;
         border-bottom: 1px solid #eee;
+        background-color: white;
+        border-radius: 6px;
+        margin-bottom: 10px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
     }
 
     .message-item:last-child {

@@ -27,6 +27,7 @@ urlpatterns = [
     path("", include('events.urls')),
     path("", include("allauth.urls")), #most important
     path('',include('chatapp.urls')),
+    path('',include('Travels.urls')),
   
 ]
 if settings.DEBUG:

@@ -10,6 +10,7 @@
         border: 1px solid #ccc;
         border-radius: 30px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
     .report-header {
         display: flex;
@@ -74,6 +75,11 @@
         padding: 10px 0;
         border-bottom: 1px solid #eee;
         align-items: center;
+        transition: background-color 0.3s ease;
+        word-wrap: break-word;
+    }
+    .item1:hover {
+        background-color: #f0e6ff;
     }
     .t-op-nextlvl {
         font-size: 14px;
@@ -101,6 +107,10 @@
         .t-op, .t-op-nextlvl {
             font-size: 0.9em;
         }
+        .report-container {
+            max-width: 100%;
+            overflow-x: auto;
+        }
     }
     @media (max-width: 480px) {
         .report-container {
@@ -112,6 +122,10 @@
         }
         .t-op, .t-op-nextlvl {
             font-size: 0.8em;
+        }
+        .report-container {
+            max-width: 100%;
+            overflow-x: auto;
         }
     }
     .pagination {

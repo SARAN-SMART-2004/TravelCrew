@@ -12,3 +12,4 @@ twilio
 django-simple-captcha
 python-decouple
 channels
+daphne

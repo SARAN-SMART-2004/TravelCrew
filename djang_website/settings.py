@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'users',
     'events',
     'chatapp',
+    'Travels',
 
     # Third-party apps
     'tinymce',
@@ -151,7 +152,7 @@ LOGIN_REDIRECT_URL = '/'
 LOGIN_URL = 'login'
 
 # Set a valid site ID for Django Allauth
-SITE_ID = 1
+SITE_ID = 3
 
 # Authentication backends
 AUTHENTICATION_BACKENDS = (
@@ -223,3 +224,12 @@ TINYMCE_DEFAULT_CONFIG = {
 TWILIO_ACCOUNT_SID = config('TWILIO_ACCOUNT_SID')
 TWILIO_AUTH_TOKEN = config('TWILIO_AUTH_TOKEN')
 TWILIO_PHONE_NUMBER = config('TWILIO_PHONE_NUMBER')
+
+
+# >>> Site.objects.all()
+# <QuerySet [<Site: 127.0.0.1:8000>]>
+# >>> from django.contrib.sites.models import Site
+# >>> site = Site.objects.all()[0]
+# >>> print(site.id)
+# 3
+# >>>

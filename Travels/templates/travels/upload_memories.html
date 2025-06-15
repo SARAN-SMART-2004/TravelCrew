@@ -1,0 +1,53 @@
+{% extends "main/design/header.html" %}
+{% block content %}
+<style>
+    .upload-memories-container {
+        max-width: 700px;
+        margin: 40px auto;
+        background: white;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        text-align: center;
+    }
+    h2 {
+        color: #410099;
+        font-weight: 700;
+        margin-bottom: 25px;
+    }
+    input[type="file"] {
+        margin: 20px 0;
+    }
+    .error-message {
+        color: red;
+        margin-bottom: 15px;
+    }
+    button {
+        background-color: #410099;
+        color: white;
+        padding: 12px 25px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 18px;
+        font-weight: 600;
+        transition: background-color 0.3s ease;
+    }
+    button:hover {
+        background-color: #6a0dad;
+    }
+</style>
+<div class="upload-memories-container">
+    <h2>Upload Memories for {{ travel.place_name }}</h2>
+    {% if error %}
+    <p class="error-message">{{ error }}</p>
+    {% endif %}
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="file" name="memories" multiple accept="image/*" required>
+        <p>Minimum 20 images required</p>
+        <button type="submit">Upload</button>
+    </form>
+</div>
+{% endblock %}

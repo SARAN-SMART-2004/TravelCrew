@@ -4,178 +4,256 @@
 {% block content %}
 <style>
     .report-container {
-        width: 100%;
-        max-width: 800px;
-        margin: 20px auto;
+        width: calc(100% - 240px);
+        max-width: 900px;
+        margin: 50px 0 50px 240px;
+        padding: 40px 50px;
+        background: #f8f9fa;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        color: #333;
+        box-sizing: border-box;
+    }
+
+    .profile-sidebar {
+        width: 280px;
+        background: white;
+        border-radius: 10px;
         padding: 20px;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        background: #ffffff;
-        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 0 8px rgba(0,0,0,0.1);
+        float: left;
+        margin-right: 30px;
+        text-align: center;
     }
 
-    .profile-image {
-        width: 100px;
-        height: 100px;
+    .profile-sidebar img {
+        width: 120px;
+        height: 120px;
         border-radius: 50%;
-        border: 2px solid #ccc;
-        cursor: pointer;
+        margin-bottom: 15px;
+        border: 3px solid #410099;
     }
 
-    .account-heading {
+    .profile-sidebar h2 {
+        margin: 0;
         font-size: 24px;
-        font-weight: bold;
-        margin-bottom: 5px;
+        font-weight: 700;
+        color: #410099;
     }
 
-    .text-muted {
+    .profile-sidebar p {
+        color: #666;
+        margin: 5px 0 15px 0;
         font-size: 14px;
     }
 
-    .text-secondary {
-        font-size: 16px;
-        margin-bottom: 10px;
-    }
-
-    .verified-badge {
-        color: green;
-    }
-
-    .not-verified-badge {
-        color: red;
-    }
-
-    .content-section {
-        margin-top: 20px;
-    }
-
-    .form-group {
-        margin-bottom: 1rem;
-    }
-
-    .btn-update {
-        background-color: #6a0dad;
-        color: white;
-        border: 1px solid #6a0dad;
-        padding: 10px 20px;
-        font-size: 16px;
+    .profile-sidebar .btn {
+        margin: 5px 5px 15px 5px;
+        padding: 8px 20px;
+        font-size: 14px;
         border-radius: 5px;
         cursor: pointer;
-        transition: background-color 0.3s ease, color 0.3s ease;
+        border: none;
+        transition: background-color 0.3s ease;
     }
 
-    .btn-update:hover {
-        background-color: #5a0cac;
-        border-color: #5a0cac;
+    .btn-follow {
+        background-color: #410099;
+        color: white;
     }
 
-    .back-button {
-        position: absolute;
-        top: 10px;
-        right: 10px;
+    .btn-follow:hover {
+        background-color: #6a0dad;
     }
 
-    .social-icon {
-        width: 24px;
-        height: 24px;
-        margin-right: 8px;
-        vertical-align: middle;
+    .btn-message {
+        background-color: #e9ecef;
+        color: #333;
     }
-    .border-bottom b{
-        font-size:30px;
+
+    .btn-message:hover {
+        background-color: #ced4da;
+    }
+
+    .profile-content {
+        overflow: hidden;
+    }
+
+    .profile-info {
+        background: white;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 0 8px rgba(0,0,0,0.1);
+        margin-bottom: 20px;
+    }
+
+    .profile-info h3 {
+        margin-top: 0;
+        color: #410099;
+        font-weight: 700;
+        margin-bottom: 15px;
+    }
+
+    .profile-info table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .profile-info table td {
+        padding: 10px 8px;
+        border-bottom: 1px solid #dee2e6;
+        font-size: 15px;
+    }
+
+    .profile-info table td:first-child {
+        font-weight: 600;
+        color: #555;
+        width: 30%;
+    }
+
+    .profile-info table td:last-child {
+        color: #333;
+    }
+
+    .edit-btn {
+        background-color: #17a2b8;
+        color: white;
+        padding: 8px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 14px;
+        transition: background-color 0.3s ease;
+        margin-top: 10px;
+    }
+
+    .edit-btn:hover {
+        background-color: #138496;
+    }
+
+    .social-links {
+        background: white;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 0 8px rgba(0,0,0,0.1);
+        margin-bottom: 20px;
+    }
+
+    .social-links h4 {
+        margin-top: 0;
+        color: #410099;
+        font-weight: 700;
+        margin-bottom: 15px;
+    }
+
+    .social-links a {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+        color: #333;
+        text-decoration: none;
+        font-size: 14px;
+        transition: color 0.3s ease;
+    }
+
+    .social-links a:hover {
+        color: #410099;
+    }
+
+    .social-links i {
+        margin-right: 10px;
+        font-size: 18px;
+        color: #410099;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .report-container {
+            width: 95%;
+            margin: 20px auto;
+            padding: 20px;
+        }
+
+        .profile-sidebar {
+            width: 100%;
+            float: none;
+            margin: 0 0 20px 0;
+            text-align: center;
+        }
+
+        .profile-content {
+            overflow: visible;
+        }
     }
 </style>
 
 <div class="report-container">
-    <a href="{% url 'homepage' %}" class="btn btn-outline-secondary back-button">Back</a>
-    <center><legend class="border-bottom mb-4"><b>Profile Information</b></legend></center>
-    <div class="content-section">
-        <div class="align">
-            <div class="media">
-                {% if user.username == form.instance.username %}
-                <img class="rounded-circle account-img profile-image" src="{{ form.instance.image.url }}" alt="Profile Image">
-                
-                {% else %}
-                <img class="rounded-circle account-img profile-image" src="{{ form.instance.image.url }}" alt="Profile Image">
-                {% endif %}
-            </div>
-            <div class="media-body ml-3">
-                <h2 class="account-heading">{{ form.instance.username }}
-                    <small class="text-muted">({{ form.instance.status }})</small>
-                </h2>
-                <p class="text-secondary">{{ form.instance.first_name }} {{ form.instance.last_name }}</p>
-                <p class="text-secondary"><b>Email:</b> {{ form.instance.email }}</p>
-                
-                <p class="text-secondary">{{ form.instance.description }}</p>
-                <p class="text-secondary">
-                    {{ form.instance.phone_number }}
-                    {% if form.instance.is_phone_verified %}
-                    <span class="verified-badge">✔ Verified</span>
-                    {% else %}
-                    <span class="not-verified-badge">✘ Not Verified</span>
-                    {% endif %}
-                </p>
-            </div>
-        </div>
-
+    <div class="profile-sidebar">
         {% if user.username == form.instance.username %}
-        <form method="POST" enctype="multipart/form-data">
-            {% csrf_token %}
-            <fieldset class="form-group mt-4">
-                <legend class="border-bottom mb-4">Edit Profile Information</legend>
-                {{ form.image|as_crispy_field }}
-                <div class="form-row">
-                    <div class="form-group col-md-6">
-                        {{ form.first_name|as_crispy_field }}
-                    </div>
-                    <div class="form-group col-md-6">
-                        {{ form.last_name|as_crispy_field }}
-                    </div>
-                </div>
-                {{ form.gender|as_crispy_field }}
-                {{ form.email|as_crispy_field }}
-                {{ form.designation|as_crispy_field }}
-                {{ form.description|as_crispy_field }}
-                {{ form.phone_number|as_crispy_field }}
-                {{ form.age|as_crispy_field }}
-                {{ form.address|as_crispy_field }}
-                {{ form.city_name|as_crispy_field }}
-                {{ form.district_name|as_crispy_field }}
-                {{ form.postcode|as_crispy_field }}
-
-                <div class="form-group">
-                    <label for="id_instagram">
-                        <i class="fa-brands fa-square-instagram" style="color: #410099;"></i> 
-                    </label>
-                    {{ form.instagram|as_crispy_field }}
-                </div>
-                <div class="form-group">
-                    <label for="id_twitter">
-                        <i class="fa-brands fa-square-x-twitter" style="color: #410099;"></i> 
-                    </label>
-                    {{ form.twitter|as_crispy_field }}
-                </div>
-                <div class="form-group">
-                    <label for="id_facebook">
-                        <i class="fa-brands fa-facebook" style="color: #410099;"></i> 
-                    </label>
-                    {{ form.facebook|as_crispy_field }}
-                </div>
-                <div class="form-group">
-                    <label for="id_linkedin">
-                        <i class="fa-brands fa-linkedin" style="color: #410099;"></i> 
-                    </label>
-                    {{ form.linkedin|as_crispy_field }}
-                </div>
-
-                <a href="{% url 'password_change' %}" class="btn btn-link">Change Password</a>
-            </fieldset>
-
-            <div class="form-group text-center">
-                <button class="btn btn-update" type="submit">Update</button>
-            </div>
-        </form>
+            <img src="{{ form.instance.image.url }}" alt="Profile Image">
+        {% else %}
+            <img src="{{ form.instance.image.url }}" alt="Profile Image">
         {% endif %}
+        <h2>{{ form.instance.username }}</h2>
+        <p>{{ form.instance.designation }}</p>
+        <button class="btn btn-follow">Follow</button>
+        <button class="btn btn-message">Message</button>
+    </div>
+    <div class="profile-content">
+        <div class="profile-info">
+            <h3>Profile Information</h3>
+            <table>
+                <tr>
+                    <td>Full Name</td>
+                    <td>{{ form.instance.first_name }} {{ form.instance.last_name }}</td>
+                </tr>
+                <tr>
+                    <td>Email</td>
+                    <td>{{ form.instance.email }}</td>
+                </tr>
+                <tr>
+                    <td>Phone</td>
+                    <td>{{ form.instance.phone_number }}</td>
+                </tr>
+                <tr>
+                    <td>Mobile</td>
+                    <td>{{ form.instance.phone_number }}</td>
+                </tr>
+                <tr>
+                    <td>Gender</td>
+                    <td>{{ form.instance.gender }}</td>
+                </tr>
+                <tr>
+                    <td>Age</td>
+                    <td>{{ form.instance.age }}</td>
+                </tr>
+                <tr>
+                    <td>Address</td>
+                    <td>{{ form.instance.address }}, {{ form.instance.city_name }}, {{ form.instance.district_name }}, {{ form.instance.postcode }}</td>
+                </tr>
+            </table>
+            {% if user.username == form.instance.username %}
+            <button class="edit-btn" onclick="document.getElementById('edit-profile-form').style.display='block'; this.style.display='none';">Edit</button>
+            {% endif %}
+        </div>
+        {% if user.username == form.instance.username %}
+        <div id="edit-profile-form" style="display:none;">
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form|crispy }}
+                <button class="edit-btn" type="submit">Save</button>
+            </form>
+        </div>
+        {% endif %}
+        <div class="social-links">
+            <h4>Social Links</h4>
+            <a href="{{ form.instance.social_media_links.website }}" target="_blank"><i class="fa fa-globe"></i> Website</a>
+            <a href="{{ form.instance.social_media_links.github }}" target="_blank"><i class="fa fa-github"></i> Github</a>
+            <a href="{{ form.instance.social_media_links.twitter }}" target="_blank"><i class="fa fa-twitter"></i> Twitter</a>
+            <a href="{{ form.instance.social_media_links.instagram }}" target="_blank"><i class="fa fa-instagram"></i> Instagram</a>
+            <a href="{{ form.instance.social_media_links.facebook }}" target="_blank"><i class="fa fa-facebook"></i> Facebook</a>
+        </div>
     </div>
 </div>
 

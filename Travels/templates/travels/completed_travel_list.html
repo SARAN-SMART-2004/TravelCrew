@@ -1,0 +1,52 @@
+{% extends "main/design/header.html" %}
+{% block content %}
+<style>
+    .completed-travel-list-container {
+        max-width: 900px;
+        margin: 40px auto;
+        background: white;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    h2 {
+        color: #410099;
+        font-weight: 700;
+        margin-bottom: 25px;
+        text-align: center;
+    }
+    ul.completed-travel-list {
+        list-style: none;
+        padding: 0;
+    }
+    ul.completed-travel-list li {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 15px;
+        border-bottom: 1px solid #ddd;
+        transition: background-color 0.3s ease;
+    }
+    ul.completed-travel-list li:hover {
+        background-color: #f0e6ff;
+    }
+    ul.completed-travel-list li a {
+        color: #3f0097;
+        text-decoration: none;
+        font-weight: 600;
+    }
+</style>
+<div class="completed-travel-list-container">
+    <h2>Completed Travels</h2>
+    <ul class="completed-travel-list">
+        {% for travel in travels %}
+        <li>
+            <a href="{% url 'travel_detail' travel.pk %}">{{ travel.place_name }} - {{ travel.city }}, {{ travel.state }}</a>
+        </li>
+        {% empty %}
+        <li>No completed travels found.</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

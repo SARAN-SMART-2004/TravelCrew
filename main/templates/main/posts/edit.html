@@ -3,50 +3,74 @@
 {% if user.is_authenticated %}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <style>
-    .report-container {
-        margin: 0px;
-    }
-
     .form-container {
         background-color: white;
-        padding: 20px;
-        border-radius: 8px;
-        max-width: 500px;
-        margin: auto;
+        padding: 30px 25px;
+        border-radius: 12px;
+        max-width: 600px;
+        margin: 40px auto;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    h2 {
+        color: #410099;
+        font-weight: 700;
+        margin-bottom: 25px;
+        text-align: center;
     }
     .form-group {
-        margin-bottom: 15px;
+        margin-bottom: 20px;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
     }
     .form-group label {
         display: block;
-        font-weight: bold;
-        margin-bottom: 5px;
+        font-weight: 600;
+        margin-bottom: 8px;
+        color: #333;
     }
     .form-group input,
     .form-group textarea {
         width: 100%;
-        padding: 10px;
-        border-radius: 4px;
+        padding: 12px 15px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        font-size: 16px;
+        font-family: inherit;
+        transition: border-color 0.3s ease;
+    }
+    .form-group input:focus,
+    .form-group textarea:focus {
+        border-color: #410099;
+        outline: none;
+        box-shadow: 0 0 8px rgba(65, 0, 153, 0.3);
     }
     .form-group input[type="date"],
     .form-group input[type="time"] {
-        padding: 5px;
+        padding: 8px 12px;
     }
     .form-group textarea {
         resize: vertical;
-        height: 100px;
+        height: 120px;
     }
     .form-group button {
-        background-color: #8e44ad;
+        background-color: #410099;
         color: white;
-        padding: 10px 20px;
+        padding: 12px 25px;
         border: none;
-        border-radius: 4px;
+        border-radius: 8px;
         cursor: pointer;
-        font-size: 16px;
+        font-size: 18px;
+        font-weight: 600;
+        transition: background-color 0.3s ease;
+        width: 100%;
     }
     .form-group button:hover {
-        background-color: #732d91;
+        background-color: #6a0dad;
     }
 </style>
 
@@ -54,9 +78,58 @@
     <h2>Edit Travel Plan</h2>
     <form action="{% url 'edit_travel_plan' form.instance.pk %}" method="POST">
         {% csrf_token %}
-        {{ form.as_p }}
-        <div class="form-group">
-            <button type="submit">Update</button>
+        <div class="form-group row">
+            <label for="id_source_place" class="col-sm-4 col-form-label">Source place:</label>
+            <div class="col-sm-8">
+                {{ form.source_place }}
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="id_destination_place" class="col-sm-4 col-form-label">Destination place:</label>
+            <div class="col-sm-8">
+                {{ form.destination_place }}
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="id_waiting_place" class="col-sm-4 col-form-label">Waiting place:</label>
+            <div class="col-sm-8">
+                {{ form.waiting_place }}
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="id_date" class="col-sm-4 col-form-label">Date:</label>
+            <div class="col-sm-8">
+                {{ form.date }}
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="id_leaving_time" class="col-sm-4 col-form-label">Leaving time:</label>
+            <div class="col-sm-8">
+                {{ form.leaving_time }}
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="id_waiting_time" class="col-sm-4 col-form-label">Waiting time:</label>
+            <div class="col-sm-8">
+                {{ form.waiting_time }}
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="id_message" class="col-sm-4 col-form-label">Message:</label>
+            <div class="col-sm-8">
+                {{ form.message }}
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="id_organizer" class="col-sm-4 col-form-label">Organizer:</label>
+            <div class="col-sm-8">
+                {{ form.organizer }}
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-sm-12">
+                <button type="submit" class="btn btn-primary btn-block">Update</button>
+            </div>
         </div>
     </form>
 </div>
