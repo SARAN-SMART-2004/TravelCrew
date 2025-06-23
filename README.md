@@ -1,4 +1,4 @@
-# Travel Crew (New Travel System)!
+# Travel Crew (New Travel System)
 
 ## Overview
 
